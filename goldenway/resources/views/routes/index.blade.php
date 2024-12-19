@@ -24,12 +24,18 @@
 
         .card-title {
             font-weight: bold;
-            color: #007bff;
+            color: #FFD700; /* Golden accent */
         }
 
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
+        .btn-golden {
+            background-color: #FFD700;
+            border-color: #FFD700;
+            color: white;
+        }
+
+        .btn-golden:hover {
+            background-color: #e6be00;
+            border-color: #e6be00;
         }
 
         input.form-control {
@@ -37,20 +43,24 @@
         }
 
         input.form-control:focus {
-            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
-            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            border-color: #FFD700;
+        }
+
+        .no-data-img {
+            width: 150px;
         }
     </style>
 </head>
 <body>
     <div class="container py-4">
-        <h1 class="mb-4 text-center">Available Buses</h1>
+        <h1 class="mb-4 text-center text-golden">Available Buses</h1>
 
         <!-- Centered Search Form -->
         <div class="d-flex justify-content-center mb-4">
             <form action="{{ route('routes.index') }}" method="GET" class="w-50">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search by start or end point" name="search" value="{{ request('search') }}">
+                    <input type="text" class="form-control" placeholder="Enter starting or destination city" name="search" aria-label="Search Routes" value="{{ request('search') }}">
                     <button class="btn btn-outline-secondary" type="submit">Search</button>
                 </div>
             </form>
@@ -62,18 +72,19 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100 shadow-sm">
                         <div class="card-body">
-                            <h5 class="card-title text-primary">{{ $route->name ?? 'Bus Service' }}</h5>
+                            <h5 class="card-title">{{ $route->name ?? 'Bus Service' }}</h5>
                             <p class="mb-1"><strong>From:</strong> {{ $route->start_point }}</p>
                             <p class="mb-1"><strong>To:</strong> {{ $route->end_point }}</p>
                             <p class="mb-1"><strong>Time:</strong> {{ $route->departure_time ?? 'N/A' }}</p>
                             <p class="mb-1"><strong>Price:</strong> NPR {{ $route->price }}</p>
-                            <a href="{{ route('book', $route->id) }}" class="btn btn-success mt-2 w-100">Book Now</a>
+                            <a href="{{ route('book', $route->id) }}" class="btn btn-golden mt-2 w-100">Book Now</a>
                         </div>
                     </div>
                 </div>
             @empty
                 <div class="col-12 text-center">
-                    <p>No buses found.</p>
+                    <img src="no-data.svg" alt="No data found" class="no-data-img mb-3">
+                    <p>No buses found. Please try searching for a different route.</p>
                 </div>
             @endforelse
         </div>
@@ -88,4 +99,4 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-    </x-app-layout>
+</x-app-layout>
