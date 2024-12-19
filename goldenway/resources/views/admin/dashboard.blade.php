@@ -15,7 +15,7 @@
         .sidebar {
             height: 100vh;
             width: 250px;
-            background-color: #007bff;
+            background-color: #ffd700;
             color: white;
             position: fixed;
             top: 0;
@@ -42,7 +42,7 @@
         }
 
         .sidebar a:hover, .sidebar a.active {
-            background-color: #0056b3;
+            background-color: #c5a700;
         }
 
         .main-content {
@@ -61,6 +61,40 @@
 
         .visible {
             display: block;
+        }
+
+        .card-header {
+            background-color: #c5a700;
+        }
+
+        .btn-primary {
+            background-color: #ffd700;
+            border-color: #c5a700;
+        }
+
+        .btn-primary:hover {
+            background-color: #c5a700;
+            border-color: #a38600;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ff9800;
+        }
+
+        .btn-warning:hover {
+            background-color: #ff9800;
+            border-color: #e68900;
+        }
+
+        .btn-danger {
+            background-color: #ff5252;
+            border-color: #e53935;
+        }
+
+        .btn-danger:hover {
+            background-color: #e53935;
+            border-color: #d32f2f;
         }
     </style>
 </head>
@@ -82,7 +116,7 @@
                 <div class="row justify-content-center">
                     <div class="col-md-6">
                         <div class="card">
-                            <div class="card-header bg-primary text-white text-center">
+                            <div class="card-header text-white text-center">
                                 <h3>Register New User</h3>
                             </div>
                             <div class="card-body">
@@ -240,54 +274,29 @@
                                     <h5 class="card-title text-primary">{{ $route->name ?? 'Bus Service' }}</h5>
                                     <p class="mb-1"><strong>From:</strong> {{ $route->start_point }}</p>
                                     <p class="mb-1"><strong>To:</strong> {{ $route->end_point }}</p>
-                                    <p class="mb-1"><strong>Time:</strong> {{ $route->departure_time ?? 'N/A' }}</p>
-                                    <p class="mb-1"><strong>Price:</strong> NPR {{ $route->price }}</p>
-                                    <div class="d-flex justify-content-between">
-                                        <a href="{{ route('routes.edit', $route->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                        <form action="{{ route('routes.destroy', $route->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                        </form>
-                                    </div>
+                                    <p class="mb-1"><strong>Distance:</strong> {{ $route->distance }} km</p>
+                                    <p class="mb-1"><strong>Duration:</strong> {{ $route->duration }} minutes</p>
+                                    <p class="mb-1"><strong>Price:</strong> ${{ $route->price }}</p>
                                 </div>
                             </div>
                         </div>
                     @empty
-                        <div class="col-12 text-center">
-                            <p>No buses found.</p>
-                        </div>
+                        <p>No routes available.</p>
                     @endforelse
                 </div>
-
-             
             </div>
         </div>
-
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function showSection(sectionId) {
-            const sections = document.querySelectorAll('.content-section');
-            const links = document.querySelectorAll('.sidebar a');
+</x-app-layout>
 
-            sections.forEach(section => {
-                section.classList.add('hidden');
-                section.classList.remove('visible');
-            });
+<script>
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => section.classList.add('hidden'));
+        document.getElementById(sectionId).classList.remove('hidden');
+    }
+</script>
 
-            links.forEach(link => {
-                link.classList.remove('active');
-            });
-
-            document.getElementById(sectionId).classList.add('visible');
-            document.getElementById(sectionId).classList.remove('hidden');
-
-            document.querySelector(`#link-${sectionId}`).classList.add('active');
-        }
-    </script>
 </body>
 </html>
-    </x-app-layout>
