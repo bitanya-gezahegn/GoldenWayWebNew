@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -8,12 +9,16 @@ class Route extends Model
 {
     use HasFactory;
 
-    // Add the fillable property to allow mass assignment
     protected $fillable = [
-        'start_point',
-        'end_point',
-        'duration',
-        'distance',
-        'price',
-    ];  //
+        'origin',
+        'destination',
+    ];
+
+    /**
+     * Define a relationship with the Trip model.
+     */
+    public function trips()
+    {
+        return $this->hasMany(Trip::class);
+    }
 }

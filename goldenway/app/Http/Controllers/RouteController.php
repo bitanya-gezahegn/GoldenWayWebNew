@@ -8,49 +8,52 @@ use App\Models\Route;
 
 class RouteController extends Controller
 {
-    public function create()
+  
+    public function index()
     {
-        return view('routes.create');  // Make sure the 'routes.create' view exists
+        $routes = Route::all();
+        return view('routes.routes', compact('routes'));
     }
-
 
     public function store(Request $request)
     {
         $request->validate([
-            'start_point' => 'required|string|max:255',
-            'end_point' => 'required|string|max:255',
-            'duration' => 'required|integer',
-            'distance' => 'required|numeric',
-            'price' => 'required|numeric',
+            'start' => 'required|string',
+            'end' => 'required|string',
         ]);
 
-        Route::create($request->all());
+        Route::create([
+            'origin' => $request['start'],
+            'destination' => $request['end'], ]);
+            $routes=Route::all(); 
+            return redirect()->route('routes.index')->with('success', 'Route added successfully!');
+        }
+        public function edit($id){
 
-       
-    return redirect()->back()->with('success', 'User registered successfully!');
-}
-
-public function index(Request $request)
-{
-    // Check if there's a search query
-    $search = $request->get('search');
+  $routes=Route::find($id);
+    
+    
+           return view('routes.edit',compact('routes'));
+        }
 
 
-    // Fetch the routes with pagination and optional search filter
-    $routes = Route::query()
-        ->when($search, function ($query, $search) {
-            return $query->where('start_point', 'like', "%$search%")
-                         ->orWhere('end_point', 'like', "%$search%");
-        })
-        ->paginate(10); // Adjust pagination as needed
+        public function edit_confirm(Request $request, $id){
+            $routes=Route::find($id);
+             $routes->origin=$request->start;
+            $routes->destination=$request->end;
+           
+            $routes->save();
+            
+            
+            return redirect()->route('routes.index')->with('message','Product Updated SuccessFully');
+            
+                }
 
-    return view('routes.index', compact('routes'));
-}
-public function book(){
-return view('routes.book');
-}
 
-public function edit(Request $request, $id){
-    return view('routes.edit');
-}
+
+    public function destroy($id)
+    {
+        Route::destroy($id);
+        return redirect()->route('routes.index')->with('success', 'Route deleted successfully!');
+    }
 }

@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('routes', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('start_point');
-            $table->string('end_point');
-            $table->integer('duration');
-            $table->float('distance');
+        Schema::create('trips', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('route_id')->constrained('routes')->onDelete('cascade');
+            $table->time('departure_time');
+            $table->time('arrival_time');
             $table->float('price');
+            $table->integer('capacity');
             $table->timestamps();
         });
     }

@@ -7,81 +7,202 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Custom golden theme styling */
-        .bg-golden {
-            background-color: #FFD700 !important;
-        }
-        .text-golden {
-            color: #FFD700 !important;
-        }
-        .btn-golden {
-            background-color: #FFD700;
-            border-color: #FFD700;
-            color: white;
-        }
-        .btn-golden:hover {
-            background-color: #e6be00;
-            border-color: #e6be00;
-        }
-        .nav-link:hover {
-            text-decoration: underline;
-        }
+      
+    @import url('https://fonts.googleapis.com/css2?family=Lemon+Milk&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lemon Milk', sans-serif;
+}
+
+body {
+    background-color: #f8face;
+    color: #333;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10%;
+    background-color: #f8face;
+    color: #f99005;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #070707;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #f99005;
+}
+
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px 10%;
+    background: url('bus-5840875_1280.webp') no-repeat right;
+    background-size: contain;
+    background-color: #f8face;
+    height: 500px;
+    color: #0c0c0c;
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-text h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.hero-text .btn {
+    background-color: #f99005;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.hero-text .btn:hover {
+    background-color: #ffc107;
+}
+
+@media (max-width: 768px) {
+    .hero {
+        background-position: right top;
+        background-size: cover;
+    }
+
+    .hero-text {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+    }
+
+    .hero-text p {
+        font-size: 1rem;
+    }
+}
+
+.features {
+    display: flex;
+    justify-content: space-around;
+    padding: 50px 10%;
+    background-color: #fff;
+}
+
+.feature {
+    text-align: center;
+    max-width: 300px;
+}
+
+.feature img {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+.feature h3 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+}
+
+.feature p {
+    font-size: 1rem;
+}
+
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg bg-golden">
-        <div class="container-fluid">
-            <a class="navbar-brand text-white" href="#">GoldenWay</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Buses</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Profile</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">About</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#">Contact</a></li>
-                    @if (Route::has('login'))
+    <header>
+        <div class="logo"> GoldenWay</div>
+      
+      </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Features</a></li>
+                <li><a href="#">About</a></li>
+                @if (Route::has('login'))
                         @auth
-                            <li class="nav-item"><a href="{{ url('/home') }}" class="nav-link text-white">Dashboard</a></li>
+                            <li class="nav-item"><a href="{{ url('/home') }}" class="nav-link ">Dashboard</a></li>
                         @else
-                            <li class="nav-item"><a href="{{ route('login') }}" class="nav-link text-white">Login</a></li>
+                            <li class="nav-item"><a href="{{ route('login') }}" class="nav-link ">Login</a></li>
                             @if (Route::has('register'))
-                                <li class="nav-item"><a href="{{ route('register') }}" class="nav-link text-white">Register</a></li>
+                                <li class="nav-item"><a href="{{ route('register') }}" class="nav-link ">Register</a></li>
                             @endif
                         @endauth
                     @endif
-                </ul>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Main Content -->
-    <div class="container mt-5">
-        <div class="text-center mb-4">
-            <h1 class="mb-3 text-golden">Welcome to GoldenWay</h1>
-            <p class="text-secondary">Experience hassle-free bus ticket booking across Nepal!</p>
-        </div>
-        <div class="card mx-auto shadow-sm" style="max-width: 600px; padding: 20px;">
-            <form>
-                <div class="mb-3">
-                    <label for="from" class="form-label text-golden">From</label>
-                    <input type="text" id="from" class="form-control border-golden" placeholder="Enter starting location">
-                </div>
-                <div class="mb-3">
-                    <label for="to" class="form-label text-golden">To</label>
-                    <input type="text" id="to" class="form-control border-golden" placeholder="Enter destination">
-                </div>
-                <div class="mb-3">
-                    <label for="date" class="form-label text-golden">Date</label>
-                    <input type="date" id="date" class="form-control border-golden">
-                </div>
-                <button type="submit" class="btn btn-golden w-100">Search Buses</button>
-            </form>
-        </div>
-    </div>
+            </ul>
+        </nav>
+    </header>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <section class="hero">
+        <div class="hero-text">
+            <h1>Book Your Bus Tickets Hassle-Free</h1>
+            <p>Convenient and reliable bus ticketing services at your fingertips. Plan your journey with ease today!</p>
+            @if (Route::has('login'))
+                        @auth
+                            <li class="btn"><a href="{{ url('/home') }}" class="nav-link ">Get Started</a></li>
+                        @else
+                        <li class="btn"><a href="{{ route('login') }}" class="nav-link ">Get Started</a></li>
+                        @endif
+                        @endauth
+            
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <img src="Orange Array of Literary Display.jpeg" alt="Feature 1" style="height: 9rem;">
+            <h3>Easy Booking</h3>
+            <p>Quick and easy online booking with just a few clicks.</p>
+        </div>
+        <div class="feature">
+            <img src="Vibrant Alarm Clock Promotion.jpeg" alt="Feature 2" style="height: 9rem;">
+            <h3>Secure Payments</h3>
+            <p>Enjoy secure and hassle-free payment options.</p>
+        </div>
+        <div class="feature">
+            <img src="Minimalist Key on Peach Gradient.jpeg" alt="Feature 3"style="height: 9rem;">
+            <h3>24/7 Support</h3>
+            <p>Our support team is always here to help you.</p>
+        </div>
+    </section>
+
+   
 </body>
 </html>

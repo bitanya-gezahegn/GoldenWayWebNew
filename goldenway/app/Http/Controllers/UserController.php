@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -28,13 +27,18 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $id,
             'phone' => 'required|string',
-            'usertype' => 'required|string|in:registor_officer,driver,ticket_officer',
+            'role' => 'required|string|in:register_officer,driver,ticket_officer',
         ]);
 
         $user = User::findOrFail($id);
-        $user->update($request->all());
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->phone = $request->input('phone');
+        $user->role = $request->input('role'); // Assuming 'role' corresponds to the user type
 
-        return view('admin.success');
+        $user->save();
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully!');
     }
 
     // Delete user
@@ -43,6 +47,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
     }
 }

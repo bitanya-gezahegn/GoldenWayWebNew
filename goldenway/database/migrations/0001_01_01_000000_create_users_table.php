@@ -17,8 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->nullable();
 
-            $table->string('usertype')->default('customer');
-
+            $table->enum('role', ['customer', 'admin', 'operations_officer',  'driver','ticket_officer'])->default('customer');
+            $table->enum('status', ['active', 'suspended'])->default('active');
+          
 
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
@@ -26,7 +27,7 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
-        });
+           });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
