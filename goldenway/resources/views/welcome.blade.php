@@ -176,7 +176,7 @@ nav ul li a:hover {
             <p>Convenient and reliable bus ticketing services at your fingertips. Plan your journey with ease today!</p>
             @if (Route::has('login'))
                         @auth
-                            <li class="btn"><a href="{{ url('/home') }}" class="nav-link ">Get Started</a></li>
+                            <li class="btn"><a href="{{ url('/redirect') }}" class="nav-link ">Get Started</a></li>
                         @else
                         <li class="btn"><a href="{{ route('login') }}" class="nav-link ">Get Started</a></li>
                         @endif
