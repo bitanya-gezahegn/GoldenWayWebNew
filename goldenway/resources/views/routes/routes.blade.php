@@ -139,6 +139,8 @@
 " class="btn btn-golden">Add Trips</a>
           <a href="{{ url('schedules.index') }}
 " class="btn btn-golden">Add Schedule</a>
+<a href="{{ url('issuedisplay') }}
+" class="btn btn-golden">Check Issues</a>
       </div>
 
       <h2>Existing Routes</h2>

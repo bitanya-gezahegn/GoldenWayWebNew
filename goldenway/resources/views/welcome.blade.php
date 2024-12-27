@@ -157,7 +157,7 @@ nav ul li a:hover {
                 <li><a href="#">About</a></li>
                 @if (Route::has('login'))
                         @auth
-                            <li class="nav-item"><a href="{{ url('/home') }}" class="nav-link ">Dashboard</a></li>
+                            <li class="nav-item"><a href="{{ url('/redirect') }}" class="nav-link ">Dashboard</a></li>
                         @else
                             <li class="nav-item"><a href="{{ route('login') }}" class="nav-link ">Login</a></li>
                             @if (Route::has('register'))

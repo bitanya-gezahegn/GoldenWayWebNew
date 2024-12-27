@@ -73,7 +73,7 @@ class AdminController extends Controller
         ]);
     
         // Redirect with a success message or view
-        return redirect()->route('admin.users.create')->with('success', 'User created successfully!');
+        return redirect()->route('redirect')->with('success', 'User created successfully!');
     }
     
      public function home(){

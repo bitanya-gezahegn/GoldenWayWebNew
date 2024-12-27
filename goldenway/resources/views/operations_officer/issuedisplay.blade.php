@@ -188,36 +188,28 @@ min-width: 100px;
 <body>
 <div class="container">
 <div class="header">
-<h1>Schedules</h1>
+<h1>Issue Reports</h1>
 </div>
-<div class="text-end mb-3"><a href="{{ route('schedules.create') }}" class="btn btn-golden mb-3">Create Schedule</a>
-</div>
+
 <table class="table table-striped">
 <thead>
 <tr>
-<th>ID</th>
-<th>Trip</th>
 <th>Driver</th>
-<th>Status</th>
+<th>Issue</th>
+<th>Date</th>
 <th>Actions</th>
 </tr>
 </thead>
 <tbody>
-@foreach ($schedules as $schedule)
+@foreach ($reports as $report)
 <tr>
-<td>{{ $schedule->id }}</td>
-<td>{{ $schedule->trip->id }}</td>
-<td>{{ $schedule->driver->name }}</td>
-<td>{{ $schedule->status }}</td>
+<td>{{ $report->driver->name }}</td>
+<td>{{ $report->description }}</td>
+<td>{{ $report->reported_at }}</td>
 <td>
-<a href="{{ route('schedules.edit', $schedule->id) }}
-" class="btn btn-primary">Edit</a> </td>
-<td> <form action="route('schedules.destroy', $schedule->id) }}
-" method="POST" class="d-inline mr-28">
-@csrf
-@method('DELETE')
-<button type="submit" class="btn btn-danger">Delete</button>
-</form>
+<a href="
+" class="btn btn-primary">Address</a> </td>
+<td> 
 </td>
 </tr>
 @endforeach

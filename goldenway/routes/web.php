@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DriverController;
 use App\Http\Controllers\RouteController;
 use App\Http\Controllers\SchedulesController;
 use App\Http\Controllers\UserController;
@@ -76,3 +77,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
 
 Route::post('/search-schedule', [AdminController::class, 'search'])->name('schedule.search');
+
+Route::get('/reportissues', [DriverController::class, 'reportissues'])->name('reportissues');
+Route::post('/reportissuecreate', [DriverController::class, 'reportissuecreate'])->name('reportissuecreate');
+Route::get('/issuedisplay', [DriverController::class, 'issuedisplay'])->name('issuedisplay');
+
+
+

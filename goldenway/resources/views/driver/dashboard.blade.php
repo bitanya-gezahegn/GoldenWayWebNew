@@ -8,7 +8,7 @@
     <title>Document</title>
    </head>
    <body>
-    hey driver
+  <a href="{{url('/reportissues')}}">Report issues</a>
    </body>
    </html>
 </x-app-layout>
