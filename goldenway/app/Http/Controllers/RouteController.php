@@ -20,11 +20,16 @@ class RouteController extends Controller
         $request->validate([
             'start' => 'required|string',
             'end' => 'required|string',
+            'stop' => 'string',
         ]);
 
         Route::create([
             'origin' => $request['start'],
-            'destination' => $request['end'], ]);
+            'destination' => $request['end'],
+            'bus_stops'=>  json_encode([$request['stop']]),
+
+        
+        ]);
             $routes=Route::all(); 
             return redirect()->route('routes.index')->with('success', 'Route added successfully!');
         }
@@ -45,7 +50,7 @@ class RouteController extends Controller
             $routes->save();
             
             
-            return redirect()->route('routes.index')->with('message','Product Updated SuccessFully');
+            return redirect()->route('routes.index')->with('success','Product Updated SuccessFully');
             
                 }
 

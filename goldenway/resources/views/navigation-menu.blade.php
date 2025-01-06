@@ -1,3 +1,8 @@
+
+@php
+    use Illuminate\Support\Facades\Auth;
+@endphp
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,7 +84,7 @@
                                 </button>
                             @else
                                 <span class="inline-flex rounded-md space-x-10">
-                                    <button class="">Home </button>
+                                  <a href="/redirect"><button class="mt-10px">Home </button></a>  
                                     <button>Features</button>
                                     <button>About</button>
                                     <button type="button" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none focus:bg-gray-50 active:bg-gray-50 transition ease-in-out duration-150">

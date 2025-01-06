@@ -1,3 +1,7 @@
+@php
+    use Illuminate\Support\Facades\Route;
+@endphp
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,16 +159,16 @@ nav ul li a:hover {
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Features</a></li>
                 <li><a href="#">About</a></li>
-                @if (Route::has('login'))
-                        @auth
-                            <li class="nav-item"><a href="{{ url('/redirect') }}" class="nav-link ">Dashboard</a></li>
-                        @else
-                            <li class="nav-item"><a href="{{ route('login') }}" class="nav-link ">Login</a></li>
-                            @if (Route::has('register'))
-                                <li class="nav-item"><a href="{{ route('register') }}" class="nav-link ">Register</a></li>
-                            @endif
-                        @endauth
-                    @endif
+               @if (Illuminate\Support\Facades\Route::has('login'))
+    @auth
+        <li class="nav-item"><a href="{{ url('/redirect') }}" class="nav-link"></a></li>
+    @else
+        <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Login</a></li>
+        @if (Illuminate\Support\Facades\Route::has('register'))
+            <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Register</a></li>
+        @endif
+    @endauth
+@endif
 
             </ul>
         </nav>

@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('trips', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('route_id')->constrained('routes')->onDelete('cascade');
-            $table->time('departure_time');
-            $table->time('arrival_time');
-            $table->float('price');
-            $table->integer('capacity');
+            $table->foreignId('route_id')->constrained('routes')->onDelete('cascade'); // Links to the route
+            $table->date('date'); // Date of the trip
+            $table->time('departure_time'); // Departure time
+            $table->time('arrival_time'); // Arrival time
+            $table->float('price'); // Price for the trip
+            $table->integer('capacity'); // Capacity of the trip
             $table->timestamps();
         });
     }

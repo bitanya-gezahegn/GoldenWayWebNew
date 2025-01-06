@@ -1,197 +1,287 @@
-<x-app-layout>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Available Buses</title>
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Lemon+Milk&display=swap" rel="stylesheet">
-<style>
-body {
-background-color: #fffaf0; /* Soft cream background */
-font-family: 'Lemon Milk', sans-serif;
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: arial, sans-serif;
 }
-
-.card {
-border-radius: 10px;
-border: 1px solid #e3e6f0;
-transition: transform 0.2s;
-background-color: #fff;
-}
-
-.card:hover {
-transform: scale(1.05);
-box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.card-title {
-font-weight: bold;
-color: #FFD700; /* Golden accent */
-}
-
-.btn-golden {
-background-color: #FFD700;
-border-color: #FFD700;
-color: white;
-}
-
-.btn-golden:hover {
-background-color: #e6be00;
-border-color: #e6be00;
-}
-
-.btn-edit {
-background-color: #FFD700;
-border-color: #FFD700;
-color: white;
-height: 2rem;
-width: 4.3rem;
-}
-
-.btn-edit:hover {
-background-color: #e6be00;
-border-color: #e6be00;
-}
-
-.btn-delete {
-background-color: #FF6347; /* Orangish Red */
-border-color: #FF6347;
-color: white;
-height: 2rem;
-width: 4.3rem;
-}
-
-.btn-delete:hover {
-background-color: #e5533b;
-border-color: #e5533b;
-}
-
-input.form-control {
-border-radius: 20px;
-}
-
-input.form-control:focus {
-box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-border-color: #FFD700;
-}
-
-.no-data-img {
-width: 150px;
-}
-
 .header {
-text-align: center;
-margin: 20px 0;
-color: #FFD700;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 15px 30px;
+	background: #f8b75c;
+	color: #f6f3f3;
 }
+.u-name {
+	font-size: 20px;
+	padding-left: 17px;
+}
+.u-name b {
+	background: #f8b75c;
+}
+.header i {
+	font-size: 30px;
+	cursor: pointer;
+	color: #fff;
+}
+.header i:hover {
+	color: #ffb038;
+}
+.user-p {
+	text-align: center;
+	padding-left: 10px;
+	padding-top: 25px;
+}
+.user-p img {
+	width: 100px;
+	border-radius: 50%;
+}
+.user-p h4 {
+	color: #fef3e8;
+	padding: 5px 0;
 
-.header h1 {
-font-size: 3rem;
-font-weight: bold;
 }
+.side-bar {
+	width: 250px;
+	background: hsl(0, 80%, 98%);
+	min-height: 100vh;
+	transition: 500ms width;
+}
+.body {
+	display: flex;
+}
+.section-1 {
+	width: 100%;
+  background-color: #f4efe9;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+    padding-bottom: 500px;
+}
+.section-1 h1 {
+	color: #fff;
+	font-size: 60px;
+}
+.section-1 p {
+	color: #f3a93b;
+	font-size: 20px;
+	background: #fff;
+	padding: 7px;
+	border-radius: 5px;
+}
+.side-bar ul {
+	margin-top: 20px;
+	list-style: none;
+}
+.side-bar ul li {
+	font-size: 16px;
+	padding: 15px 0px;
+	padding-left: 20px;
+	transition: 500ms background;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.side-bar ul li:hover {
+	background: #f6aa38;
+}
+.side-bar ul li a {
+	text-decoration: none;
+	color: #100f0f;
+	cursor: pointer;
+	letter-spacing: 1px;
+}
+.side-bar ul li a i {
+	display: inline-block;
+	padding-right: 10px;
+	font-size: 23px;
+}
+#navbtn {
+	display: inline-block;
+	margin-left: 70px;
+	font-size: 20px;
+	transition: 500ms color;
+}
+#checkbox {
+	display: none;
+}
+#checkbox:checked ~ .body .side-bar {
+	width: 60px;
+}
+#checkbox:checked ~ .body .side-bar .user-p{
+	visibility: hidden;
+}
+#checkbox:checked ~ .body .side-bar a span{
+	display: none;
+}
+        .side-bar ul {
+            list-style: none;
+            padding: 0;
+        }
 
-.placeholder {
-color: #bbb;
-text-align: center;
-margin: 20px 0;
-}
+        .side-bar ul li {
+            position: relative;
+        }
 
-.illustration {
-text-align: center;
-margin: 40px 0;
-}
+        .side-bar ul li a {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: #333;
+        }
 
-.illustration img {
-max-width: 300px;
-}
+        .side-bar ul li a:hover {
+            background: #fd901b;
+        }
 
-.placeholder-card {
-margin: 20px auto;
-padding: 20px;
-border-radius: 10px;
-background-color: #FFF5CC;
-text-align: center;
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+        .side-bar ul li .sub-menu {
+            display: none;
+            list-style: none;
+            margin: 0;
+            padding-left: 20px;
+        }
 
-.placeholder-card h2 {
-color: #e6be00;
-}
+        .side-bar ul li.active .sub-menu {
+            display: block;
+        }
 
-.placeholder-card p {
-color: #aaa;
-}
+        .side-bar ul li .sub-menu li a {
+            padding: 5px;
+        }
+    .section-1 {
+        width: 100%;
+        background-color: #f4efe9; /* Subtle background for section */
+        padding: 20px; /* Add padding for spacing */
+    }
 
-.footer {
-margin-top: 40px;
-text-align: center;
-color: #FFD700;
-}
+    .section-1 h1 {
+        color: #f8b75c; /* Matching the header's theme */
+        font-size: 36px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-align: center; /* Center-align the title */
+    }
 
-.footer a {
-color: #FFD700;
-text-decoration: underline;
-}
+    .text-end {
+        margin-bottom: 20px;
+        text-align: right;
+    }
 
-.footer a:hover {
-color: #e6be00;
-text-decoration: none;
-}
+    .btn-golden {
+        background-color: #f8b75c;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+    }
 
-@media (max-width: 576px) {
-.table thead {
-display: none;
-}
+    .btn-golden:hover {
+        background-color: #e6a843;
+        color: #fff;
+    }
 
-td[data-label] {
-display: block;
-text-align: right;
-padding-left: 50%;
-position: relative;
-}
+    table.table {
+        background-color: #ffffff; /* White background for better contrast */
+        border-radius: 10px; /* Rounded corners */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        overflow: hidden;
+    }
 
-td[data-label]::before {
-content: attr(data-label);
-position: absolute;
-left: 0;
-width: 45%;
-text-align: left;
-font-weight: bold;
-color: #555;
-}
-}
+    table.table th {
+        background-color: #f8b75c; /* Header background */
+        color: white;
+        text-align: center;
+        font-weight: bold;
+        padding: 10px;
+    }
 
-@media (min-width: 992px) {
-.btn-edit, .btn-delete {
-margin-right: 10px;
-}
+    table.table td {
+        text-align: center; /* Center-align table cells */
+        padding: 10px;
+    }
 
-.btn-edit:last-child, .btn-delete:last-child {
-margin-right: 0;
-}
+    table.table td:last-child {
+        display: flex;
+        justify-content: center; /* Align action buttons to the center */
+        gap: 10px; /* Add spacing between buttons */
+    }
 
-td {
-vertical-align: middle;
-}
+    table.table td .btn {
+        font-size: 14px;
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
 
-.btn-edit, .btn-delete {
-min-width: 100px;
-}
-}
-</style>
+    table.table .btn-primary {
+        background-color: #4CAF50; /* Green for edit */
+        border: none;
+    }
+
+    table.table .btn-primary:hover {
+        background-color: #45a049;
+    }
+
+    table.table .btn-danger {
+        background-color: #f44336; /* Red for delete */
+        border: none;
+    }
+
+    table.table .btn-danger:hover {
+        background-color: #e53935;
+    }
+    .alert-success {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+
+    </style>
 </head>
+
 <body>
-<div class="container">
-<div class="header">
+    <input type="checkbox" id="checkbox">
+   
+
+    <header class="header">
+   
+
+        <h2 class="u-name">OPERATION <b>OFFICER</b>
+            <label for="checkbox">
+                <i id="navbtn" class="fa fa-bars" aria-hidden="true"></i>
+            </label>
+        </h2>
+        <a href="/">
+		<i class="fa fa-home" aria-hidden="true"></i>
+ 
+		</a>  </header>
+    <div class="body">
+        <nav class="side-bar">
+    @include('sidebar')
+           
+    </nav>
+        <section class="section-1">
+      
+
 <h1>Schedules</h1>
-</div>
-<div class="text-end mb-3"><a href="{{ route('schedules.create') }}" class="btn btn-golden mb-3">Create Schedule</a>
-</div>
+
+
 <table class="table table-striped">
 <thead>
 <tr>
@@ -206,13 +296,13 @@ min-width: 100px;
 @foreach ($schedules as $schedule)
 <tr>
 <td>{{ $schedule->id }}</td>
-<td>{{ $schedule->trip->id }}</td>
+<td>{{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}</td>
 <td>{{ $schedule->driver->name }}</td>
 <td>{{ $schedule->status }}</td>
 <td>
 <a href="{{ route('schedules.edit', $schedule->id) }}
-" class="btn btn-primary">Edit</a> </td>
-<td> <form action="route('schedules.destroy', $schedule->id) }}
+" class="btn btn-primary">Edit</a> 
+ <form action="route('schedules.destroy', $schedule->id) }}
 " method="POST" class="d-inline mr-28">
 @csrf
 @method('DELETE')
@@ -224,8 +314,8 @@ min-width: 100px;
 </tbody>
 </table>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    </section>
+    </div>
 </body>
 </html>
-</x-app-layout>
-

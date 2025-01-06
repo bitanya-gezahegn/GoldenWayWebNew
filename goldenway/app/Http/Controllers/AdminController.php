@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Schedule;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Auth;
@@ -19,11 +20,10 @@ class AdminController extends Controller
             $actor=Auth::user();
       $usertype= Auth::user()->role;
 
-            if($usertype == 'customer'){
-                $schedules=Schedule::all();
-            return view('dashboard', compact('schedules'));
-        
-           }
+      if($usertype == 'customer') {
+        $schedules = Schedule::where('status', 'active')->get();
+        return view('dashboard', compact('schedules'));
+    }
             elseif($usertype == 'admin'){
 
                 $users = User::where('role', '!=', 'admin')->get();
@@ -36,11 +36,16 @@ class AdminController extends Controller
             elseif($usertype == 'operations_officer'){
         $routes = Route::all();
                 
-                return view('routes.routes',compact('routes'));
+                return view('dashboardd',compact('routes'));
                 
         }
         elseif($usertype == 'ticket_officer'){
-            return view('ticket_officer.dashboard',compact('actor' ));
+            $completedPayments = \App\Models\Payment::where('payment_status', 'completed')
+            ->with('customer') // Eager load the related customer
+            ->get();
+    
+        return view('ticket_officer.dashboard', compact('completedPayments'));
+    
             
     }
     else {
@@ -128,31 +133,56 @@ class AdminController extends Controller
          $user->delete();
  
          return redirect()->route('users.index')->with('success', 'User deleted successfully!');
-     }
-
-     public function search(Request $request)
+     }public function search(Request $request)
      {
+         // Validate inputs
          $request->validate([
+             'origin' => 'nullable|string|max:255',
              'destination' => 'nullable|string|max:255',
              'date' => 'nullable|date',
          ]);
      
+         // Initialize query
          $query = Schedule::query();
      
+         // Filter by origin
+         if ($request->filled('origin')) {
+             $query->whereHas('trip.route', function ($q) use ($request) {
+                 $q->where('origin', 'like', '%' . $request->input('origin') . '%');
+             });
+         }
+     
+         // Filter by destination
          if ($request->filled('destination')) {
              $query->whereHas('trip.route', function ($q) use ($request) {
                  $q->where('destination', 'like', '%' . $request->input('destination') . '%');
              });
          }
      
+         // Filter by date
          if ($request->filled('date')) {
              $query->whereDate('created_at', $request->input('date'));
          }
      
+         // Retrieve results
          $schedules = $query->with(['trip.route', 'driver'])->get();
      
-      
-    return view('dashboard', ['schedules' => $schedules]);   }
+         return view('dashboard', ['schedules' => $schedules]);
+     }
      
+       
+     
+    public function test(){
+        return view('test');
+    }   public function dashboardd(){
+        return view('dashboardd');
+    }
+    public function manageroute(){
+        $routes = Route::all();
+        return view('routes.routes',compact('routes'));
+    }
+    public function dashboardadmin(){
+        return view('admin.dashboardadmin');
+    }
 }
 

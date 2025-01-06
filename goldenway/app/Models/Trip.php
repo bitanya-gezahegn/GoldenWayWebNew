@@ -11,6 +11,8 @@ class Trip extends Model
 
     protected $fillable = [
         'route_id',
+        'date',
+
         'departure_time',
         'arrival_time',
         'price',

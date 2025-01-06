@@ -130,11 +130,14 @@
     <section class="search-section">
             <h2>Search Your Ticket</h2>
             <form action="{{ route('schedule.search') }}" method="POST">
-                @csrf
-                <input type="text" name="destination" placeholder="Enter your destination...">
+                @csrf        <input type="text" name="origin" id="origin" placeholder="Enter origin">
+        <input type="text" name="destination" id="destination" placeholder="Enter destination">
+
+
                 <input type="date" name="date">
                 <button type="submit">Search Ticket</button>
             </form>
+           
         </section>
 
         @if(isset($schedules) && count($schedules) > 0)
@@ -146,7 +149,14 @@
                     <span>Route: {{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}</span>
                     <span>Date: {{ $schedule->created_at->format('Y-m-d') }}</span>
                     <span>Driver: {{ $schedule->driver->name ?? 'N/A' }}</span>
+                    <span>Bus Stop: {{ $schedule->trip->route->bus_stops ?? 'N/A' }}</span>
+
                     <span>Status: {{ $schedule->status }}</span>
+                    <span>
+                    <a href="{{ url('/book-now/' . $schedule->id) }}">Book Now</a>
+                    </span>  <span>
+                    <a href="{{ route('feedback.form', $schedule->id) }}">Feedback</a>
+   </span>
                 </li>
             @endforeach
         </ul>

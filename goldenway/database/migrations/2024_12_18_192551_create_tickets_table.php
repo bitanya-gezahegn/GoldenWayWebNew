@@ -19,6 +19,7 @@ return new class extends Migration
         $table->string('qr_code');
         $table->timestamps();
     });
+    
         
     }
 

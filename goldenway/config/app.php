@@ -1,5 +1,6 @@
 <?php
 
+
 return [
 
     /*
@@ -40,6 +41,7 @@ return [
     */
 
     'debug' => (bool) env('APP_DEBUG', false),
+   
 
     /*
     |--------------------------------------------------------------------------
@@ -66,6 +68,11 @@ return [
     */
 
     'timezone' => env('APP_TIMEZONE', 'UTC'),
+   'aliases' => [
+    // Other aliases...
+    'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+   ],
+
 
     /*
     |--------------------------------------------------------------------------

@@ -10,13 +10,14 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {       Schema::create('payments', function (Blueprint $table) {
+    {     Schema::create('payments', function (Blueprint $table) {
         $table->id();
         $table->foreignId('ticket_id')->constrained()->onDelete('cascade'); // Links payment to a ticket
         $table->foreignId('customer_id')->constrained('users')->onDelete('cascade'); // Links payment to the customer
         $table->decimal('amount', 8, 2);
         $table->enum('payment_method', ['credit_card', 'paypal', 'cash', 'bank_transfer']);
         $table->string('payment_status')->default('completed'); // e.g., 'completed', 'failed', 'pending'
+        $table->enum('ticket_status', ['unchecked', 'checked'])->default('unchecked'); // New column for ticket status
         $table->timestamp('payment_date')->useCurrent();
         $table->timestamps();
     });

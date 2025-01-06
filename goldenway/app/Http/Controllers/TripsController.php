@@ -30,23 +30,33 @@ class TripsController extends Controller
      * Store a newly created trip in storage.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'route_id' => 'required|exists:routes,id',
-            'departure_time' => 'required|date_format:H:i',
-            'arrival_time' => 'required|date_format:H:i',
-            'price' => 'required|numeric|min:0',
-            'capacity' => 'required|integer|min:1',
-        ]);
+{
+    // Debug the request data
+   
+    // Validation
+    $request->validate([
+        'route_id' => 'required|exists:routes,id',
+        'date' => 'required|date_format:Y-m-d',
+        'departure_time' => 'required|date_format:H:i',
+        'arrival_time' => 'required|date_format:H:i',
+        'price' => 'required|numeric|min:0',
+        'capacity' => 'required|integer|min:1',
+    ]);
 
-        Trip::create($request->all());
+    // After validation, you can save the trip:
+    Trip::create([
+        'route_id' => $request->route_id,
+        'date' => $request->date,
+        'departure_time' => $request->departure_time,
+        'arrival_time' => $request->arrival_time,
+        'price' => $request->price,
+        'capacity' => $request->capacity,
+    ]);
 
-        return redirect()->route('trips.index')->with('success', 'Trip created successfully!');
-    }
+    // Redirect after successful creation
+    return redirect()->route('trips.index')->with('success', 'Trip created successfully!');
+}
 
-    /**
-     * Show the form for editing a trip.
-     */
     public function edit(Trip $trip)
     {
         $routes = Route::all(); // To display route options in the edit form
@@ -55,6 +65,8 @@ class TripsController extends Controller
 
     public function update(Request $request, Trip $trip)
 {$trip->route_id = $request->route_id;
+    $trip->date = $request->date;
+    
     $trip->departure_time = $request->departure_time;
     $trip->arrival_time = $request->arrival_time;
     $trip->price = $request->price;
@@ -75,5 +87,39 @@ class TripsController extends Controller
     {
         $trip->delete();
         return redirect()->route('trips.index')->with('success', 'Trip deleted successfully!');
+    }
+
+    public function getSeats($tripId)
+    {
+        // Fetch the trip
+        $trip = Trip::with('seats')->findOrFail($tripId);
+
+        // Return the seat data
+        return response()->json([
+            'seats' => $trip->seats, // Assuming the seats relationship exists
+            'capacity' => $trip->capacity,
+        ]);
+    }
+
+    public function bookSeats(Request $request, $tripId)
+    {
+        $request->validate([
+            'seats' => 'required|array',
+            'seats.*' => 'integer',
+        ]);
+
+        $trip = Trip::findOrFail($tripId);
+
+        foreach ($request->seats as $seatId) {
+            $seat = $trip->seats()->findOrFail($seatId);
+            if ($seat->status !== 'available') {
+                return response()->json(['error' => "Seat $seatId is not available."], 400);
+            }
+
+            // Mark seat as booked
+            $seat->update(['status' => 'booked']);
+        }
+
+        return response()->json(['success' => 'Seats booked successfully!']);
     }
 }

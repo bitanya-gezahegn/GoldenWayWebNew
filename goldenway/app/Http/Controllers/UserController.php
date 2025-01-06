@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Schedule;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -48,5 +49,26 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+    }
+
+    public function booknow($scheduleId){
+       
+            $schedule = Schedule::findOrFail($scheduleId);
+        
+            // Get already booked seat numbers
+            $bookedSeats = Ticket::where('schedule_id', $scheduleId)
+                ->pluck('seat_number')
+                ->toArray();
+        
+            // Assume total seats are 40 (update based on your logic)
+            $totalSeats = range(1, 40);
+        
+            return view('booknow', [
+                'schedule' => $schedule,
+                'totalSeats' => $totalSeats,
+                'bookedSeats' => $bookedSeats,
+            ]);
+        
+        
     }
 }

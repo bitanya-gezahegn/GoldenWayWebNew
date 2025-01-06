@@ -14,9 +14,9 @@ return new class extends Migration
         
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('trip_id')->constrained()->onDelete('cascade');
-            $table->foreignId('driver_id')->constrained('users')->onDelete('cascade');
-            $table->string('status');
+            $table->foreignId('trip_id')->constrained()->onDelete('cascade'); // Links to the trip
+            $table->foreignId('driver_id')->constrained('users')->onDelete('cascade'); // Links to the driver
+            $table->string('status'); // Status of the schedule (e.g., scheduled, completed)
             $table->timestamps();
         });
 

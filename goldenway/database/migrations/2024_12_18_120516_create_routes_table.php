@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->string('origin');
-            $table->string('destination');
+            $table->string('origin'); // Starting point of the route
+            $table->string('destination'); // Ending point of the route
+            $table->json('bus_stops')->nullable(); // List of intermediate stops (if multiple)
             $table->timestamps();
         });
     }
