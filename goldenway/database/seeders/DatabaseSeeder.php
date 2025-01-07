@@ -19,5 +19,42 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        User::factory()->create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'role' => 'admin',
+            'email_verified_at' => now(),
+            'password' => bcrypt('admin123'),
+        ]);
+
+        User::factory()->create([
+            'name' => 'Customer',
+            'email' => 'customer@gmail.com',
+            'role' => 'customer',
+            'email_verified_at' => now(),
+            'password' => bcrypt('customer123'),
+        ]);
+        User::factory()->create([
+            'name' => 'Driver',
+            'email' => 'driver@gmail.com',
+            'role' => 'driver',
+            'email_verified_at' => now(),
+            'password' => bcrypt('driver123'),
+        ]);
+        User::factory()->create([
+            'name' => 'Operations Officer',
+            'email' => 'oofficer@gmail.com',
+            'role' => 'operations_officer',
+            'email_verified_at' => now(),
+            'password' => bcrypt('oofficer123'),
+        ]);
+        User::factory()->create([
+            'name' => 'Ticket Officer',
+            'email' => 'tofficer@gmail.com',
+            'role' => 'ticket_officer',
+            'email_verified_at' => now(),
+            'password' => bcrypt('tofficer123'),
+        ]);
     }
 }

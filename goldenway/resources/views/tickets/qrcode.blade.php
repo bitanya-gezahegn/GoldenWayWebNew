@@ -203,7 +203,7 @@
         </div>
 
         <div class="qr-code">
-        {!! QrCode::size(200)->generate($ticket->qr_code); !!}
+        {!! QrCode::size(200)->generate($ticket->qr_code) !!}
         </div>
 
         <div class="download-button">
