@@ -1,295 +1,325 @@
 
 
-
-
-
 <x-app-layout>
- 
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Code Scanner</title>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
 
-     <style>
+    <style>
         * {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	font-family: arial, sans-serif;
-}
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 15px 30px;
-	background: #f8b75c;
-	color: #f6f3f3;
-}
-.u-name {
-	font-size: 20px;
-	padding-left: 17px;
-}
-.u-name b {
-	background: #f8b75c;
-}
-.header i {
-	font-size: 30px;
-	cursor: pointer;
-	color: #fff;
-}
-.header i:hover {
-	color: #ffb038;
-}
-.user-p {
-	text-align: center;
-	padding-left: 10px;
-	padding-top: 25px;
-}
-.user-p img {
-	width: 100px;
-	border-radius: 50%;
-}
-.user-p h4 {
-	color: #fef3e8;
-	padding: 5px 0;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-}
-.side-bar {
-	width: 250px;
-	background: hsl(0, 80%, 98%);
-	min-height: 100vh;
-	transition: 500ms width;
-}
-.body {
-	display: flex;
-}
-.section-1 {
-	width: 100%;
-  background-color: #f4efe9;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-}
-.section-1 h1 {
-	color: #fff;
-	font-size: 60px;
-}
-.section-1 p {
-	color: #f3a93b;
-	font-size: 20px;
-	background: #fff;
-	padding: 7px;
-	border-radius: 5px;
-}
-.side-bar ul {
-	margin-top: 20px;
-	list-style: none;
-}
-.side-bar ul li {
-	font-size: 16px;
-	padding: 15px 0px;
-	padding-left: 20px;
-	transition: 500ms background;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.side-bar ul li:hover {
-	background: #f6aa38;
-}
-.side-bar ul li a {
-	text-decoration: none;
-	color: #100f0f;
-	cursor: pointer;
-	letter-spacing: 1px;
-}
-.side-bar ul li a i {
-	display: inline-block;
-	padding-right: 10px;
-	font-size: 23px;
-}
-#navbtn {
-	display: inline-block;
-	margin-left: 70px;
-	font-size: 20px;
-	transition: 500ms color;
-}
-#checkbox {
-	display: none;
-}
-#checkbox:checked ~ .body .side-bar {
-	width: 60px;
-}
-#checkbox:checked ~ .body .side-bar .user-p{
-	visibility: hidden;
-}
-#checkbox:checked ~ .body .side-bar a span{
-	display: none;
-}
+        /* Header Section */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: goldenrod; /* yellow-400 */
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .u-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .header i {
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        .header i:hover {
+            color: #ffb038;
+        }
+
+        /* Sidebar */
+        .side-bar {
+            width: 250px;
+            background-color: #F3F4F6; /* gray-300 */
+            min-height: 100vh;
+            padding-top: 20px;
+            transition: 300ms width ease-in-out;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
         .side-bar ul {
             list-style: none;
-            padding: 0;
+            padding-left: 0;
         }
 
         .side-bar ul li {
-            position: relative;
+            font-size: 16px;
+            padding: 15px;
+            padding-left: 20px;
+            transition: 300ms background-color ease;
+        }
+
+        .side-bar ul li:hover {
+            background-color: goldenrod; /* yellow-400 */
+            color: white;
         }
 
         .side-bar ul li a {
             text-decoration: none;
+            color: #333;
             display: flex;
             align-items: center;
-            padding: 10px;
-            color: #333;
+            font-size: 16px;
+            padding-right: 10px;
         }
 
-        .side-bar ul li a:hover {
-            background: #fd901b;
+        .side-bar ul li a i {
+            margin-right: 15px;
+            font-size: 20px;
         }
 
-        .side-bar ul li .sub-menu {
+        /* Toggle Button */
+        #checkbox {
             display: none;
-            list-style: none;
-            margin: 0;
-            padding-left: 20px;
         }
 
-        .side-bar ul li.active .sub-menu {
-            display: block;
+        #checkbox:checked ~ .body .side-bar {
+            width: 60px;
         }
 
-        .side-bar ul li .sub-menu li a {
-            padding: 5px;
+        #checkbox:checked ~ .body .side-bar .u-name,
+        #checkbox:checked ~ .body .side-bar ul li a span {
+            display: none;
         }
+
+        /* Body Section */
+        .body {
+            display: flex;
+            transition: margin-left 300ms ease-in-out;
+        }
+
+        /* Section Content */
+        .section-1 {
+            width: 100%;
+            background-color: #F9FAFB; /* light gray */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 50px;
+        }
+
+        .section-1 h1 {
+            font-size: 60px;
+            color: goldenrod; /* yellow-400 */
+        }
+
+        .section-1 p {
+            color: goldenrod;
+            font-size: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-p img {
+            width: 100px;
+            border-radius: 50%;
+        }
+
+        .user-p h4 {
+            color: #333;
+            padding: 5px 0;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .side-bar {
+                width: 200px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .section-1 h1 {
+                font-size: 40px;
+            }
+        }
+      
+    /* Center Section */
     .section-1 {
         width: 100%;
-        background-color: #f4efe9; /* Subtle background for section */
-        padding: 20px; /* Add padding for spacing */
+        background-color: #F9FAFB; /* light gray */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 50px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    /* Section Title */
     .section-1 h1 {
-        color: #f8b75c; /* Matching the header's theme */
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-align: center; /* Center-align the title */
+        font-size: 50px;
+        color: goldenrod; /* yellow-400 */
+        margin-bottom: 30px;
     }
 
-    .text-end {
-        margin-bottom: 20px;
-        text-align: right;
+    /* Form Container */
+    .form-container {
+        width: 100%;
+        max-width: 600px;
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .btn-golden {
-        background-color: #f8b75c;
-        border: none;
-        color: white;
-        padding: 10px 20px;
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
-        font-weight: bold;
     }
 
-    .btn-golden:hover {
-        background-color: #e6a843;
-        color: #fff;
-    }
-
-    table.table {
-        background-color: #ffffff; /* White background for better contrast */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-        overflow: hidden;
-    }
-
-    table.table th {
-        background-color: #f8b75c; /* Header background */
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: goldenrod; /* yellow-400 */
         color: white;
-        text-align: center;
-        font-weight: bold;
-        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
-    table.table td {
-        text-align: center; /* Center-align table cells */
-        padding: 10px;
+    .btn-submit:hover {
+        background-color: #1E66A4; /* dark yellow */
     }
 
-    table.table td:last-child {
-        display: flex;
-        justify-content: center; /* Align action buttons to the center */
-        gap: 10px; /* Add spacing between buttons */
+    /* Existing Routes Table */
+    .route-table {
+        width: 100%;
+        max-width: 900px;
+        margin-top: 30px;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    table.table td .btn {
+    .route-table th,
+    .route-table td {
+        padding: 15px;
+        text-align: left;
+        font-size: 16px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .route-table th {
+        background-color: #F3F4F6; /* light gray */
+    }
+
+    .route-table td {
+        color: #333;
+    }
+
+    .btn-edit, .btn-delete {
+        padding: 6px 12px;
         font-size: 14px;
-        padding: 5px 10px;
-        border-radius: 4px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
-    table.table .btn-primary {
-        background-color: #4CAF50; /* Green for edit */
-        border: none;
+    .btn-edit {
+        background-color: #FFA500; /* orange */
+        color: white;
     }
 
-    table.table .btn-primary:hover {
-        background-color: #45a049;
+    .btn-edit:hover {
+        background-color: #FF7F00; /* dark orange */
     }
 
-    table.table .btn-danger {
-        background-color: #f44336; /* Red for delete */
-        border: none;
+    .btn-delete {
+        background-color: #E74C3C; /* red */
+        color: white;
     }
 
-    table.table .btn-danger:hover {
-        background-color: #e53935;
+    .btn-delete:hover {
+        background-color: #C0392B; /* dark red */
     }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .section-1 h1 {
+            font-size: 40px;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .route-table th, .route-table td {
+            font-size: 14px;
+        }
+
+        .btn-submit {
+            font-size: 16px;
+        }
+    }
+
 
     </style>
 </head>
 
 <body>
     <input type="checkbox" id="checkbox">
-   
-
     <header class="header">
-   
-
-        <h2 class="u-name">TICKET <b>OFFICER</b>
+            <h2 class="u-name">TICKET <b>OFFICER</b>
+                
+            </h2>
+            <a href="/">
             <label for="checkbox">
-                <i id="navbtn" class="fa fa-bars" aria-hidden="true"></i>
-            </label>
-        </h2>
-        <a href="/">
-		<i class="fa fa-home" aria-hidden="true"></i>
- 
-		</a>   </header>
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </label>      </a>
+        </header>
+
     <div class="body">
         <nav class="side-bar">
-    @include('sidebarticketofficer')
-           
-    </nav>
-    <section class="section-1  pt-56 mt-96">
-    <div id="qr-reader" class="mx-auto" style="width: 600px; margin-top: -500px; padding-top: -400px;"></div>
+            <ul>
+                <li><a href="{{ url('redirect') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                   </ul>
+        </nav>
+
+        <section class="section-1 py-16">
+    <div id="qr-reader" class="mx-auto mb-8" style="width: 600px;"></div>
 
     <script>
         function onScanSuccess(decodedText, decodedResult) {
@@ -346,11 +376,11 @@
         }
     </script>
 
-    <!-- Table for Completed Payments -->
-    <div class="text-end mb-4">
-        <h2 class="text-2xl font-semibold">Completed Payments</h2>
+    <!-- Completed Payments Table -->
+    <div class="text-end mb-6">
+        <h2 class="text-3xl font-semibold text-gray-800">Completed Payments</h2>
     </div>
-    <table id="payments-table" class="min-w-full table-auto border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+    <table id="payments-table" class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
             <tr class="bg-gray-100 text-left text-sm font-medium text-gray-700">
                 <th class="px-4 py-2 border-b">Payment ID</th>
@@ -377,7 +407,7 @@
                     </td>
                     <td class="px-4 py-3 border-b text-sm">
                         @if($payment->ticket_status == 'unchecked')
-                            <button onclick="changeTicketStatus({{ $payment->id }})" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                            <button onclick="changeTicketStatus({{ $payment->id }})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                                 Mark as Checked
                             </button>
                         @endif
@@ -389,11 +419,8 @@
 </section>
 
 
+    </div>
 
-  
 </body>
 </html>
-
-
-
 </x-app-layout>

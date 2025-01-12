@@ -123,7 +123,7 @@ Route::get("/fff", function() {
 });
 
 
-Route::get('/payment/initialize/{id}', [PaymentController::class, 'initialize'])->name('payment.initialize');
+Route::post('/payment/initialize/{id}', [PaymentController::class, 'initialize'])->name('payment.initialize');
 Route::post('/payment/callback', [PaymentController::class, 'callback'])->name('payment.callback');
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/error', [PaymentController::class, 'error'])->name('payment.error');

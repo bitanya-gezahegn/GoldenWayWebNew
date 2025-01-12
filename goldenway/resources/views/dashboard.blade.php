@@ -1,177 +1,121 @@
-<x-app-layout><!DOCTYPE html>
+<x-app-layout>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Find Your Route</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
         body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .bg-primary {
+            background: linear-gradient(135deg, #f7d9b9, #fcf2e5);
+        }
+        .header-title {
             font-family: 'Lemon Milk', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #fcf2e5;
-            color: #333;
+            letter-spacing: 1px;
         }
-
-        header {
-            /* background-color: #ffcc00; */
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
-            font-family: 'Lemon Milk', sans-serif;
-
+        .hover-shadow:hover {
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
         }
-
-        header h1 {
-            margin: 0;
-            font-size: 2.5em;
-            color: #333;
+        .card {
+            transition: all 0.3s;
         }
-
-        .map-section {
-            text-align: center;
-            margin: 20px 0;
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
         }
-
-        .map-section iframe {
-            width: 100%;
-            height: 400px;
-            border: none;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        .search-section {
-            text-align: center;
-            margin: 20px 0;
-            border-radius: 22px;
-        }
-
-        .search-section input[type="text"],
-        .search-section input[type="date"],
-        .search-section button {
-            padding: 10px;
-            margin: 5px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            font-size: 1em;
-        }
-
-        .search-section button {
-            background-color: #ff9900;
-            color: #333;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-        }
-
-        .search-section button:hover {
-            background-color: #e6b800;
-        }
-
-        .recent-history {
-            margin: 20px 0;
-        }
-
-        .recent-history h2 {
-            font-size: 1.5em;
-            margin-bottom: 10px;
-        }
-
-        .recent-history ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .recent-history ul li {
-            background-color: #fff;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        footer {
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            padding: 10px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
         footer p {
-            margin: 0;
             font-size: 0.9em;
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>Find Your Route </h1>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-yellow text-gray-800 py-6 shadow-md">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl font-bold header-title">Find Your Route</h1>
+        </div>
     </header>
 
-    <section class="map-section">
-        <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345095966!2d144.95565131531358!3d-37.81732797975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d2b5c5b7b2a0!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1601516867342!5m2!1sen!2sau" 
-            allowfullscreen="" 
-            loading="lazy">
-        </iframe>
+    <!-- Map Section -->
+    <section class="py-8 grid place-items-center">
+        <div class="container mx-auto text-center" data-aos="fade-up">
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345095966!2d144.95565131531358!3d-37.81732797975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d2b5c5b7b2a0!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1601516867342!5m2!1sen!2sau"
+                class="rounded-lg shadow-lg w-full md:w-3/4"
+                height="400"
+                allowfullscreen=""
+                loading="lazy">
+            </iframe>
+        </div>
     </section>
 
-    <main>
-    <section class="search-section">
-            <h2>Search Your Ticket</h2>
-            <form action="{{ route('schedule.search') }}" method="POST">
-                @csrf        <input type="text" name="origin" id="origin" placeholder="Enter origin">
-        <input type="text" name="destination" id="destination" placeholder="Enter destination">
-
-
-                <input type="date" name="date">
-                <button type="submit">Search Ticket</button>
+    <!-- Search Section -->
+    <section class="py-16 bg-primary-light">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl font-bold mb-6">Search Your Ticket</h2>
+            <form action="{{ route('schedule.search') }}" method="POST" class="space-y-4">
+                @csrf
+                <div class="flex flex-col md:flex-row justify-center gap-4">
+                    <input type="text" name="origin" id="origin" placeholder="Enter origin" class="px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-400 border">
+                    <input type="text" name="destination" id="destination" placeholder="Enter destination" class="px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-400 border">
+                    <input type="date" name="date" class="px-4 py-2 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-400 border">
+                </div>
+                <button type="submit" class="bg-yellow-500 text-gray-800 font-bold px-6 py-2 rounded-md hover:bg-yellow-600 transition transform hover:scale-105 shadow-lg">Search Ticket</button>
             </form>
-           
-        </section>
+        </div>
+    </section>
 
-        @if(isset($schedules) && count($schedules) > 0)
-    <section class="recent-history">
-        <h2>Search Results</h2>
-        <ul>
-            @foreach ($schedules as $schedule)
-                <li>
-                    <span>Route: {{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}</span>
-                    <span>Date: {{ $schedule->created_at->format('Y-m-d') }}</span>
-                    <span>Driver: {{ $schedule->driver->name ?? 'N/A' }}</span>
-                    <span>Bus Stop: {{ $schedule->trip->route->bus_stops ?? 'N/A' }}</span>
-
-                    <span>Status: {{ $schedule->status }}</span>
-                    <span>
-                    <a href="{{ url('/book-now/' . $schedule->id) }}">Book Now</a>
-                    </span>  <span>
-                    <a href="{{ route('feedback.form', $schedule->id) }}">Feedback</a>
-   </span>
+    <!-- Search Results Section -->
+    @if(isset($schedules) && count($schedules) > 0)
+    <section class="py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-2xl font-bold mb-6">Search Results</h2>
+            <ul class="space-y-6">
+                @foreach ($schedules as $schedule)
+                <li class="card bg-white p-6 rounded-lg shadow-md">
+                    <p><strong>Route:</strong> {{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}</p>
+                    <p><strong>Date:</strong> {{ $schedule->created_at->format('Y-m-d') }}</p>
+                    <p><strong>Driver:</strong> {{ $schedule->driver->name ?? 'N/A' }}</p>
+                    <p><strong>Bus Stop:</strong> {{ $schedule->trip->route->bus_stops ?? 'N/A' }}</p>
+                    <p><strong>Status:</strong> {{ $schedule->status }}</p>
+                    <div class="mt-4 space-x-4">
+                        <a href="{{ url('/book-now/' . $schedule->id) }}" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition">Book Now</a>
+                        <a href="{{ route('feedback.form', $schedule->id) }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Feedback</a>
+                    </div>
                 </li>
-            @endforeach
-        </ul>
+                @endforeach
+            </ul>
+        </div>
     </section>
-@else
-    <section class="recent-history">
-        <h2>No schedules found</h2>
+    @else
+    <section class="py-16">
+        <div class="container mx-auto text-center">
+            <h2 class="text-2xl font-bold text-gray-700">No Schedules Found</h2>
+            <p class="text-gray-500 mt-4">Please try searching with different criteria.</p>
+        </div>
     </section>
-@endif
+    @endif
 
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Golden Bus. All Rights Reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2024 GoldenWay Bus. All Rights Reserved.</p>
+        </div>
     </footer>
+
+    <script>
+        AOS.init({
+            duration: 1000,
+            once: true,
+        });
+    </script>
 </body>
 </html>
 </x-app-layout>

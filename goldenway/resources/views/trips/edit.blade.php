@@ -1,494 +1,360 @@
 
+<x-app-layout>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+            }
 
+            /* Header Section */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 30px;
+                background: #3B82F6; /* yellow-400 */
+                color: #fff;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
 
+            .u-name {
+                font-size: 20px;
+                font-weight: bold;
+            }
 
+            .header i {
+                font-size: 30px;
+                cursor: pointer;
+            }
 
+            .header i:hover {
+                color: #ffb038;
+            }
 
+            /* Sidebar */
+            .side-bar {
+                width: 250px;
+                background-color: #F3F4F6; /* gray-300 */
+                min-height: 100vh;
+                padding-top: 20px;
+                transition: 300ms width ease-in-out;
+                box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            }
 
+            .side-bar ul {
+                list-style: none;
+                padding-left: 0;
+            }
 
+            .side-bar ul li {
+                font-size: 16px;
+                padding: 15px;
+                padding-left: 20px;
+                transition: 300ms background-color ease;
+            }
 
+            .side-bar ul li:hover {
+                background-color: #3B82F6; /* yellow-400 */
+                color: white;
+            }
 
+            .side-bar ul li a {
+                text-decoration: none;
+                color: #333;
+                display: flex;
+                align-items: center;
+                font-size: 16px;
+                padding-right: 10px;
+            }
 
+            .side-bar ul li a i {
+                margin-right: 15px;
+                font-size: 20px;
+            }
 
+            /* Toggle Button */
+            #checkbox {
+                display: none;
+            }
 
+            #checkbox:checked ~ .body .side-bar {
+                width: 60px;
+            }
 
+            #checkbox:checked ~ .body .side-bar .u-name,
+            #checkbox:checked ~ .body .side-bar ul li a span {
+                display: none;
+            }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-        * {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	font-family: arial, sans-serif;
-}
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 15px 30px;
-	background: #f8b75c;
-	color: #f6f3f3;
-}
-.u-name {
-	font-size: 20px;
-	padding-left: 17px;
-}
-.u-name b {
-	background: #f8b75c;
-}
-.header i {
-	font-size: 30px;
-	cursor: pointer;
-	color: #fff;
-}
-.header i:hover {
-	color: #ffb038;
-}
-.user-p {
-	text-align: center;
-	padding-left: 10px;
-	padding-top: 25px;
-}
-.user-p img {
-	width: 100px;
-	border-radius: 50%;
-}
-.user-p h4 {
-	color: #fef3e8;
-	padding: 5px 0;
+            /* Body Section */
+            .body {
+                display: flex;
+                transition: margin-left 300ms ease-in-out;
+            }
 
-}
-.side-bar {
-	width: 250px;
-	background: hsl(0, 80%, 98%);
-	min-height: 100vh;
-	transition: 500ms width;
-}
-.body {
-	display: flex;
-}
-.section-1 {
-	width: 100%;
-  background-color: #f4efe9;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-  
-    
-}
-.section-1 h1 {
-	color: #fff;
-	font-size: 60px;
-}
-.section-1 p {
-	color: #f3a93b;
-	font-size: 20px;
-	background: #fff;
-	padding: 7px;
-	border-radius: 5px;
-}
-.side-bar ul {
-	margin-top: 20px;
-	list-style: none;
-}
-.side-bar ul li {
-	font-size: 16px;
-	padding: 15px 0px;
-	padding-left: 20px;
-	transition: 500ms background;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.side-bar ul li:hover {
-	background: #f6aa38;
-}
-.side-bar ul li a {
-	text-decoration: none;
-	color: #100f0f;
-	cursor: pointer;
-	letter-spacing: 1px;
-}
-.side-bar ul li a i {
-	display: inline-block;
-	padding-right: 10px;
-	font-size: 23px;
-}
-
-#navbtn {
-	display: inline-block;
-	margin-left: 40px;
-	font-size: 20px;
-	transition: 500ms color;
-}
-#checkbox {
-	display: none;
-}
-#checkbox:checked ~ .body .side-bar {
-	width: 60px;
-}
-#checkbox:checked ~ .body .side-bar .user-p{
-	visibility: hidden;
-}
-#checkbox:checked ~ .body .side-bar a span{
-	display: none;
-}
-        .side-bar ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .side-bar ul li {
-            position: relative;
-        }
-
-        .side-bar ul li a {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            color: #333;
-        }
-
-        .side-bar ul li a:hover {
-            background: #fd901b;
-        }
-
-        .side-bar ul li .sub-menu {
-            display: none;
-            list-style: none;
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        .side-bar ul li.active .sub-menu {
-            display: block;
-        }
-
-        .side-bar ul li .sub-menu li a {
-            padding: 5px;
-        }
-    .section-1 {
-        width: 100%;
-        background-color: #f4efe9; /* Subtle background for section */
-        padding: 20px; /* Add padding for spacing */
-    }
-
-    .section-1 h1 {
-        color: #f8b75c; /* Matching the header's theme */
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-align: center; /* Center-align the title */
-    }
-
-    .text-end {
-        margin-bottom: 20px;
-        text-align: right;
-    }
-
-    .btn-golden {
-        background-color: #f8b75c;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-    .btn-golden:hover {
-        background-color: #e6a843;
-        color: #fff;
-    }
-
-  
-
-    table.table .btn-danger:hover {
-        background-color: #e53935;
-    }
- 
-    /* Main content container */
-    .content-section {
-        padding: 20px;
-        background-color: #f4efe9;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 900px;
-        margin: 0 auto;
-    }
-
-    /* Form container */
-    .form-container {
-        margin-bottom: 30px;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Form field styling */
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
-
-    .form-group input:focus {
-        border-color: #f8b75c;
-        outline: none;
-    }
-
-    /* Submit button styling */
-   
-    .content-section {
-        padding: 20px;
-        background-color: #f4efe9;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-     
-       max-width: 900px;
-        margin: 0 auto;
-    }
-
-    /* Form container */
-    .form-container {
-        margin-bottom: 30px;
-        background: #fff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Form field styling */
-    .form-group {
-        margin-bottom: 15px;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
-
-    .form-group input:focus {
-        border-color: #f8b75c;
-        outline: none;
-    }
-
-    /* Submit button styling */
-    .btn-submit {
-        background-color: #f8b75c;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        font-weight: bold;
-        cursor: pointer;
-        width: 100%;
-    }
-
-    .btn-submit:hover {
-        background-color: #e6a843;
-    }
-    .alert-success {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        /* Form styles */
-        .form-container {
-            margin-top: 30px;
-            padding: 20px;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .form-group select,
-        .form-group input {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-
-        .form-group select:focus,
-        .form-group input:focus {
-            border-color: #f8b75c;
-            outline: none;
-        }
-
-        .btn-golden {
-            background-color: #f8b75c;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: bold;
-            width: 100%;
-        }
-
-        .btn-golden:hover {
-            background-color: #e6a843;
-            color: #fff;
-
-        }
-
-        .container {
-                margin-top: 50px;
+            /* Section Content */
+            .section-1 {
+                width: 100%;
+                background-color: #F9FAFB; /* light gray */
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                gap: 30px;
+                flex-direction: column;
+                padding: 50px;
             }
 
-            .card {
+            .section-1 h1 {
+                font-size: 60px;
+                color: #3B82F6; /* yellow-400 */
+            }
+
+            .section-1 p {
+                color: #3B82F6;
+                font-size: 20px;
+                background-color: #fff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .user-p img {
+                width: 100px;
+                border-radius: 50%;
+            }
+
+            .user-p h4 {
+                color: #333;
+                padding: 5px 0;
+            }
+
+            /* Form Container */
+            .form-container {
                 width: 100%;
-                max-width: 800px;
-                border-radius: 10px;
-                border: 1px solid #e3e6f0;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-                background-color: white;
-                padding: 20px;
-                gap: 30px;
-                display: grid;
-                place-items: center;
-
-            }
-
-            .card-title {
-                font-weight: bold;
-                color: #FFD700;
-                text-align: center;
-                margin-bottom: 20px;
-                font-size: 2rem;
-            }
-
-            .form-label {
-                font-weight: bold;
-                font-size: 1.1rem;
-                gap: 30px;
+                max-width: 600px;
+                background-color: #fff;
+                padding: 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
                 margin-top: 30px;
-
             }
 
-            .btn-golden {
-                background-color: #FFD700;
-                border-color: #FFD700;
-                color: white;
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                display: block;
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 5px;
+            }
+
+            .form-group input {
                 width: 100%;
                 padding: 10px;
-                font-size: 1.1rem;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
             }
 
-            .btn-golden:hover {
-                background-color: #e6be00;
-                border-color: #e6be00;
+            .btn-submit {
+                width: 100%;
+                padding: 12px;
+                background-color: #3B82F6; /* yellow-400 */
+                color: white;
+                font-size: 18px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
             }
 
-            input.form-control,
-            .form-select {
-                border-radius: 20px;
-                font-size: 1rem;
+            .btn-submit:hover {
+                background-color: #1E66A4; /* dark yellow */
             }
 
-            input.form-control:focus,
-            .form-select:focus {
-                box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-                border-color: #FFD700;
-            }
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .side-bar {
+                    width: 200px;
+                }
 
-            @media (max-width: 500px) {
-                .card {
-                    width: 90%;
+                .header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 15px;
+                }
+
+                .section-1 h1 {
+                    font-size: 40px;
+                }
+
+                .form-container {
+                    padding: 20px;
+                }
+
+                .route-table th, .route-table td {
+                    font-size: 14px;
+                }
+
+                .btn-submit {
+                    font-size: 16px;
                 }
             }
+            /* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
 
-    </style>
-</head>
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
 
-<body>
-    <input type="checkbox" id="checkbox">
-   
+.table th {
+    background-color: #3B82F6; /* yellow-400 */
+    color: white;
+    font-size: 16px;
+}
 
-    <header class="header">
-   
+.table tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
 
-        <h2 class="u-name">OPERATION<b>OFFICER</b>
+.table td {
+    font-size: 14px;
+}
+
+/* Responsive Design for Table */
+@media (max-width: 768px) {
+    .table {
+        border: 0;
+        display: block;
+        overflow-x: auto;
+    }
+
+    .table th,
+    .table td {
+        display: block;
+        text-align: right;
+        padding: 8px;
+        border: 0;
+    }
+
+    .table th {
+        background-color: #f9fafb;
+        color: #333;
+    }
+
+    .table td {
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+        display: block;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        text-align: left;
+    }
+}
+/* Edit and Delete Buttons */
+.btn-primary {
+    background-color: #3B82F6; /* yellow-400 */
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #1E66A4; /* dark yellow */
+}
+
+.btn-danger {
+    background-color: #EF4444; /* red-500 */
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #9B2C2C; /* dark red */
+}
+
+
+        </style>
+    </head>
+
+    <body>
+        <input type="checkbox" id="checkbox">
+        <header class="header">
+            <h2 class="u-name">OPERATION <b>OFFICER</b>
+                
+            </h2>
+            <a href="/">
             <label for="checkbox">
-                <i id="navbtn" class="fa fa-bars" aria-hidden="true"></i>
-            </label>
-        </h2>
-        <a href="/">
-		<i class="fa fa-home" aria-hidden="true"></i>
- 
-		</a> </header>
-    <div class="body">
-        <nav class="side-bar">
-    @include('sidebar')
-           
-    </nav><section class="section-1">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </label>      </a>
+        </header>
+
+        <div class="body">
+            <nav class="side-bar">
+                <ul>
+                    <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                    <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
+                    <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
+                    <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
+                    <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
+                    <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
+                    <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
+                </ul>
+            </nav>
+
+            <section class="section-1">
     <main class="content-section">
-        <!-- Section Title -->
+        <!-- Success Message -->
         @if(session('success'))
-            <div class="alert-success">
+            <div class="bg-green-100 text-green-800 p-4 rounded mb-4">
                 {{ session('success') }}
             </div>
         @endif
-        <div class="container">
-            <div class="card">
-                <h1 class="card-title">Edit Trip</h1>
+
+        <div class="container mx-auto p-4">
+            <div class="bg-white p-6 rounded-lg shadow-lg">
+                <h1 class="text-2xl font-semibold text-yellow-600 mb-6">Edit Trip</h1>
+                
                 <form action="{{ route('trips.update', $trip->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
                     <!-- Route Selection -->
-                    <div class="mb-3">
-                        <label for="route_id" class="form-label">Route</label>
-                        <select name="route_id" id="route_id" class="form-select">
+                    <div class="mb-4">
+                        <label for="route_id" class="block text-gray-700 text-sm font-medium">Route</label>
+                        <select name="route_id" id="route_id" class="form-select mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500">
                             @foreach ($routes as $route)
                                 <option value="{{ $route->id }}" {{ $trip->route_id == $route->id ? 'selected' : '' }}>
                                     {{ $route->origin }} - {{ $route->destination }}
@@ -496,62 +362,49 @@
                             @endforeach
                         </select>
                     </div>
-                    <br>
 
                     <!-- Date Selection -->
-                    <div class="mb-3">
-                        <label for="date" class="form-label">Date</label>
-                        <input type="date" name="date" id="date" class="form-control" value="{{ $trip->date }}" required>
+                    <div class="mb-4">
+                        <label for="date" class="block text-gray-700 text-sm font-medium">Date</label>
+                        <input type="date" name="date" id="date" class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" value="{{ $trip->date }}" required>
                     </div>
-<br>
+
                     <!-- Departure Time -->
-                    <div class="mb-3">
-                        <label for="departure_time" class="form-label">Departure Time</label>
-                        <input type="time" name="departure_time" id="departure_time" class="form-control" value="{{ $trip->departure_time }}" required>
+                    <div class="mb-4">
+                        <label for="departure_time" class="block text-gray-700 text-sm font-medium">Departure Time</label>
+                        <input type="time" name="departure_time" id="departure_time" class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" value="{{ $trip->departure_time }}" required>
                     </div>
-                    <br>
 
                     <!-- Arrival Time -->
-                    <div class="mb-3">
-                        <label for="arrival_time" class="form-label">Arrival Time</label>
-                        <input type="time" name="arrival_time" id="arrival_time" class="form-control" value="{{ $trip->arrival_time }}" required>
+                    <div class="mb-4">
+                        <label for="arrival_time" class="block text-gray-700 text-sm font-medium">Arrival Time</label>
+                        <input type="time" name="arrival_time" id="arrival_time" class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" value="{{ $trip->arrival_time }}" required>
                     </div>
-<br>
+
                     <!-- Price Input -->
-                    <div class="mb-3">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="number" name="price" id="price" class="form-control" value="{{ $trip->price }}" required>
+                    <div class="mb-4">
+                        <label for="price" class="block text-gray-700 text-sm font-medium">Price</label>
+                        <input type="number" name="price" id="price" class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" value="{{ $trip->price }}" required>
                     </div>
-<br>
+
                     <!-- Capacity Input -->
-                    <div class="mb-3">
-                        <label for="capacity" class="form-label">Capacity</label>
-                        <input type="number" name="capacity" id="capacity" class="form-control" value="{{ $trip->capacity }}" required>
+                    <div class="mb-4">
+                        <label for="capacity" class="block text-gray-700 text-sm font-medium">Capacity</label>
+                        <input type="number" name="capacity" id="capacity" class="mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" value="{{ $trip->capacity }}" required>
                     </div>
-<br>
+
                     <!-- Submit Button -->
-                    <button type="submit" class="btn btn-golden">Update Trip</button>
+                    <button type="submit" class="w-full py-3 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors mt-4">
+                        Update Trip
+                    </button>
                 </form>
             </div>
         </div>
     </main>
 </section>
 
-    </div>
-</body>
-</html>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </body>
+    </html>
+</x-app-layout>

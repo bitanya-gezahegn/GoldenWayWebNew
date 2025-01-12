@@ -1,398 +1,401 @@
 
-    <!DOCTYPE html>
-    <html lang="en">
+<x-app-layout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Register New User</title>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <style>
-            body {
-                font-family: 'Arial', sans-serif;
-                background: linear-gradient(120deg, #fff8dc, #ffe066);
-                color: #333;
-            }
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-            .card {
-                border-radius: 10px;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            }
+        /* Header Section */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: goldenrod; /* yellow-400 */
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
 
-            .card-header {
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-            }
+        .u-name {
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-            .card-title {
-                color: BLACK;
-                margin: 0;
-            }
+        .header i {
+            font-size: 30px;
+            cursor: pointer;
+        }
 
-            .form-label {
-                font-weight: bold;
-            }
+        .header i:hover {
+            color: #ffb038;
+        }
 
-            .btn-golden {
-                background-color: #FFD700;
-                border-color: #FFD700;
-                color: white;
-                width: 100%;
-                padding: 10px;
-                font-size: 1.1rem;
-            }
+        /* Sidebar */
+        .side-bar {
+            width: 250px;
+            background-color: #F3F4F6; /* gray-300 */
+            min-height: 100vh;
+            padding-top: 20px;
+            transition: 300ms width ease-in-out;
+            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+        }
 
-            .btn-golden:hover {
-                background-color: #e6be00;
-                border-color: #e6be00;
-            }
-
-            @media (max-width: 500px) {
-                .container {
-                    margin-top: 20px;
-                }
-            }.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 15px 30px;
-	background: #f8b75c;
-	color: #f6f3f3;
-}
-.u-name {
-	font-size: 20px;
-	padding-left: 17px;
-}
-.u-name b {
-	background: #f8b75c;
-}
-.header i {
-	font-size: 30px;
-	cursor: pointer;
-	color: #fff;
-}
-.header i:hover {
-	color: #ffb038;
-}
-.user-p {
-	text-align: center;
-	padding-left: 10px;
-	padding-top: 25px;
-}
-.user-p img {
-	width: 100px;
-	border-radius: 50%;
-}
-.user-p h4 {
-	color: #fef3e8;
-	padding: 5px 0;
-
-}
-.side-bar {
-	width: 250px;
-	background: hsl(0, 80%, 98%);
-	min-height: 100vh;
-	transition: 500ms width;
-}
-.body {
-	display: flex;
-}
-.section-1 {
-	width: 100%;
-  background-color: #f4efe9;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-}
-.section-1 h1 {
-	color: #fff;
-	font-size: 60px;
-}
-.section-1 p {
-	color: #f3a93b;
-	font-size: 20px;
-	background: #fff;
-	padding: 7px;
-	border-radius: 5px;
-}
-.side-bar ul {
-	margin-top: 20px;
-	list-style: none;
-}
-.side-bar ul li {
-	font-size: 16px;
-	padding: 15px 0px;
-	padding-left: 20px;
-	transition: 500ms background;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.side-bar ul li:hover {
-	background: #f6aa38;
-}
-.side-bar ul li a {
-	text-decoration: none;
-	color: #100f0f;
-	cursor: pointer;
-	letter-spacing: 1px;
-}
-.side-bar ul li a i {
-	display: inline-block;
-	padding-right: 10px;
-	font-size: 23px;
-}
-#navbtn {
-	display: inline-block;
-	margin-left: 70px;
-	font-size: 20px;
-	transition: 500ms color;
-}
-#checkbox {
-	display: none;
-}
-#checkbox:checked ~ .body .side-bar {
-	width: 60px;
-}
-#checkbox:checked ~ .body .side-bar .user-p{
-	visibility: hidden;
-}
-#checkbox:checked ~ .body .side-bar a span{
-	display: none;
-}
         .side-bar ul {
             list-style: none;
-            padding: 0;
+            padding-left: 0;
         }
 
         .side-bar ul li {
-            position: relative;
+            font-size: 16px;
+            padding: 15px;
+            padding-left: 20px;
+            transition: 300ms background-color ease;
+        }
+
+        .side-bar ul li:hover {
+            background-color: goldenrod; /* yellow-400 */
+            color: white;
         }
 
         .side-bar ul li a {
             text-decoration: none;
+            color: #333;
             display: flex;
             align-items: center;
-            padding: 10px;
-            color: #333;
+            font-size: 16px;
+            padding-right: 10px;
         }
 
-        .side-bar ul li a:hover {
-            background: #fd901b;
+        .side-bar ul li a i {
+            margin-right: 15px;
+            font-size: 20px;
         }
 
-        .side-bar ul li .sub-menu {
+        /* Toggle Button */
+        #checkbox {
             display: none;
-            list-style: none;
-            margin: 0;
-            padding-left: 20px;
         }
 
-        .side-bar ul li.active .sub-menu {
-            display: block;
+        #checkbox:checked ~ .body .side-bar {
+            width: 60px;
         }
 
-        .side-bar ul li .sub-menu li a {
-            padding: 5px;
+        #checkbox:checked ~ .body .side-bar .u-name,
+        #checkbox:checked ~ .body .side-bar ul li a span {
+            display: none;
         }
+
+        /* Body Section */
+        .body {
+            display: flex;
+            transition: margin-left 300ms ease-in-out;
+        }
+
+        /* Section Content */
+        .section-1 {
+            width: 100%;
+            background-color: #F9FAFB; /* light gray */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 50px;
+        }
+
+        .section-1 h1 {
+            font-size: 60px;
+            color: goldenrod; /* yellow-400 */
+        }
+
+        .section-1 p {
+            color: goldenrod;
+            font-size: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-p img {
+            width: 100px;
+            border-radius: 50%;
+        }
+
+        .user-p h4 {
+            color: #333;
+            padding: 5px 0;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .side-bar {
+                width: 200px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 15px;
+            }
+
+            .section-1 h1 {
+                font-size: 40px;
+            }
+        }
+      
+    /* Center Section */
     .section-1 {
         width: 100%;
-        background-color: #f4efe9; /* Subtle background for section */
-        padding: 20px; /* Add padding for spacing */
+        background-color: #F9FAFB; /* light gray */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        padding: 50px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
+    /* Section Title */
     .section-1 h1 {
-        color: #f8b75c; /* Matching the header's theme */
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-align: center; /* Center-align the title */
+        font-size: 50px;
+        color: goldenrod; /* yellow-400 */
+        margin-bottom: 30px;
     }
 
-    .text-end {
-        margin-bottom: 20px;
-        text-align: right;
+    /* Form Container */
+    .form-container {
+        width: 100%;
+        max-width: 600px;
+        background-color: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    .btn-golden {
-        background-color: #f8b75c;
-        border: none;
-        color: white;
-        padding: 10px 20px;
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 16px;
-        font-weight: bold;
     }
 
-    .btn-golden:hover {
-        background-color: #e6a843;
-        color: #fff;
-    }
-
-    table.table {
-        background-color: #ffffff; /* White background for better contrast */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-        overflow: hidden;
-    }
-
-    table.table th {
-        background-color: #f8b75c; /* Header background */
+    .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: goldenrod; /* yellow-400 */
         color: white;
-        text-align: center;
-        font-weight: bold;
-        padding: 10px;
+        font-size: 18px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
-    table.table td {
-        text-align: center; /* Center-align table cells */
-        padding: 10px;
+    .btn-submit:hover {
+        background-color: #1E66A4; /* dark yellow */
     }
 
-    table.table td:last-child {
-        display: flex;
-        justify-content: center; /* Align action buttons to the center */
-        gap: 10px; /* Add spacing between buttons */
+    /* Existing Routes Table */
+    .route-table {
+        width: 100%;
+        max-width: 900px;
+        margin-top: 30px;
+        border-collapse: collapse;
+        background-color: #fff;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    table.table td .btn {
+    .route-table th,
+    .route-table td {
+        padding: 15px;
+        text-align: left;
+        font-size: 16px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .route-table th {
+        background-color: #F3F4F6; /* light gray */
+    }
+
+    .route-table td {
+        color: #333;
+    }
+
+    .btn-edit, .btn-delete {
+        padding: 6px 12px;
         font-size: 14px;
-        padding: 5px 10px;
-        border-radius: 4px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
-    table.table .btn-primary {
-        background-color: #4CAF50; /* Green for edit */
-        border: none;
+    .btn-edit {
+        background-color: #FFA500; /* orange */
+        color: white;
     }
 
-    table.table .btn-primary:hover {
-        background-color: #45a049;
+    .btn-edit:hover {
+        background-color: #FF7F00; /* dark orange */
     }
 
-    table.table .btn-danger {
-        background-color: #f44336; /* Red for delete */
-        border: none;
+    .btn-delete {
+        background-color: #E74C3C; /* red */
+        color: white;
     }
 
-    table.table .btn-danger:hover {
-        background-color: #e53935;
+    .btn-delete:hover {
+        background-color: #C0392B; /* dark red */
     }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .section-1 h1 {
+            font-size: 40px;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .route-table th, .route-table td {
+            font-size: 14px;
+        }
+
+        .btn-submit {
+            font-size: 16px;
+        }
+    }
+
 
     </style>
 </head>
 
 <body>
     <input type="checkbox" id="checkbox">
-   
-
     <header class="header">
-   
-
-        <h2 class="u-name">ADMIN
+            <h2 class="u-name">ADMIN</b>
+                
+            </h2>
+            <a href="/">
             <label for="checkbox">
-                <i id="navbtn" class="fa fa-bars" aria-hidden="true"></i>
-            </label>
-        </h2>
-        <a href="/">
-		<i class="fa fa-home" aria-hidden="true"></i>
- 
-		</a>    </header>
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </label>      </a>
+        </header>
+
     <div class="body">
         <nav class="side-bar">
-    @include('sidebaradmin')
-           
-    </nav>
-        <section class="section-1">
-                     <div class="card">
-                        <div class="card-header text-center">
-                            <h3 class="card-title">Register New User</h3>
-                        </div>
-                        <div class="card-body">
-                         
+            <ul>
+                <li><a href="{{ url('dashboardadmin') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ url('redirect') }}"><i class="fa fa-desktop"></i><span>Manage Users</span></a></li>
+                <li><a href="{{ url('admincreate') }}"><i class="fa fa-desktop"></i><span>Add Users</span></a></li>
+                   </ul>
+        </nav>
 
-<form method="POST" action="{{ route('adminstoring') }}">
-@csrf
-<!-- Name -->
-<div class="mb-3">
-<label for="name" class="form-label">Name</label>
-<input type="text" class="form-control" id="name" name="name" placeholder="Enter user name" required>
-</div>
-<!-- Email -->
-<div class="mb-3">
-<label for="email" class="form-label">Email</label>
-<input type="email" class="form-control" id="email" name="email" placeholder="Enter email address" required>
-</div>
-<!-- Phone -->
-<div class="mb-3">
-<label for="phone" class="form-label">Phone</label>
-<input type="text" class="form-control" id="phone" name="phone" placeholder="Enter phone number">
-</div>
-<!-- Role -->
-<div class="mb-3">
-<label for="role" class="form-label">Role</label>
-<select class="form-select" id="role" name="role" required>
-<option value="" disabled selected>Select user role</option>
-<option value="customer">Customer</option>
-<option value="admin">Admin</option>
-<option value="operations_officer">Operations Officer</option>
-<option value="driver">Driver</option>
-<option value="ticket_officer">Ticket Officer</option>
-</select>
-</div>
-<!-- Status -->
-<div class="mb-3">
-<label for="status" class="form-label">Status</label>
-<select class="form-select" id="status" name="status" required>
-<option value="active">Active</option>
-<option value="suspended">Suspended</option>
-</select>
-</div>
-<!-- Password -->
-<div class="mb-3">
-<label for="password" class="form-label">Password</label>
-<input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
-</div>
-<!-- Confirm Password -->
-<div class="mb-3">
-<label for="password_confirmation" class="form-label">Confirm Password</label>
-<input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
-</div>
-<!-- Submit Button -->
-<div class="d-grid">
-<button type="submit" class="mt-3 btn btn-golden">Register User</button>
-</div>
-</form>
-<!-- Back to Users List -->
-<div class="mt-3 text-center">
-<a href="/redirect" class="btn btn-secondary">Back to Users List</a>
-</div>
+        <section class="section-1 py-16">
+    <div class="card mx-auto max-w-2xl bg-white shadow-md rounded-lg">
+        <div class="card-header text-center py-4 border-b">
+            <h3 class="card-title text-2xl font-semibold text-gray-800">Register New User</h3>
         </div>
-                    </div>
+        <div class="card-body p-8">
+            <form method="POST" action="{{ route('adminstoring') }}">
+                @csrf
+
+                <!-- Name -->
+                <div class="mb-6">
+                    <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="name" name="name" placeholder="Enter user name" required>
                 </div>
+
+                <!-- Email -->
+                <div class="mb-6">
+                    <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                    <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="email" name="email" placeholder="Enter email address" required>
+                </div>
+
+                <!-- Phone -->
+                <div class="mb-6">
+                    <label for="phone" class="block text-gray-700 font-medium mb-2">Phone</label>
+                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="phone" name="phone" placeholder="Enter phone number">
+                </div>
+
+                <!-- Role -->
+                <div class="mb-6">
+                    <label for="role" class="block text-gray-700 font-medium mb-2">Role</label>
+                    <select class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="role" name="role" required>
+                        <option value="" disabled selected>Select user role</option>
+                        <option value="customer">Customer</option>
+                        <option value="admin">Admin</option>
+                        <option value="operations_officer">Operations Officer</option>
+                        <option value="driver">Driver</option>
+                        <option value="ticket_officer">Ticket Officer</option>
+                    </select>
+                </div>
+
+                <!-- Status -->
+                <div class="mb-6">
+                    <label for="status" class="block text-gray-700 font-medium mb-2">Status</label>
+                    <select class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="status" name="status" required>
+                        <option value="active">Active</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="password" name="password" placeholder="Enter password" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-6">
+                    <label for="password_confirmation" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
+                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mt-6">
+                    <button type="submit" class="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:outline-none">Register User</button>
+                </div>
+            </form>
+
+            <!-- Back to Users List -->
+            <div class="mt-6 text-center">
+                <a href="/redirect" class="text-gray-700 hover:text-gray-900 font-medium">Back to Users List</a>
             </div>
-    
-    
-    </section>
+        </div>
     </div>
+</section>
+
+    </div>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+</x-app-layout>

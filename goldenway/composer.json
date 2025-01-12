@@ -15,6 +15,7 @@
         "illuminate/auth": "^11.0",
         "illuminate/database": "^11.0",
         "illuminate/support": "^11.0",
+        "intervention/image": "^2.7",
         "laravel/fortify": "*",
         "laravel/framework": "^11.0",
         "laravel/jetstream": "^5.3",

@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Ticket;
+use Illuminate\Support\Facades\Storage;
+
 
 use Illuminate\Support\Facades\Log; 
 use App\Models\Schedule;
+use App\Models\Trip;
+
+use Intervention\Image\Facades\Image;
 
 class TicketController extends Controller
 { 
@@ -117,7 +121,7 @@ class TicketController extends Controller
     $schedule = Schedule::findOrFail($scheduleId);
 
     // Safely handle capacity
-    $capacity = $schedule->capacity ?? 50; // Default to 50 if null
+    $capacity = $schedule->trip->capacity ?? 50; // Default to 50 if null
     if (!is_numeric($capacity) || $capacity <= 0) {
         $capacity = 50; // Set a safe fallback
     }

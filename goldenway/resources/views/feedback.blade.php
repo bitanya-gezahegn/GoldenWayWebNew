@@ -67,7 +67,7 @@
                 <!-- Submit Button -->
                 <div class="text-center">
                     <button type="submit"
-                        class=" bg-orange-500 hover:bg-yellow-500 text-white font-semibold px-6 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300">
+                        class=" bg-blue-500 hover:bg-gray-500 text-white font-semibold px-6 py-2 rounded-md focus:outline-none focus:ring focus:ring-blue-300">
                         Submit Feedback
                     </button>
                 </div>

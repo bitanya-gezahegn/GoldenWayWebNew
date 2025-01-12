@@ -1,321 +1,380 @@
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <style>
-        * {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
-	font-family: arial, sans-serif;
-}
-.header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 15px 30px;
-	background: #f8b75c;
-	color: #f6f3f3;
-}
-.u-name {
-	font-size: 20px;
-	padding-left: 17px;
-}
-.u-name b {
-	background: #f8b75c;
-}
-.header i {
-	font-size: 30px;
-	cursor: pointer;
-	color: #fff;
-}
-.header i:hover {
-	color: #ffb038;
-}
-.user-p {
-	text-align: center;
-	padding-left: 10px;
-	padding-top: 25px;
-}
-.user-p img {
-	width: 100px;
-	border-radius: 50%;
-}
-.user-p h4 {
-	color: #fef3e8;
-	padding: 5px 0;
+<x-app-layout>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Dashboard</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <style>
+            * {
+                padding: 0;
+                margin: 0;
+                box-sizing: border-box;
+                font-family: Arial, sans-serif;
+            }
 
-}
-.side-bar {
-	width: 250px;
-	background: hsl(0, 80%, 98%);
-	min-height: 100vh;
-	transition: 500ms width;
-}
-.body {
-	display: flex;
-}
-.section-1 {
-	width: 100%;
-  background-color: #f4efe9;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-    padding-bottom: 500px;
-}
-.section-1 h1 {
-	color: #fff;
-	font-size: 60px;
-}
-.section-1 p {
-	color: #f3a93b;
-	font-size: 20px;
-	background: #fff;
-	padding: 7px;
-	border-radius: 5px;
-}
-.side-bar ul {
-	margin-top: 20px;
-	list-style: none;
-}
-.side-bar ul li {
-	font-size: 16px;
-	padding: 15px 0px;
-	padding-left: 20px;
-	transition: 500ms background;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-.side-bar ul li:hover {
-	background: #f6aa38;
-}
-.side-bar ul li a {
-	text-decoration: none;
-	color: #100f0f;
-	cursor: pointer;
-	letter-spacing: 1px;
-}
-.side-bar ul li a i {
-	display: inline-block;
-	padding-right: 10px;
-	font-size: 23px;
-}
-#navbtn {
-	display: inline-block;
-	margin-left: 70px;
-	font-size: 20px;
-	transition: 500ms color;
-}
-#checkbox {
-	display: none;
-}
-#checkbox:checked ~ .body .side-bar {
-	width: 60px;
-}
-#checkbox:checked ~ .body .side-bar .user-p{
-	visibility: hidden;
-}
-#checkbox:checked ~ .body .side-bar a span{
-	display: none;
-}
-        .side-bar ul {
-            list-style: none;
-            padding: 0;
-        }
+            /* Header Section */
+            .header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 30px;
+                background: goldenrod; /* yellow-400 */
+                color: #fff;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
 
-        .side-bar ul li {
-            position: relative;
-        }
+            .u-name {
+                font-size: 20px;
+                font-weight: bold;
+            }
 
-        .side-bar ul li a {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            padding: 10px;
-            color: #333;
-        }
+            .header i {
+                font-size: 30px;
+                cursor: pointer;
+            }
 
-        .side-bar ul li a:hover {
-            background: #fd901b;
-        }
+            .header i:hover {
+                color: #ffb038;
+            }
 
-        .side-bar ul li .sub-menu {
-            display: none;
-            list-style: none;
-            margin: 0;
-            padding-left: 20px;
-        }
+            /* Sidebar */
+            .side-bar {
+                width: 250px;
+                background-color: #F3F4F6; /* gray-300 */
+                min-height: 100vh;
+                padding-top: 20px;
+                transition: 300ms width ease-in-out;
+                box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
+            }
 
-        .side-bar ul li.active .sub-menu {
-            display: block;
-        }
+            .side-bar ul {
+                list-style: none;
+                padding-left: 0;
+            }
 
-        .side-bar ul li .sub-menu li a {
-            padding: 5px;
-        }
-    .section-1 {
-        width: 100%;
-        background-color: #f4efe9; /* Subtle background for section */
-        padding: 20px; /* Add padding for spacing */
+            .side-bar ul li {
+                font-size: 16px;
+                padding: 15px;
+                padding-left: 20px;
+                transition: 300ms background-color ease;
+            }
+
+            .side-bar ul li:hover {
+                background-color: goldenrod; /* yellow-400 */
+                color: white;
+            }
+
+            .side-bar ul li a {
+                text-decoration: none;
+                color: #333;
+                display: flex;
+                align-items: center;
+                font-size: 16px;
+                padding-right: 10px;
+            }
+
+            .side-bar ul li a i {
+                margin-right: 15px;
+                font-size: 20px;
+            }
+
+            /* Toggle Button */
+            #checkbox {
+                display: none;
+            }
+
+            #checkbox:checked ~ .body .side-bar {
+                width: 60px;
+            }
+
+            #checkbox:checked ~ .body .side-bar .u-name,
+            #checkbox:checked ~ .body .side-bar ul li a span {
+                display: none;
+            }
+
+            /* Body Section */
+            .body {
+                display: flex;
+                transition: margin-left 300ms ease-in-out;
+            }
+
+            /* Section Content */
+            .section-1 {
+                width: 100%;
+                background-color: #F9FAFB; /* light gray */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                padding: 50px;
+            }
+
+            .section-1 h1 {
+                font-size: 60px;
+                color: goldenrod; /* yellow-400 */
+            }
+
+            .section-1 p {
+                color: goldenrod;
+                font-size: 20px;
+                background-color: #fff;
+                padding: 15px;
+                border-radius: 8px;
+                box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .user-p img {
+                width: 100px;
+                border-radius: 50%;
+            }
+
+            .user-p h4 {
+                color: #333;
+                padding: 5px 0;
+            }
+
+            /* Form Container */
+            .form-container {
+                width: 100%;
+                max-width: 600px;
+                background-color: #fff;
+                padding: 25px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                margin-top: 30px;
+            }
+
+            .form-group {
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                display: block;
+                font-size: 16px;
+                color: #333;
+                margin-bottom: 5px;
+            }
+
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
+            }
+
+            .btn-submit {
+                width: 100%;
+                padding: 12px;
+                background-color: goldenrod; /* yellow-400 */
+                color: white;
+                font-size: 18px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+
+            .btn-submit:hover {
+                background-color: #1E66A4; /* dark yellow */
+            }
+
+            /* Responsive Design */
+            @media (max-width: 768px) {
+                .side-bar {
+                    width: 200px;
+                }
+
+                .header {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    padding: 15px;
+                }
+
+                .section-1 h1 {
+                    font-size: 40px;
+                }
+
+                .form-container {
+                    padding: 20px;
+                }
+
+                .route-table th, .route-table td {
+                    font-size: 14px;
+                }
+
+                .btn-submit {
+                    font-size: 16px;
+                }
+            }
+            /* Table Styling */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table th,
+.table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.table th {
+    background-color: goldenrod; /* yellow-400 */
+    color: white;
+    font-size: 16px;
+}
+
+.table tr:nth-child(even) {
+    background-color: #f4f4f4;
+}
+
+.table td {
+    font-size: 14px;
+}
+
+/* Responsive Design for Table */
+@media (max-width: 768px) {
+    .table {
+        border: 0;
+        display: block;
+        overflow-x: auto;
     }
 
-    .section-1 h1 {
-        color: #f8b75c; /* Matching the header's theme */
-        font-size: 36px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        text-align: center; /* Center-align the title */
-    }
-
-    .text-end {
-        margin-bottom: 20px;
+    .table th,
+    .table td {
+        display: block;
         text-align: right;
+        padding: 8px;
+        border: 0;
     }
 
-    .btn-golden {
-        background-color: #f8b75c;
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        font-size: 16px;
-        font-weight: bold;
+    .table th {
+        background-color: #f9fafb;
+        color: #333;
     }
 
-    .btn-golden:hover {
-        background-color: #e6a843;
-        color: #fff;
-    }
-
-    table.table {
-        background-color: #ffffff; /* White background for better contrast */
-        border-radius: 10px; /* Rounded corners */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-        overflow: hidden;
-    }
-
-    table.table th {
-        background-color: #f8b75c; /* Header background */
-        color: white;
-        text-align: center;
-        font-weight: bold;
-        padding: 10px;
-    }
-
-    table.table td {
-        text-align: center; /* Center-align table cells */
-        padding: 10px;
-    }
-
-    table.table td:last-child {
-        display: flex;
-        justify-content: center; /* Align action buttons to the center */
-        gap: 10px; /* Add spacing between buttons */
-    }
-
-    table.table td .btn {
+    .table td {
+        background-color: #fff;
+        border-bottom: 1px solid #ddd;
+        display: block;
+        text-align: left;
         font-size: 14px;
-        padding: 5px 10px;
-        border-radius: 4px;
     }
 
-    table.table .btn-primary {
-        background-color: #4CAF50; /* Green for edit */
-        border: none;
+    .table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        text-align: left;
     }
+}
+/* Edit and Delete Buttons */
+.btn-primary {
+    background-color: goldenrod; /* yellow-400 */
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    table.table .btn-primary:hover {
-        background-color: #45a049;
-    }
+.btn-primary:hover {
+    background-color: #1E66A4; /* dark yellow */
+}
 
-    table.table .btn-danger {
-        background-color: #f44336; /* Red for delete */
-        border: none;
-    }
+.btn-danger {
+    background-color: #EF4444; /* red-500 */
+    color: white;
+    font-size: 14px;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-    table.table .btn-danger:hover {
-        background-color: #e53935;
-    }
-    .alert-success {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
-            text-align: center;
-        }
+.btn-danger:hover {
+    background-color: #9B2C2C; /* dark red */
+}
 
 
-    </style>
-</head>
+        </style>
+    </head>
 
-<body>
-    <input type="checkbox" id="checkbox">
-   
-
-    <header class="header">
-   
-
-        <h2 class="u-name">OPERATION <b>OFFICER</b>
+    <body>
+        <input type="checkbox" id="checkbox">
+        <header class="header">
+            <h2 class="u-name">OPERATION <b>OFFICER</b>
+                
+            </h2>
+            <a href="/">
             <label for="checkbox">
-                <i id="navbtn" class="fa fa-bars" aria-hidden="true"></i>
-            </label>
-        </h2>
-        <a href="/">
-		<i class="fa fa-home" aria-hidden="true"></i>
- 
-		</a>  </header>
-    <div class="body">
-        <nav class="side-bar">
-    @include('sidebar')
-           
-    </nav>
-        <section class="section-1">
-      
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </label>      </a>
+        </header>
 
-<h1>Schedules</h1>
+        <div class="body">
+            <nav class="side-bar">
+                <ul>
+                    <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                    <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
+                    <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
+                    <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
+                    <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
+                    <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
+                    <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
+                </ul>
+            </nav>
 
+            <section class="section-1 py-8">
+    <div class="max-w-7xl mx-auto px-4">
+        <h1 class="text-3xl font-semibold text-center text-yellow-600 mb-6">Schedules</h1>
 
-<table class="table table-striped">
-<thead>
-<tr>
-<th>ID</th>
-<th>Trip</th>
-<th>Driver</th>
-<th>Status</th>
-<th>Actions</th>
-</tr>
-</thead>
-<tbody>
-@foreach ($schedules as $schedule)
-<tr>
-<td>{{ $schedule->id }}</td>
-<td>{{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}</td>
-<td>{{ $schedule->driver->name }}</td>
-<td>{{ $schedule->status }}</td>
-<td>
-<a href="{{ route('schedules.edit', $schedule->id) }}
-" class="btn btn-primary">Edit</a> 
- <form action="route('schedules.destroy', $schedule->id) }}
-" method="POST" class="d-inline mr-28">
-@csrf
-@method('DELETE')
-<button type="submit" class="btn btn-danger">Delete</button>
-</form>
-</td>
-</tr>
-@endforeach
-</tbody>
-</table>
-</div>
+        <!-- Table for schedules -->
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+            <thead>
+                <tr class="bg-gray-200 text-left text-sm font-medium text-gray-700">
+                    <th class="px-4 py-2 border-b">ID</th>
+                    <th class="px-4 py-2 border-b">Trip</th>
+                    <th class="px-4 py-2 border-b">Driver</th>
+                    <th class="px-4 py-2 border-b">Status</th>
+                    <th class="px-4 py-2 border-b">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($schedules as $schedule)
+                    <tr class="border-b">
+                        <td class="px-4 py-2">{{ $schedule->id }}</td>
+                        <td class="px-4 py-2">{{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}</td>
+                        <td class="px-4 py-2">{{ $schedule->driver->name }}</td>
+                        <td class="px-4 py-2">{{ $schedule->status }}</td>
+                        <td class="px-4 py-2 flex items-center space-x-2">
+                            <a href="{{ route('schedules.edit', $schedule->id) }}" class="bg-yellow-500 text-white py-1 px-3 rounded-lg hover:bg-yellow-600 transition duration-300">Edit</a> 
 
-    </section>
+                            <form action="{{ route('schedules.destroy', $schedule->id) }}" method="POST" class="inline-block">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition duration-300">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
-</body>
-</html>
+</section>
+
+        </div>
+
+    </body>
+    </html>
+</x-app-layout>

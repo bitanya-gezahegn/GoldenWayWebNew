@@ -1,5 +1,6 @@
 <?php
 
+use Intervention\Image\Facades\Image;
 
 return [
 
@@ -66,18 +67,21 @@ return [
     | is set to "UTC" by default as it is suitable for most use cases.
     |
     */
+ 
 
     'timezone' => env('APP_TIMEZONE', 'UTC'),
    'aliases' => [
     // Other aliases...
     'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
+    'Image' => Intervention\Image\Facades\Image::class,
+
    ],
 
 
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
-    |--------------------------------------------------------------------------
+    |p--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
     | by Laravel's translation / localization methods. This option can be

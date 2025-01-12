@@ -1,87 +1,57 @@
-<!DOCTYPE html>
+
+
+
+<x-app-layout><!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book Now</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .container {
-            text-align: center;
-            margin-top: 50px;
-        }
-
-        .seat-map {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr); /* Adjust columns as needed */
-            gap: 10px;
-            margin: 30px auto;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .seat {
-            width: 60px;
-            height: 60px;
-            background-color: #f5a510;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .seat.taken {
-            background-color: #888;
-            cursor: not-allowed;
-        }
-
-        .seat.selected {
-            background-color: #ff5100;
-            color: #fff;
-        }
-
-        .action {
-            margin-top: 20px;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            font-size: 1rem;
-            color: #fff;
-            background-color: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn:hover {
-            background-color: #0056b3;
+        /* Add custom yellow color from your landing page */
+        @layer utilities {
+            .bg-theme {
+                @apply bg-yellow-600; /* Replace with your specific yellow if needed */
+            }
+            .hover-bg-theme {
+                @apply hover:bg-yellow-500;
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <h1>Choose Your Seat</h1>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto text-center px-4">
+        <h1 class="text-4xl font-bold text-gray-800 mb-8">Choose Your Seat</h1>
 
-        <div class="seat-map">
+        <!-- Seat Map -->
+        <div class="grid grid-cols-4 gap-4 max-w-md mx-auto mb-8">
             @foreach ($totalSeats as $seat)
                 <div 
-                    class="seat {{ in_array($seat, $bookedSeats) ? 'taken' : '' }}" 
+                    class="seat w-16 h-16 flex items-center justify-center text-gray-500 font-bold text-lg rounded-md transition-all hover:bg-yellow-500 
+                    {{ in_array($seat, $bookedSeats) ? 'bg-gray-400 cursor-not-allowed' : 'bg-theme hover-bg-theme cursor-pointer' }}" 
                     data-seat="{{ $seat }}"
+                    role="button" 
+                    aria-label="Seat {{ $seat }} {{ in_array($seat, $bookedSeats) ? 'taken' : 'available' }}"
+                    tabindex="{{ in_array($seat, $bookedSeats) ? '-1' : '0' }}"
                 >
                     {{ $seat }}
                 </div>
             @endforeach
         </div>
 
-        <form action="{{ route('book.ticket', ['schedule' => $schedule->id]) }}" method="POST">
+        <!-- Booking Form -->
+        <form action="{{ route('book.ticket', ['schedule' => $schedule->id]) }}" method="POST" class="inline-block">
             @csrf
             <input type="hidden" name="seat_number" id="seat_number" value="">
-            <button type="submit" class="btn">Book Now</button>
+            <button 
+                type="submit" 
+                class="btn px-6 py-3 bg-yellow-400 text-white font-bold rounded-lg shadow-md hover:bg-yellow-500 
+                focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all"
+                disabled
+            >
+                Book Now
+            </button>
         </form>
     </div>
 
@@ -89,20 +59,22 @@
         document.addEventListener('DOMContentLoaded', () => {
             const seats = document.querySelectorAll('.seat');
             const seatInput = document.getElementById('seat_number');
+            const submitButton = document.querySelector('.btn');
 
             // Click event for seat selection
             seats.forEach(seat => {
-                if (!seat.classList.contains('taken')) { // Allow click only on available seats
+                if (!seat.classList.contains('bg-gray-400')) { // Only allow clicks on available seats
                     seat.addEventListener('click', () => {
-                        // Highlight selected seat and set value in hidden input
-                        seats.forEach(s => s.classList.remove('selected'));
-                        seat.classList.add('selected');
+                        // Remove 'selected' class from all seats, then add it to the clicked seat
+                        seats.forEach(s => s.classList.remove('ring', 'ring-yellow-400', 'ring-offset-2'));
+                        seat.classList.add('ring', 'ring-yellow-400', 'ring-offset-2');
                         seatInput.value = seat.dataset.seat;
+                        submitButton.disabled = false; // Enable the "Book Now" button
                     });
                 }
             });
 
-            // Prevent form submission without a selected seat
+            // Prevent form submission without selecting a seat
             document.querySelector('form').addEventListener('submit', (e) => {
                 if (!seatInput.value) {
                     e.preventDefault();
@@ -113,3 +85,4 @@
     </script>
 </body>
 </html>
+    </x-app-layout>

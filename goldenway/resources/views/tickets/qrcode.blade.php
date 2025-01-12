@@ -1,226 +1,106 @@
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<x-app-layout>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticket - Golden Bus</title>
-    <style>
-        body {
-            font-family: 'Lemon Milk', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f7f1eb;
-            color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .ticket-container {
-            background: #ffffff;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
-            position: relative;
-        }
-
-        .ticket-header {
-            background: linear-gradient(135deg, #ffbf8b, #d75f03);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .ticket-header h1 {
-            margin: 0;
-            font-size: 1.5em;
-        }
-
-        .ticket-section {
-            padding: 20px;
-            position: relative;
-        }
-
-        .ticket-section:not(:last-child) {
-            border-bottom: 2px dotted #ccc;
-            margin-bottom: 10px;
-        }
-
-        .ticket-section:not(:last-child)::before,
-        .ticket-section:not(:last-child)::after {
-            content: "";
-            position: absolute;
-            width: 10px;
-            height: 5px;
-            background: #ffffff;
-            border: 2px solid #ccc;
-            border-radius: 50%;
-            top: 100%;
-            transform: translateY(-50%);
-        }
-
-        .ticket-section:not(:last-child)::before {
-            left: -10px;
-        }
-
-        .ticket-section:not(:last-child)::after {
-            right: -10px;
-        }
-
-        .ticket-section h2 {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            font-size: 0.9em;
-        }
-
-        .info-grid div {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .info-grid span {
-            font-weight: bold;
-        }
-
-        .qr-code {
-            text-align: center;
-            padding: 20px;
-        }
-
-        .qr-code img {
-            width: 150px;
-            height: 150px;
-        }
-
-        .download-button {
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #ffbf8b, #fc7108);
-        }
-
-        .download-button button {
-            background: #f5ddbc;
-            color: #080808;
-            font-size: 1em;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .download-button button:hover {
-            background: #ef9954;
-            color: rgb(8, 8, 8);
-        }
-    </style>
+    <title>Golden Bus - Your Ticket</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <div class="ticket-container">
-        <div class="ticket-header">
-            <h1>Your Ticket</h1>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md mx-auto bg-white shadow-md rounded-lg overflow-hidden">
+        <!-- Header -->
+        <div class="bg-yellow-600 text-white p-5 text-center">
+            <h1 class="text-xl font-bold uppercase">Golden Bus Ticket</h1>
+            <p class="text-sm mt-1">Your Journey Starts Here</p>
         </div>
 
-        <div class="ticket-section">
-            <h2>Passenger Information</h2>
-            <p><strong>Name:</strong> {{ $ticketData['name'] }}</p>
+        <!-- Passenger Information -->
+        <div class="p-5 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800">Passenger Information</h2>
+            <p class="text-gray-700 mt-2"><strong>Name:</strong> {{ $ticketData['name'] }}</p>
         </div>
 
-        <div class="ticket-section">
-            <h2>Trip Details</h2>
-            <div class="info-grid">
+        <!-- Trip Details -->
+        <div class="p-5 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800">Trip Details</h2>
+            <div class="grid grid-cols-2 gap-4 text-sm mt-2">
                 <div>
-                    <span>From</span>
-                    <p>{{ $ticketData['origin'] }}</p>
+                    <span class="text-gray-500">From</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['origin'] }}</p>
                 </div>
                 <div>
-                    <span>To</span>
-                    <p>{{ $ticketData['destination'] }}</p>
+                    <span class="text-gray-500">To</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['destination'] }}</p>
                 </div>
                 <div>
-                    <span>Date</span>
-                    <p>{{ $ticketData['date']->format('Y-m-d') }}</p>
-                </div>   
-                <div>
-                    <span>Departure Time</span>
-                    <p>{{ $ticketData['departureTime'] }}</p>
+                    <span class="text-gray-500">Date</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['date']->format('Y-m-d') }}</p>
                 </div>
                 <div>
-                    <span>Arrival Time</span>
-                    <p>{{ $ticketData['arrivalTime'] }}</p>
-                </div> 
-               
+                    <span class="text-gray-500">Departure</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['departureTime'] }}</p>
+                </div>
+                <div>
+                    <span class="text-gray-500">Arrival</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['arrivalTime'] }}</p>
+                </div>
             </div>
         </div>
 
-        <div class="ticket-section">
-            <h2>Bus Information</h2>
-            <div class="info-grid">
+        <!-- Bus Information -->
+        <div class="p-5 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800">Bus Information</h2>
+            <div class="grid grid-cols-2 gap-4 text-sm mt-2">
                 <div>
-                    <span>Bus Stop</span>
-                    <p>{{ is_array($ticketData['bus_stop']) ? implode(', ', $ticketData['bus_stop']) : $ticketData['bus_stop'] }}</p>
-
-
+                    <span class="text-gray-500">Bus Stop</span>
+                    <p class="text-gray-800 font-medium">
+                        {{ is_array($ticketData['bus_stop']) ? implode(', ', $ticketData['bus_stop']) : $ticketData['bus_stop'] }}
+                    </p>
                 </div>
                 <div>
-                    <span>Price</span>
-                    <p> {{ $ticketData['price'] }}</p>
+                    <span class="text-gray-500">Price</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['price'] }}</p>
                 </div>
                 <div>
-                    <span>Ticket No</span>
-                    <p> {{ $ticketData['id'] }}</p>
-
+                    <span class="text-gray-500">Ticket No</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['id'] }}</p>
                 </div>
                 <div>
-                    <span>Seat</span>
-                    <p> {{ $ticketData['seat_number'] }}</p>
+                    <span class="text-gray-500">Seat</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['seat_number'] }}</p>
                 </div>
             </div>
         </div>
 
         <div class="qr-code">
-        {!! QrCode::size(200)->generate($ticket->qr_code) !!}
+        {!! QrCode::size(200)->generate($ticket->qr_code); !!}
         </div>
 
-        <div class="download-button">
-    <a href="{{ asset('path/to/your/ticket_image.png') }}" download="ticket_image.png">
-        <button>Take A Screenshot</button>
-    </a>
+        <!-- Buttons -->
+        <div class="p-5 bg-gray-50 text-center">
+    <!-- Screenshot Button -->
+    <a id="download-ticket" class="block mb-3">
+     <div class="download-button">
+    <button id="download-ticket" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+        Download Ticket Image
+    </button>
 </div>
-        <form action="{{route('payment.initialize',  $ticket->id) }}">
-    @csrf
+    </a>
+    <!-- Payment Button -->
+    <form action="{{ route('payment.initialize', $ticket->id) }}" method="POST">
+        @csrf
+        <button class="w-full bg-yellow-600 text-white font-semibold py-2 rounded-md hover:bg-yellow-500">
+            Pay with Chapa
+        </button>
+    </form>
+</div>
 
-        <div class="download-button">
-            <button>Pay With Chapa</button>
-        </div>
-        </form>
-    </div>
 
 
 
 </body>
 </html>
+
+</x-app-layout>
