@@ -64,7 +64,8 @@ class TripsController extends Controller
     }
 
     public function update(Request $request, Trip $trip)
-{$trip->route_id = $request->route_id;
+{ 
+    $trip->route_id = $request->route_id;
     $trip->date = $request->date;
     
     $trip->departure_time = $request->departure_time;
@@ -74,7 +75,7 @@ class TripsController extends Controller
     
     if ($trip->isDirty()) { // Check if any attributes have been modified
         $trip->save();
-        return redirect()->route('trips.index')->with('success', 'Trip deleted successfully!');
+        return redirect()->route('trips.index')->with('success', 'Trip Updated successfully!');
   
     } else {
         dd('No changes detected');
