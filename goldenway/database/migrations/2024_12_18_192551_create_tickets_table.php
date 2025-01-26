@@ -15,7 +15,7 @@ return new class extends Migration
         $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
         $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
         $table->integer('seat_number');
-        $table->enum('status', ['booked', 'canceled', 'completed'])->default('booked');
+        $table->enum('status', ['booked', 'canceled', 'completed']);
         $table->string('qr_code');
         $table->timestamps();
     });

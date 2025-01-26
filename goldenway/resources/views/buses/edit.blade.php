@@ -1,6 +1,3 @@
-
-
-
 <x-app-layout>
     <!DOCTYPE html>
     <html lang="en">
@@ -23,7 +20,7 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 20px 30px;
-                background: goldenrod; /* blue-400 */
+                background: #3B82F6; /* blue-400 */
                 color: #fff;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
@@ -65,7 +62,7 @@
             }
 
             .side-bar ul li:hover {
-                background-color: goldenrod; /* blue-400 */
+                background-color: #3B82F6; /* blue-400 */
                 color: white;
             }
 
@@ -116,11 +113,11 @@
 
             .section-1 h1 {
                 font-size: 60px;
-                color: goldenrod; /* blue-400 */
+                color: #3B82F6; /* blue-400 */
             }
 
             .section-1 p {
-                color: goldenrod;
+                color: #3B82F6;
                 font-size: 20px;
                 background-color: #fff;
                 padding: 15px;
@@ -171,7 +168,7 @@
             .btn-submit {
                 width: 100%;
                 padding: 12px;
-                background-color: goldenrod; /* blue-400 */
+                background-color: #3B82F6; /* blue-400 */
                 color: white;
                 font-size: 18px;
                 border: none;
@@ -181,7 +178,7 @@
             }
 
             .btn-submit:hover {
-                background-color: yellow; /* dark blue */
+                background-color: #1E66A4; /* dark blue */
             }
 
             /* Responsive Design */
@@ -226,86 +223,48 @@
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </label>      </a>
         </header>
+
         <div class="body">
             <nav class="side-bar">
-            <ul>
-                <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
-                <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
-                <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
-                <li><a href="{{ url('bus') }}"><i class="fa fa-file"></i><span>Manage Buses</span></a></li>
-
-                <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
-                <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
-                <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
-                <li>
-    <a href="{{ route('refund.requests') }}">
-        <i class="fa fa-file"></i>
-        <span>Refund Requests</span>
-    </a>
-</li>
-  </ul>
+                <ul>
+                    <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                    <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
+                    <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
+                    <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
+                    <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
+                    <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
+                    <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
+                </ul>
             </nav>
 
             <section class="section-1">
-    <main class="content-section">
-        <!-- Section Title -->
-        @if(session('success'))
-                    <div class="alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-                <h1 class="card-title text-center">Create Trip</h1>
+                <main class="content-section">
+                    <!-- Section Title -->
+                    @if(session('success'))
+                        <div class="alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <h2 class="card-title">Edit Route</h2>
 
-<!-- Trip creation form -->
-<form action="{{ route('trips.store') }}" method="POST" class="form-container">
+                    <!-- Form for Editing Route -->
+                    <form action="{{ route('buses.edit_confirm', $bus->busID) }}" method="POST">
     @csrf
-
-    <!-- Route Selection -->
-    <div class="form-group mb-3">
-        <label for="route_id" class="form-label">Route</label>
-        <select name="route_id" id="route_id" class="form-select" required>
-            @foreach ($routes as $route)
-                <option value="{{ $route->id }}">{{ $route->origin }} - {{ $route->destination }}</option>
-            @endforeach
-        </select>
+    <div>
+        <label for="bus_type">Bus Type:</label>
+        <input type="text" name="bus_type" id="bus_type" value="{{ $bus->bus_type }}" required>
     </div>
-    <div class="form-group mb-3">
-        <label for="date" class="form-label">Date:</label>
-        <input type="date" name="date" id="date" class="form-control" required>
+    <div>
+        <label for="plate_number">Plate Number:</label>
+        <input type="text" name="plate_number" id="plate_number" value="{{ $bus->plate_number }}" required>
     </div>
-
-
-    <!-- Departure Time -->
-    <div class="form-group mb-3">
-        <label for="departure_time" class="form-label">Departure Time</label>
-        <input type="time" name="departure_time" id="departure_time" class="form-control" required>
-    </div>
-
-    <!-- Arrival Time -->
-    <div class="form-group mb-3">
-        <label for="arrival_time" class="form-label">Arrival Time</label>
-        <input type="time" name="arrival_time" id="arrival_time" class="form-control" required>
-    </div> 
-    
-  
-    <!-- Price -->
-    <div class="form-group mb-3">
-        <label for="price" class="form-label">Price</label>
-        <input type="number" name="price" id="price" class="form-control" step="0.01" required>
-    </div>
-
-    <!-- Capacity -->
-    <div class="form-group mb-3">
-        <label for="capacity" class="form-label">Capacity</label>
-        <input type="number" name="capacity" id="capacity" class="form-control" required>
-    </div>
-
-    <!-- Submit Button --> 
-    <button type="submit" class="btn-submit">Create Trip</button>
+    <button type="submit">Update Bus</button>
 </form>
-    </main>
-</section>
+
+
+                </main>
+            </section>
+
         </div>
 
     </body>

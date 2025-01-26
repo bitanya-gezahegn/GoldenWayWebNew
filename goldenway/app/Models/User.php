@@ -74,9 +74,26 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     return $this->role === 'admin';
 }
+
+public function tickets()
+{
+    return $this->hasMany(Ticket::class, 'customer_id');
+}
+
+/**
+ * Get the payments associated with the user.
+ */
 public function payments()
 {
     return $this->hasMany(Payment::class, 'customer_id');
+}
+
+/**
+ * Get the refunds associated with the user.
+ */
+public function refunds()
+{
+    return $this->hasManyThrough(Refund::class, Payment::class, 'customer_id', 'payment_id');
 }
 
 }

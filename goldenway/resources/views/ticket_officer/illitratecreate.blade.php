@@ -1,5 +1,4 @@
 
-
 <x-app-layout>
 <!DOCTYPE html>
 <html lang="en">
@@ -302,7 +301,7 @@
 <body>
     <input type="checkbox" id="checkbox">
     <header class="header">
-            <h2 class="u-name">TICKET <b>OFFICER</b>
+            <h2 class="u-name">ADMIN</b>
                 
             </h2>
             <a href="/">
@@ -312,119 +311,83 @@
         </header>
 
     <div class="body">
-        <nav class="side-bar">
+    <nav class="side-bar">
             <ul>
                 <li><a href="{{ url('redirect') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-desktop"></i><span>Illitrate Ticket</span></a></li>
                    </ul>
         </nav>
 
         <section class="section-1 py-16">
-    <div id="qr-reader" class="mx-auto mb-8" style="width: 600px;"></div>
+    <div class="card mx-auto max-w-2xl bg-white shadow-md rounded-lg">
+        <div class="card-header text-center py-4 border-b">
+            <h3 class="card-title text-2xl font-semibold text-gray-800">Register New User</h3>
+        </div>
+        <div class="card-body p-8">
+            <form method="POST" action="{{ route('adminstoring') }}">
+                @csrf
 
-    <script>
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
+                <!-- Name -->
+                <div class="mb-6">
+                    <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
+                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="name" name="name" placeholder="Enter user name" required>
+                </div>
 
-            const ticketIdMatch = decodedText.match(/ticket_(\d+)\.png/);
-            if (ticketIdMatch) {
-                const ticketId = ticketIdMatch[1];
-                console.log(`Extracted Ticket ID = ${ticketId}`);
-                filterTableByTicketId(ticketId);
-            } else {
-                console.error("Unable to extract Ticket ID from the scanned QR code.");
-            }
-        }
+                <!-- Email -->
+                <div class="mb-6">
+                    <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                    <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="email" name="email" placeholder="Enter email address" required>
+                </div>
 
-        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess);
+                <!-- Phone -->
+                <div class="mb-6">
+                    <label for="phone" class="block text-gray-700 font-medium mb-2">Phone</label>
+                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="phone" name="phone" placeholder="Enter phone number">
+                </div>
 
-        function filterTableByTicketId(ticketId) {
-            const tableRows = document.querySelectorAll('#payments-table tbody tr');
-            tableRows.forEach(row => {
-                const ticketIdCell = row.querySelector('.ticket-id');
-                if (ticketIdCell && ticketIdCell.textContent.trim() === ticketId) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-        function changeTicketStatus(paymentId) {
-    fetch(`/update-ticket-status/${paymentId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: JSON.stringify({ status: 'checked' })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            const statusCell = document.querySelector(`#payment-${paymentId} .ticket_status`);
-            statusCell.textContent = 'Checked';
-            statusCell.classList.add('bg-green-500', 'text-white');
-            statusCell.classList.remove('bg-gray-200');
-        } else {
-            alert('Failed to update ticket status: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating the ticket status.');
-    });
-}
+                <!-- Role -->
+                <div class="mb-6">
+                    <label for="role" class="block text-gray-700 font-medium mb-2">Role</label>
+                    <select class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="role" name="role" required>
+                        <option value="" disabled selected>Select user role</option>
+                        <option value="customer">Customer</option>
+                         </select>
+                </div>
 
-        
-    </script>
+                <!-- Status -->
+                <div class="mb-6">
+                    <label for="status" class="block text-gray-700 font-medium mb-2">Status</label>
+                    <select class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="status" name="status" required>
+                        <option value="active">Active</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                </div>
 
-    <!-- Completed Payments Table -->
-    <div class="text-end mb-6">
-        <h2 class="text-3xl font-semibold text-gray-800">Completed Payments</h2>
+                <!-- Password -->
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="password" name="password" placeholder="Enter password" required>
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="mb-6">
+                    <label for="password_confirmation" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
+                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mt-6">
+                    <button type="submit" class="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:outline-none">Register User</button>
+                </div>
+            </form>
+
+            <!-- Back to Users List -->
+            <div class="mt-6 text-center">
+                <a href="/redirect" class="text-gray-700 hover:text-gray-900 font-medium">Back to Users List</a>
+            </div>
+        </div>
     </div>
-    <table id="payments-table" class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
-        <thead>
-            <tr class="bg-gray-100 text-left text-sm font-medium text-gray-700">
-                <th class="px-4 py-2 border-b">Payment ID</th>
-                <th class="px-4 py-2 border-b">Ticket ID</th>
-                <th class="px-4 py-2 border-b">Customer Name</th>
-                <th class="px-4 py-2 border-b">Amount</th>
-                <th class="px-4 py-2 border-b">Payment Method</th>
-                <th class="px-4 py-2 border-b">Payment Date</th>
-                <th class="px-4 py-2 border-b">Ticket Status</th>
-                <th class="px-4 py-2 border-b">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($completedPayments as $payment)
-                <tr id="payment-{{ $payment->id }}" class="hover:bg-gray-50 transition duration-200">
-                    <td class="px-4 py-3 border-b text-sm">{{ $payment->id }}</td>
-                    <td class="px-4 py-3 border-b text-sm ticket-id">{{ $payment->ticket_id }}</td>
-                    <td class="px-4 py-3 border-b text-sm">{{ $payment->customer->name }}</td>
-                    <td class="px-4 py-3 border-b text-sm">${{ number_format($payment->amount, 2) }}</td>
-                    <td class="px-4 py-3 border-b text-sm">{{ ucfirst($payment->payment_method) }}</td>
-                    <td class="px-4 py-3 border-b text-sm">{{ $payment->payment_date }}</td>
-                    <td class="px-4 py-3 border-b text-sm ticket-status {{ $payment->ticket_status == 'unchecked' ? 'bg-gray-200' : 'bg-green-500 text-white' }}">
-                        {{ ucfirst($payment->ticket_status) }}
-                    </td>
-                    <td class="px-4 py-3 border-b text-sm">
-                        @if($payment->ticket_status == 'unchecked')
-                            <button onclick="changeTicketStatus({{ $payment->id }})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Mark as Checked
-                            </button>
-                        @endif
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
 </section>
-
 
     </div>
 

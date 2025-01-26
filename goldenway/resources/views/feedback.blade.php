@@ -6,6 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback for Driver</title>
     @vite('resources/css/app.css') <!-- Ensure Tailwind CSS is included -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> <!-- Axios for AJAX requests -->
+    <script defer>
+        document.addEventListener('DOMContentLoaded', function () {
+            const feedbackForm = document.querySelector('#feedbackForm');
+            feedbackForm.addEventListener('submit', async function (e) {
+                e.preventDefault(); // Prevent default form submission
+
+                const formData = new FormData(feedbackForm);
+                try {
+                    const response = await axios.post(feedbackForm.action, formData);
+                    alert('Feedback submitted successfully!');
+                    location.reload(); // Reload the page after success
+                } catch (error) {
+                    alert('Something went wrong. Please try again.');
+                }
+            });
+        });
+    </script>
 </head>
 <body class="bg-gray-100">
 @if (session('success') || session('error'))
@@ -17,7 +35,6 @@
             x-init="setTimeout(() => show = false, 5000)" 
             class="p-4 text-sm rounded-lg shadow-lg 
             {{ session('success') ? 'text-green-700 bg-green-100' : 'text-red-700 bg-red-100' }}">
-
             <span class="font-medium">
                 {{ session('success') ? 'Success:' : 'Error:' }}
             </span> 
@@ -30,7 +47,7 @@
         <div class="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
             <h1 class="text-2xl font-semibold text-center mb-4">Feedback for Driver</h1>
             
-            <form action="{{ route('feedback.submit') }}" method="POST" class="space-y-6">
+            <form id="feedbackForm" action="{{ route('feedback.submit') }}" method="POST" class="space-y-6">
                 @csrf
                 <input type="hidden" name="schedule_id" value="{{ $scheduleId }}">
                 <input type="hidden" name="driver_id" value="{{ $driverId }}">
@@ -76,6 +93,4 @@
     </div>
 </body>
 </html>
-
-
 </x-app-layout>

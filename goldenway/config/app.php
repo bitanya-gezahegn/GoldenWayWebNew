@@ -74,6 +74,7 @@ return [
     // Other aliases...
     'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     'Image' => Intervention\Image\Facades\Image::class,
+    'Mail' => Illuminate\Support\Facades\Mail::class,
 
    ],
 

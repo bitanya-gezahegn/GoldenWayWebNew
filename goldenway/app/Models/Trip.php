@@ -22,8 +22,19 @@ class Trip extends Model
     /**
      * Define a relationship with the Route model.
      */
-    public function route()
-    {
-        return $this->belongsTo(Route::class);
-    }
+   
+    
+     public function route()
+     {
+         return $this->belongsTo(Route::class);
+     }
+ 
+     /**
+      * Get the schedules associated with the trip.
+      */
+     public function schedules()
+     {
+         return $this->hasMany(Schedule::class);
+     }
+ 
 }

@@ -1,4 +1,3 @@
-
 <x-app-layout>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,33 +73,60 @@
             </div>
         </div>
 
-        <div class="qr-code">
-        {!! QrCode::size(200)->generate($ticket->qr_code); !!}
+        <!-- QR Code -->
+        <div class="p-5 text-center">
+            <div id="qr-code-container">
+                {!! QrCode::size(200)->generate($ticket->qr_code) !!}
+            </div>
         </div>
 
         <!-- Buttons -->
         <div class="p-5 bg-gray-50 text-center">
-    <!-- Screenshot Button -->
-    <a id="download-ticket" class="block mb-3">
-     <div class="download-button">
-    <button id="download-ticket" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-        Download Ticket Image
-    </button>
-</div>
-    </a>
-    <!-- Payment Button -->
-    <form action="{{ route('payment.initialize', $ticket->id) }}" method="POST">
-        @csrf
-        <button class="w-full bg-yellow-600 text-white font-semibold py-2 rounded-md hover:bg-yellow-500">
-            Pay with Chapa
-        </button>
-    </form>
-</div>
+            <!-- Download Button -->
+            <button id="download-ticket" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
+                Download Ticket Image
+            </button>
+            <!-- Payment Button -->
+            <form action="{{ route('payment.initialize', $ticket->id) }}" method="POST" class="mt-3">
+                @csrf
+                <button class="w-full bg-yellow-600 text-white font-semibold py-2 rounded-md hover:bg-yellow-500">
+                    Pay with Chapa
+                </button>
+            </form>
+        </div>
+    </div>
 
+    <script>
+        document.getElementById('download-ticket').addEventListener('click', function () {
+            const qrContainer = document.getElementById('qr-code-container');
+            const svg = qrContainer.querySelector('svg');
 
+            if (svg) {
+                const svgData = new XMLSerializer().serializeToString(svg);
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
 
+                const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(svgBlob);
 
+                img.onload = function () {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    URL.revokeObjectURL(url);
+
+                    const a = document.createElement('a');
+                    a.download = 'ticket-qr-code.png';
+                    a.href = canvas.toDataURL('image/png');
+                    a.click();
+                };
+
+                img.src = url;
+            }
+        });
+    </script>
 </body>
 </html>
-
 </x-app-layout>

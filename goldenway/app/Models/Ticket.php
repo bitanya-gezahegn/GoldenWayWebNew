@@ -15,21 +15,33 @@ class Ticket extends Model
         'status',
         'qr_code',
     ];
-
     public function schedule()
     {
         return $this->belongsTo(Schedule::class);
     }
 
+    /**
+     * Get the customer associated with the ticket.
+     */
     public function customer()
     {
         return $this->belongsTo(User::class, 'customer_id');
     }
 
+    /**
+     * Get the payment associated with the ticket.
+     */
+    public function payment()
+    {
+        return $this->hasOne(Payment::class);
+    }
 
-public function payments()
-{
-    return $this->hasMany(Payment::class);
-}
-
+    /**
+     * Get the refund associated with the ticket.
+     */
+    public function refund()
+    {
+        return $this->hasOne(Refund::class, 'payment_id', 'payment_id');
+    }
+ 
 }

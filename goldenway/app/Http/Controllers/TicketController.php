@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Ticket;
+use App\Models\Refund;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -115,27 +116,65 @@ class TicketController extends Controller
     } else {
         return redirect()->back()->withErrors(['qr_code' => 'QR code not found.']);
     }
-}public function showBookingPage($scheduleId)
+}
+public function showBookingPage($scheduleId)
 {
-    // Find the schedule, ensuring it exists
     $schedule = Schedule::findOrFail($scheduleId);
 
-    // Safely handle capacity
-    $capacity = $schedule->trip->capacity ?? 50; // Default to 50 if null
+    $capacity = $schedule->trip->capacity ?? 50;
     if (!is_numeric($capacity) || $capacity <= 0) {
-        $capacity = 50; // Set a safe fallback
+        $capacity = 50;
     }
 
-    // Generate seat numbers based on capacity
+    // Generate seat numbers
     $totalSeats = range(1, $capacity);
 
-    // Retrieve booked seats for the specific schedule
+    // Retrieve seats with status 'booked' for the specific schedule
     $bookedSeats = Ticket::where('schedule_id', $scheduleId)
+                         ->where('status', 'completed') // Only consider booked seats
                          ->pluck('seat_number')
                          ->toArray();
 
     return view('booknow', compact('totalSeats', 'bookedSeats', 'schedule'));
 }
+public function illitrate(){
+    return view('ticket_officer.illitratecreate');
+}
 
+
+public function showRefundRequests()
+{
+    // Fetch refund requests with nested relationships
+    $refunds = Refund::with([
+        'customer',                     // Fetch customer details
+        'payment',                      // Fetch payment details
+        'customer.tickets.schedule.trip.route' // Nested: ticket -> schedule -> trip -> route
+    ])
+    ->where('refund_status', 'pending') // Fetch only pending refunds
+    ->get();
+
+    // Debugging output to check data structure (optional, only for debugging)
+    // Remove or comment out this line to stop the dd from appearing above the table
+    // dd($refunds); 
+
+    // Return view with refunds
+    return view('operations_officer.requestrefunds', compact('refunds'));
+}
+
+
+public function handleRefundRequest(Request $request)
+{
+    $request->validate([
+        'refund_id' => 'required|exists:refunds,id',
+        'action' => 'required|in:approve,reject',
+    ]);
+
+    $refund = Refund::findOrFail($request->refund_id);
+    $refund->refund_status = $request->action === 'approve' ? 'approved' : 'rejected';
+    $refund->refund_date = now();
+    $refund->save();
+
+    return response()->json(['success' => true, 'message' => 'Refund request processed successfully.']);
+}
 
 }

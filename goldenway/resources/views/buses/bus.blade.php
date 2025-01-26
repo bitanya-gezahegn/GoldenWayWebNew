@@ -1,5 +1,4 @@
 
-
 <x-app-layout>
 <!DOCTYPE html>
 <html lang="en">
@@ -8,12 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
-
     <style>
         * {
             padding: 0;
@@ -28,7 +21,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 30px;
-            background: goldenrod; /* yellow-400 */
+            background: goldenrod; /* blue-400 */
             color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -70,7 +63,7 @@
         }
 
         .side-bar ul li:hover {
-            background-color: goldenrod; /* yellow-400 */
+            background-color: goldenrod; /* blue-400 */
             color: white;
         }
 
@@ -121,7 +114,7 @@
 
         .section-1 h1 {
             font-size: 60px;
-            color: goldenrod; /* yellow-400 */
+            color: goldenrod; /* blue-400 */
         }
 
         .section-1 p {
@@ -175,7 +168,7 @@
     /* Section Title */
     .section-1 h1 {
         font-size: 50px;
-        color: goldenrod; /* yellow-400 */
+        color: goldenrod; /* blue-400 */
         margin-bottom: 30px;
     }
 
@@ -211,7 +204,7 @@
     .btn-submit {
         width: 100%;
         padding: 12px;
-        background-color: goldenrod; /* yellow-400 */
+        background-color: goldenrod; /* blue-400 */
         color: white;
         font-size: 18px;
         border: none;
@@ -221,7 +214,7 @@
     }
 
     .btn-submit:hover {
-        background-color: #1E66A4; /* dark yellow */
+        background-color: #1E66A4; /* dark blue */
     }
 
     /* Existing Routes Table */
@@ -302,7 +295,7 @@
 <body>
     <input type="checkbox" id="checkbox">
     <header class="header">
-            <h2 class="u-name">TICKET <b>OFFICER</b>
+            <h2 class="u-name">OPERATION <b>OFFICER</b>
                 
             </h2>
             <a href="/">
@@ -313,119 +306,85 @@
 
     <div class="body">
         <nav class="side-bar">
-            <ul>
-                <li><a href="{{ url('redirect') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                   </ul>
+        <ul>
+                <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
+                <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
+                <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
+                <li><a href="{{ url('bus') }}"><i class="fa fa-file"></i><span>Manage Buses</span></a></li>
+
+                <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
+                <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
+                <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
+                <li>
+    <a href="{{ route('refund.requests') }}">
+        <i class="fa fa-file"></i>
+        <span>Refund Requests</span>
+    </a>
+</li>
+  </ul>
         </nav>
 
-        <section class="section-1 py-16">
-    <div id="qr-reader" class="mx-auto mb-8" style="width: 600px;"></div>
+        <section class="section-1">
+    <main class="content-section">
+        <!-- Section Title -->
+        @if(session('success'))
+                    <div class="alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+        <h1>Manage Routes</h1>
 
-    <script>
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
+        <!-- Form for Adding New Route -->
+        <form action="{{ route('bus.store') }}" method="POST" class="form-container">
+            @csrf
+            <div class="form-group">
+                <label for="bus_type">Bus Type:</label>
+                <input type="text" id="bus_type" name="bus_type" required placeholder="Enter Bus Type">
+            </div>
+            <div class="form-group">
+                <label for="plate_number">Plate Number:</label>
+                <input type="text" id="plate_number" name="plate_number" required placeholder="Enter plate number">
+            </div>
+         
+            <button type="submit" class="btn-submit">Add Bus</button>
+        </form>
 
-            const ticketIdMatch = decodedText.match(/ticket_(\d+)\.png/);
-            if (ticketIdMatch) {
-                const ticketId = ticketIdMatch[1];
-                console.log(`Extracted Ticket ID = ${ticketId}`);
-                filterTableByTicketId(ticketId);
-            } else {
-                console.error("Unable to extract Ticket ID from the scanned QR code.");
-            }
-        }
-
-        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess);
-
-        function filterTableByTicketId(ticketId) {
-            const tableRows = document.querySelectorAll('#payments-table tbody tr');
-            tableRows.forEach(row => {
-                const ticketIdCell = row.querySelector('.ticket-id');
-                if (ticketIdCell && ticketIdCell.textContent.trim() === ticketId) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-        function changeTicketStatus(paymentId) {
-    fetch(`/update-ticket-status/${paymentId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: JSON.stringify({ status: 'checked' })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            const statusCell = document.querySelector(`#payment-${paymentId} .ticket_status`);
-            statusCell.textContent = 'Checked';
-            statusCell.classList.add('bg-green-500', 'text-white');
-            statusCell.classList.remove('bg-gray-200');
-        } else {
-            alert('Failed to update ticket status: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating the ticket status.');
-    });
-}
-
-        
-    </script>
-
-    <!-- Completed Payments Table -->
-    <div class="text-end mb-6">
-        <h2 class="text-3xl font-semibold text-gray-800">Completed Payments</h2>
-    </div>
-    <table id="payments-table" class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
-        <thead>
-            <tr class="bg-gray-100 text-left text-sm font-medium text-gray-700">
-                <th class="px-4 py-2 border-b">Payment ID</th>
-                <th class="px-4 py-2 border-b">Ticket ID</th>
-                <th class="px-4 py-2 border-b">Customer Name</th>
-                <th class="px-4 py-2 border-b">Amount</th>
-                <th class="px-4 py-2 border-b">Payment Method</th>
-                <th class="px-4 py-2 border-b">Payment Date</th>
-                <th class="px-4 py-2 border-b">Ticket Status</th>
-                <th class="px-4 py-2 border-b">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($completedPayments as $payment)
-                <tr id="payment-{{ $payment->id }}" class="hover:bg-gray-50 transition duration-200">
-                    <td class="px-4 py-3 border-b text-sm">{{ $payment->id }}</td>
-                    <td class="px-4 py-3 border-b text-sm ticket-id">{{ $payment->ticket_id }}</td>
-                    <td class="px-4 py-3 border-b text-sm">{{ $payment->customer->name }}</td>
-                    <td class="px-4 py-3 border-b text-sm">${{ number_format($payment->amount, 2) }}</td>
-                    <td class="px-4 py-3 border-b text-sm">{{ ucfirst($payment->payment_method) }}</td>
-                    <td class="px-4 py-3 border-b text-sm">{{ $payment->payment_date }}</td>
-                    <td class="px-4 py-3 border-b text-sm ticket-status {{ $payment->ticket_status == 'unchecked' ? 'bg-gray-200' : 'bg-green-500 text-white' }}">
-                        {{ ucfirst($payment->ticket_status) }}
-                    </td>
-                    <td class="px-4 py-3 border-b text-sm">
-                        @if($payment->ticket_status == 'unchecked')
-                            <button onclick="changeTicketStatus({{ $payment->id }})" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                Mark as Checked
-                            </button>
-                        @endif
-                    </td>
+        <!-- Existing Routes Table -->
+        <h2>Existing Buses</h2>
+        <table class="route-table">
+            <thead>
+                <tr>
+                    <th>Bus ID</th>
+                    <th>Bus Type</th>
+                    <th>Plate number</th>
+                    <th>Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+    @foreach($buses as $bus)
+        <tr>
+            <td>{{ $bus->busID }}</td>
+            <td>{{ $bus->bus_type }}</td>
+            <td>{{ $bus->plate_number }}</td>
+            <td>
+                <!-- Edit Button -->
+                  <a href="{{ url('buses.edit/'.$bus->busID) }}" class="btn-edit">Edit</a>
+                       
+                <!-- Delete Form -->
+                <form action="{{ route('bus.destroy', $bus->busID) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn-delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+    @endforeach
+</tbody>
+
+        </table>
+    </main>
 </section>
-
-
     </div>
 
 </body>

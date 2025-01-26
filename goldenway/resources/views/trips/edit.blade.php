@@ -21,7 +21,7 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 20px 30px;
-                background: #3B82F6; /* yellow-400 */
+                background: goldenrod; /* yellow-400 */
                 color: #fff;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
@@ -63,7 +63,7 @@
             }
 
             .side-bar ul li:hover {
-                background-color: #3B82F6; /* yellow-400 */
+                background-color: goldenrod; /* yellow-400 */
                 color: white;
             }
 
@@ -114,11 +114,11 @@
 
             .section-1 h1 {
                 font-size: 60px;
-                color: #3B82F6; /* yellow-400 */
+                color: goldenrod; /* yellow-400 */
             }
 
             .section-1 p {
-                color: #3B82F6;
+                color: goldenrod;
                 font-size: 20px;
                 background-color: #fff;
                 padding: 15px;
@@ -169,7 +169,7 @@
             .btn-submit {
                 width: 100%;
                 padding: 12px;
-                background-color: #3B82F6; /* yellow-400 */
+                background-color: goldenrod; /* yellow-400 */
                 color: white;
                 font-size: 18px;
                 border: none;
@@ -225,7 +225,7 @@
 }
 
 .table th {
-    background-color: #3B82F6; /* yellow-400 */
+    background-color: goldenrod; /* yellow-400 */
     color: white;
     font-size: 16px;
 }
@@ -276,7 +276,7 @@
 }
 /* Edit and Delete Buttons */
 .btn-primary {
-    background-color: #3B82F6; /* yellow-400 */
+    background-color: goldenrod; /* yellow-400 */
     color: white;
     font-size: 14px;
     padding: 8px 12px;
@@ -323,15 +323,23 @@
 
         <div class="body">
             <nav class="side-bar">
-                <ul>
-                    <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                    <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
-                    <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
-                    <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
-                    <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
-                    <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
-                    <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
+                <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
+                <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
+                <li><a href="{{ url('bus') }}"><i class="fa fa-file"></i><span>Manage Buses</span></a></li>
+
+                <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
+                <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
+                <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
+                <li>
+    <a href="{{ route('refund.requests') }}">
+        <i class="fa fa-file"></i>
+        <span>Refund Requests</span>
+    </a>
+</li>
+  </ul>
             </nav>
 
             <section class="section-1">

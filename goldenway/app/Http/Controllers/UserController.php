@@ -3,7 +3,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Schedule;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
+use App\Models\Payment;
+use App\Models\Refund;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -71,4 +76,43 @@ class UserController extends Controller
         
         
     }
-}
+public function users_history()
+
+    {
+        $userId = Auth::id();
+    
+        // Fetch tickets with all necessary relationships, including refund
+        $tickets = Ticket::with(['refund', 'schedule.trip.route', 'schedule.driver', 'payment'])
+            ->where('customer_id', $userId)
+            ->get();
+    
+    $refunds=Refund::find($userId);
+ 
+        // Return the tickets to the view
+        return view('userhistory', compact('tickets','refunds'));
+    }
+    
+    public function requestRefund(Request $request)
+    {
+        $ticketId = $request->input('ticket_id');
+        $reason = $request->input('reason');
+    
+        $ticket = Ticket::find($ticketId);
+    
+        if ($ticket && $ticket->status === 'completed' && !$ticket->refund) {
+            Refund::create([
+                'payment_id' => $ticket->payment_id,
+                'customer_id' => $ticket->customer_id,
+                'refund_amount' => $ticket->payment->amount,
+                'reason' => $reason,
+                'refund_status' => 'pending',
+                'refund_date' => now(), // Set refund date to current timestamp
+            ]);
+    
+            return response()->json(['success' => true]);
+        }
+    
+        return response()->json(['success' => false, 'message' => 'Invalid request or refund already requested.']);
+    }
+    
+    }
