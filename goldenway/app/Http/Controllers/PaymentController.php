@@ -1,11 +1,14 @@
 <?php
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\Payment;
 use App\Models\Refund;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
+
 
 class PaymentController extends Controller
 {
@@ -82,7 +85,7 @@ class PaymentController extends Controller
             }
     
             // Redirect to success route
-            return redirect()->route('payment.success')->with('success', 'Payment completed successfully!');
+            return redirect()->route('payment.success')->with('success', 'Payment completed successfully!')->with('ticket',$ticket->id);
         } elseif ($status === 'failed') {
             // Retrieve the payment record by the transaction reference
             $payment = Payment::where('tx_ref', $tx_ref)->first();
@@ -105,9 +108,11 @@ class PaymentController extends Controller
     {
         
         // Retrieve payment data from the session
-       
-     
-
+        $ticket_id=session('ticket');
+        $ticket = Ticket::find($ticket_id);
+            $userId=$ticket->customer_id;
+        session()->put('userId', $userId);
+        Auth::loginUsingId($userId);
         return view('payment.success');
     }
 

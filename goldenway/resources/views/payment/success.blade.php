@@ -15,6 +15,16 @@
                     {{ session('message') }}
                 </div>
             @endif
+            {{-- @if (session('ticket'))
+            <div class="bg-green-100 text-green-800 border border-green-300 p-4 mb-6 rounded-lg text-center font-bold">
+                {{ session('ticket') }}
+            </div>
+        @endif
+        @if (session('userId'))
+        <div class="bg-green-100 text-green-800 border border-green-300 p-4 mb-6 rounded-lg text-center font-bold">
+            {{ session('userId') }}
+        </div>
+    @endif --}}
 
             <h1 class="text-3xl font-semibold text-green-600 text-center">Payment Successful!</h1>
 
