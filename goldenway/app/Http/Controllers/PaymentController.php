@@ -1,7 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
-
+use Illuminate\Support\Facades\Log; 
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\Payment;
@@ -9,7 +9,7 @@ use App\Models\Refund;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 
-
+header('Accept: application/json');
 class PaymentController extends Controller
 {
     public function initialize($id)
@@ -125,8 +125,12 @@ class PaymentController extends Controller
     {
         $payment = Payment::find($paymentId);
 
-        if ($payment && $payment->status == 'completed') {
-            $payment->ticket->update(['status' => 'completed']);
+        if ($payment) {
+            Log::error("Payment found for ID: $paymentId");
+           
+        }
+        if ($payment && $payment->payment_status == 'completed') {
+            $payment->update(['ticket_status' => 'checked']);
             return response()->json(['success' => true]);
         }
 

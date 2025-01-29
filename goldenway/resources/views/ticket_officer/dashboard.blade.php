@@ -6,6 +6,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -321,67 +323,7 @@
         <section class="section-1 py-16">
     <div id="qr-reader" class="mx-auto mb-8" style="width: 600px;"></div>
 
-    <script>
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
-
-            const ticketIdMatch = decodedText.match(/ticket_(\d+)\.png/);
-            if (ticketIdMatch) {
-                const ticketId = ticketIdMatch[1];
-                console.log(`Extracted Ticket ID = ${ticketId}`);
-                filterTableByTicketId(ticketId);
-            } else {
-                console.error("Unable to extract Ticket ID from the scanned QR code.");
-            }
-        }
-
-        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess);
-
-        function filterTableByTicketId(ticketId) {
-            const tableRows = document.querySelectorAll('#payments-table tbody tr');
-            tableRows.forEach(row => {
-                const ticketIdCell = row.querySelector('.ticket-id');
-                if (ticketIdCell && ticketIdCell.textContent.trim() === ticketId) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-        function changeTicketStatus(paymentId) {
-    fetch(`/update-ticket-status/${paymentId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: JSON.stringify({ status: 'checked' })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            const statusCell = document.querySelector(`#payment-${paymentId} .ticket_status`);
-            statusCell.textContent = 'Checked';
-            statusCell.classList.add('bg-green-500', 'text-white');
-            statusCell.classList.remove('bg-gray-200');
-        } else {
-            alert('Failed to update ticket status: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating the ticket status.');
-    });
-}
-
-        
-    </script>
+   
 
     <!-- Completed Payments Table -->
     <div class="text-end mb-6">
@@ -427,7 +369,68 @@
 
 
     </div>
+    <script>
+        function onScanSuccess(decodedText, decodedResult) {
+            console.log(`Code scanned = ${decodedText}`, decodedResult);
 
+            const ticketIdMatch = decodedText.match(/ticket_(\d+)\.png/);
+            if (ticketIdMatch) {
+                const ticketId = ticketIdMatch[1];
+                console.log(`Extracted Ticket ID = ${ticketId}`);
+                filterTableByTicketId(ticketId);
+            } else {
+                console.error("Unable to extract Ticket ID from the scanned QR code.");
+            }
+        }
+
+        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+
+        function filterTableByTicketId(ticketId) {
+            const tableRows = document.querySelectorAll('#payments-table tbody tr');
+            tableRows.forEach(row => {
+                const ticketIdCell = row.querySelector('.ticket-id');
+                if (ticketIdCell && ticketIdCell.textContent.trim() === ticketId) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+        function changeTicketStatus(paymentId) {
+            console.log(paymentId); // Debugging
+    fetch(`/update-ticket-status/${paymentId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: JSON.stringify({ status: 'checked' })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.success) {
+            const statusCell = document.querySelector(`#payment-${paymentId} .ticket-status`);
+            statusCell.textContent = 'Checked';
+            statusCell.classList.add('bg-green-500', 'text-white');
+            statusCell.classList.remove('bg-gray-200');
+        } else {
+            alert('Failed to update ticket status: ' + data.message);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred while updating the ticket status.');
+    });
+}
+
+        
+    </script>
 </body>
 </html>
 </x-app-layout>
