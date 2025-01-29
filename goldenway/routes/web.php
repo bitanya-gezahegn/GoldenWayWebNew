@@ -21,8 +21,9 @@ Route::get('/', function () {
 });
 
 
+Route::middleware(['auth', 'verified'])->get('/redirect',[AdminController::class,'redirect'])->name('redirect');
 
-route::get('/redirect',[AdminController::class,'redirect'])->name('redirect');
+//route::get('/redirect',[AdminController::class,'redirect'])->name('redirect');
 Route::get('/trips.index', [TripsController::class,'index']);
 Route::get('/schedules.index', [SchedulesController::class,'index']);
 
@@ -50,7 +51,7 @@ Route::get('/scheduleview', [DriverController::class, 'scheduleview'])->name('sc
 
 
 
-Route::get('/redirect', [AdminController::class, 'redirect'])->name('redirect');
+//Route::get('/redirect', [AdminController::class, 'redirect'])->name('redirect');
 
 // Admin Routes
 Route::prefix('admin')->middleware('auth')->group(function () {

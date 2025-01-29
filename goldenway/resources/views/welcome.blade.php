@@ -74,7 +74,7 @@ Simplify your travel today with GoldenWay!</p>
                     @auth
                         <a href="{{ url('/redirect') }}" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded shadow-lg font-semibold transition transform hover:scale-105">Get Started</a>
                     @else
-                        <a href="{{ route('login') }}" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded shadow-lg font-semibold transition transform hover:scale-105">Get Started</a>
+                        <a href="{{ route('register') }}" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded shadow-lg font-semibold transition transform hover:scale-105">Get Started</a>
                     @endauth
                 @endif
             </div>

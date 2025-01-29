@@ -54,13 +54,19 @@
 <section class="py-8 flex justify-center items-center">
     <div class="w-full max-w-5xl">
         <div class="relative" data-aos="fade-up">
-            <iframe
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1008793.6073439743!2d38.7472896!3d9.0089008!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snl!4v1738168370248!5m2!1sen!2snl"  class="rounded-lg shadow-lg w-full md:w-[100%] mx-auto"
+            height="200"
+            width="full"
+            allowfullscreen=""
+            loading="lazy"></iframe>
+            {{-- <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345095966!2d144.95565131531358!3d-37.81732797975171!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf577d2b5c5b7b2a0!2sFederation%20Square!5e0!3m2!1sen!2sau!4v1601516867342!5m2!1sen!2sau"
                 class="rounded-lg shadow-lg w-full md:w-[80%] mx-auto"
-                height="400"
+                height="200"
+                width="full"
                 allowfullscreen=""
                 loading="lazy">
-            </iframe>
+            </iframe> --}}
         </div>
         <div class="text-center mt-6">
             <a href="{{ route('users_history') }}" class="text-yellow-500 font-bold hover:underline">View History</a>
@@ -70,7 +76,7 @@
 
 
     <!-- Search Section -->
-    <section class="py-16 bg-primary">
+    <section class="py-16 ">
         <div class="container mx-auto text-center">
             <h2 class="text-3xl font-bold mb-6">Search Your Ticket</h2>
             <form action="{{ route('schedule.search') }}" method="POST" class="space-y-6">
