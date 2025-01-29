@@ -6,6 +6,7 @@ use App\Models\Schedule;
 use App\Models\Payment;
 use Illuminate\Support\Facades\Hash;
 
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Route;
 
@@ -40,7 +41,7 @@ class AdminController extends Controller
                 
         }
         elseif($usertype == 'ticket_officer'){
-            $completedPayments = \App\Models\Payment::where('payment_status', 'completed')
+            $completedPayments = Payment::where('payment_status', 'completed')
             ->with('customer') // Eager load the related customer
             ->get();
     
@@ -133,7 +134,9 @@ class AdminController extends Controller
          $user->delete();
  
          return redirect()->route('users.index')->with('success', 'User deleted successfully!');
-     }public function search(Request $request)
+     }
+     
+     public function search(Request $request)
      {
          // Validate inputs
          $request->validate([

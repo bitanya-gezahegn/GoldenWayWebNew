@@ -14,7 +14,9 @@ class DriverController extends Controller
 {
     public function reportissues(){
         return view('driver.report');
-    }public function reportissuecreate(Request $request)
+    }
+    
+    public function reportissuecreate(Request $request)
     {
         $request->validate([
             'description' => 'required|string',

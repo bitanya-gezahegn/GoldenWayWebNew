@@ -1,5 +1,6 @@
 <?php
-
+use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use  Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DriverController;
@@ -104,7 +105,9 @@ Route::post('/search-schedule', [AdminController::class, 'search'])->name('sched
 Route::get('/search-schedule', [AdminController::class, 'search'])->name('schedule.search');
 
 Route::get('/reportissues', [DriverController::class, 'reportissues'])->name('reportissues');
-Route::post('/reportissuecreate', [DriverController::class, 'reportissuecreate'])->name('reportissuecreate');
+Route::post('/reportissuecreate', [DriverController::class, 'reportissuecreate'])
+    ->middleware(['web', VerifyCsrfToken::class])
+    ->name('reportissuecreate');
 Route::get('/issuedisplay', [DriverController::class, 'issuedisplay'])->name('issuedisplay');
 Route::get('/test', [AdminController::class, 'test'])->name('test');
 Route::get('/dashboardd', [AdminController::class, 'dashboardd'])->name('dashboardd');

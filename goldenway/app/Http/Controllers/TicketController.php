@@ -62,8 +62,20 @@ class TicketController extends Controller
         
         // Generate and store the QR code image
         $qrCodeImage = QrCode::format('png')->size(300)->generate($qrDataJson);
+        if (!Storage::disk('public')->exists('qrcodes')) {
+            Storage::disk('public')->makeDirectory('qrcodes');
+        }
         $filePath = "qrcodes/ticket_{$ticket->id}.png";  // File path in public directory
-        Storage::put('public/' . $filePath, $qrCodeImage);  // Store QR code in the public storage folder
+        $stored = Storage::put('public/' . $filePath, $qrCodeImage);
+        if (!$stored) {
+            Log::error('Failed to store the QR code file.', ['filePath' => $filePath]);
+            throw new Exception('Failed to store the QR code file.');
+        } else {
+            Log::info('QR code file stored successfully.', ['filePath' => $filePath]);
+        }  // Store QR code in the public storage folder
+        Log::info('Storage Path:', ['path' => storage_path()]);
+Log::info('QR Code Path:', ['filePath' => $filePath]);
+
         
         // Update the ticket with the QR code path
         $ticket->update(['qr_code' => $filePath]);
