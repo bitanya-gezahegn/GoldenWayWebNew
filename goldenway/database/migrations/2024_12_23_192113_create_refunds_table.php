@@ -22,6 +22,7 @@ return new class extends Migration
             $table->timestamp('refund_date')->nullable(); // The date refund is processed
             $table->timestamps();
         });
+        
     }
  
 
