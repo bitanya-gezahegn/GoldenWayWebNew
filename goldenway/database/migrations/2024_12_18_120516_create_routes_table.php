@@ -15,9 +15,14 @@ return new class extends Migration
             $table->id();
             $table->string('origin'); // Starting point of the route
             $table->string('destination'); // Ending point of the route
+<<<<<<< HEAD
+=======
+            $table->decimal('distance', 8, 2)->nullable();
+>>>>>>> 58c7d06 (my  changes)
             $table->json('bus_stops')->nullable(); // List of intermediate stops (if multiple)
             $table->timestamps();
         });
+        
     }
 
     public function down()

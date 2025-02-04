@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('driver_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('customer_id')->constrained('users')->onDelete('cascade');
-            $table->integer('rating');
+            $table->integer('rating')->unsigned();
             $table->text('feedback')->nullable();
             $table->timestamps();
         });
