@@ -4,189 +4,166 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Ticket;
 use App\Models\Refund;
-use Illuminate\Support\Facades\Storage;
-
-
-use Illuminate\Support\Facades\Log; 
 use App\Models\Schedule;
 use App\Models\Trip;
-
-use Intervention\Image\Facades\Image;
+use Exception;
+use Carbon\Carbon;
 
 class TicketController extends Controller
-{ 
+{
     public function bookTicket(Request $request, Schedule $schedule)
     {
-        // Validate the incoming request
         $validated = $request->validate([
             'seat_number' => 'required|integer',
         ]);
-        
+    
         $seatNumber = $validated['seat_number'];
-        
-        // Log the schedule ID to debug
-        Log::info('Booking Ticket for Schedule:', ['schedule_id' => $schedule->id]);
-        
-        // Check if the seat is already booked for the given schedule
+    
+        // Check if seat is already booked
         $isSeatTaken = Ticket::where('schedule_id', $schedule->id)
-                             ->where('seat_number', $seatNumber)
-                             ->exists();
-        
+            ->where('seat_number', $seatNumber)
+            ->exists();
+    
         if ($isSeatTaken) {
-            return back()->withErrors(['seat_number' => 'This seat is already booked. Please select a different seat.']);
+            return back()->withErrors(['seat_number' => 'This seat is already booked.']);
         }
-        
-        // Create a new ticket
+    
+        // Create QR Data
+        $qrData = json_encode([
+            'Schedule ID' => $schedule->id,
+            'Seat Number' => $seatNumber,
+            'Customer ID' => Auth::user()->id,
+        ]);
+    
+        // Ensure QR code directory exists
+        $directory = storage_path('app/public/qrcodes/');
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+    
+        // Generate a unique filename
+        $fileName = 'ticket_' . uniqid() . '.png';
+        $filePath = $directory . $fileName;
+    
+        // Generate QR Code
+        QrCode::format('png')->size(300)->generate($qrData, $filePath);
+    
+        // Store relative path for retrieval
+        $qrCodePath = 'qrcodes/' . $fileName;
+    
+        // Create the ticket with the QR code
         $ticket = Ticket::create([
             'schedule_id' => $schedule->id,
             'customer_id' => Auth::user()->id,
             'seat_number' => $seatNumber,
             'status' => 'booked',
-            'qr_code' => '', // Placeholder for QR code path
+            'qr_code' => $qrCodePath, // Save the generated QR code path
         ]);
-        
-        // Prepare data for QR code
-        $qrData = [
-            'Ticket ID' => $ticket->id,
-            'Schedule ID' => $ticket->schedule_id,
-            'Seat Number' => $ticket->seat_number,
-            'Customer ID' => $ticket->customer_id,
-            'Status' => $ticket->status,
-            'Booking Date' => $ticket->created_at->format('Y-m-d H:i:s'),
-        ];
-        
-        $qrDataJson = json_encode($qrData);
-        
-        // Generate and store the QR code image
-        $qrCodeImage = QrCode::format('png')->size(300)->generate($qrDataJson);
-        if (!Storage::disk('public')->exists('qrcodes')) {
-            Storage::disk('public')->makeDirectory('qrcodes');
-        }
-        $filePath = "qrcodes/ticket_{$ticket->id}.png";  // File path in public directory
-        $stored = Storage::put('public/' . $filePath, $qrCodeImage);
-        if (!$stored) {
-            Log::error('Failed to store the QR code file.', ['filePath' => $filePath]);
-            throw new Exception('Failed to store the QR code file.');
-        } else {
-            Log::info('QR code file stored successfully.', ['filePath' => $filePath]);
-        }  // Store QR code in the public storage folder
-        Log::info('Storage Path:', ['path' => storage_path()]);
-Log::info('QR Code Path:', ['filePath' => $filePath]);
-
-        
-        // Update the ticket with the QR code path
-        $ticket->update(['qr_code' => $filePath]);
-        
-        // Redirect to QR code display page
-        return redirect()->route('generate.qr', ['ticketId' => $ticket->id])
-                         ->with('success', 'Your ticket has been booked successfully!');
-    }
     
-
+        return redirect()->route('generate.qr', ['ticketId' => $ticket->id])
+            ->with('success', 'Your ticket has been booked successfully!');
+    }
     public function showQrCode($ticketId)
     {
-
         $ticket = Ticket::with(['customer', 'schedule.trip.route'])->findOrFail($ticketId);
-    
-        // Format the data for the view (optional)
-        $departureTime =$ticket->schedule->trip->departure_time  ? $ticket->schedule->trip->departure_time : null;
-        $arrivalTime =$ticket->schedule->trip->arrival_time  ? $ticket->schedule->trip->arrival_time : null;
 
-    // Format the data for the view
-    $ticketData = [
-        'id' => $ticket->id,
+        $ticketData = [
+            'id' => $ticket->id,
+            'name' => $ticket->customer->name,
+            'origin' => $ticket->schedule->trip->route->origin,
+            'distance' => $ticket->schedule->trip->route->distance,
+            'bus_stop' => $ticket->schedule->trip->route->bus_stops,
+            'bus' => $ticket->schedule->bus->bus_type,
+            'destination' => $ticket->schedule->trip->route->destination,
+            'seat_number' => $ticket->seat_number,
+            'date' => $ticket->schedule->trip->date ? \Carbon\Carbon::parse($ticket->schedule->trip->date)->format('Y-m-d') : 'N/A',
+            'departureTime' => $ticket->schedule->trip->departure_time ? \Carbon\Carbon::parse($ticket->schedule->trip->departure_time)->format('H:i') : 'N/A',
+            'arrivalTime' => $ticket->schedule->trip->arrival_time ? \Carbon\Carbon::parse($ticket->schedule->trip->arrival_time)->format('H:i') : 'N/A',
+            'price' => $ticket->schedule->trip->price,
+        ];
+        
 
-        'name' => $ticket->customer->name,
-        'origin' => $ticket->schedule->trip->route->origin,
-        'bus_stop' => $ticket->schedule->trip->route->bus_stops,
-
-        'destination' => $ticket->schedule->trip->route->destination,
-        'seat_number' => $ticket->seat_number,
-        'date' => $ticket->schedule->created_at ?$ticket->schedule->created_at : 'N/A',
-        'departureTime' => $departureTime ? $departureTime: 'N/A',
-        'arrivalTime' => $arrivalTime ? $arrivalTime: 'N/A',
-        'price' => $ticket->schedule->trip->price,
-    ];
-
-        // Pass the ticket data to the view
-     
-         return view('tickets.qrcode', compact('ticket','ticketData')); // Pass ticket to view
-     }
-
-     public function downloadQr($ticketId)
-{
-    $ticket = Ticket::findOrFail($ticketId);
-    
-    // Get the path of the QR code image stored in the public storage
-    $filePath = storage_path('app/public/' . $ticket->qr_code);
-    
-    if (file_exists($filePath)) {
-        return response()->download($filePath);
-    } else {
-        return redirect()->back()->withErrors(['qr_code' => 'QR code not found.']);
+        return view('tickets.qrcode', compact('ticket', 'ticketData'));
     }
-}
+
+    public function downloadQr($ticketId)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+        $filePath = storage_path('app/public/' . $ticket->qr_code);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return back()->withErrors(['qr_code' => 'QR code not found.']);
+        }
+    }
+
+   
 public function showBookingPage($scheduleId)
 {
     $schedule = Schedule::findOrFail($scheduleId);
+    $capacity = is_numeric($schedule->trip->capacity) && $schedule->trip->capacity > 0
+        ? $schedule->trip->capacity
+        : 50;
 
-    $capacity = $schedule->trip->capacity ?? 50;
-    if (!is_numeric($capacity) || $capacity <= 0) {
-        $capacity = 50;
-    }
+    // Delete tickets that have been booked for more than 3 days
+    Ticket::where('schedule_id', $scheduleId)
+        ->where('status', 'booked')
+        ->where('created_at', '<', Carbon::now()->subDays(3))
+        ->delete();
 
-    // Generate seat numbers
     $totalSeats = range(1, $capacity);
 
-    // Retrieve seats with status 'booked' for the specific schedule
+    // Fetch booked and completed seats separately
     $bookedSeats = Ticket::where('schedule_id', $scheduleId)
-                         ->where('status', 'completed') // Only consider booked seats
-                         ->pluck('seat_number')
-                         ->toArray();
+        ->where('status', 'booked')
+        ->pluck('seat_number')
+        ->toArray();
 
-    return view('booknow', compact('totalSeats', 'bookedSeats', 'schedule'));
-}
-public function illitrate(){
-    return view('ticket_officer.illitratecreate');
-}
+    $completedSeats = Ticket::where('schedule_id', $scheduleId)
+        ->where('status', 'completed')
+        ->pluck('seat_number')
+        ->toArray();
 
-
-public function showRefundRequests()
-{
-    // Fetch refund requests with nested relationships
-    $refunds = Refund::with([
-        'customer',                     // Fetch customer details
-        'payment',                      // Fetch payment details
-        'customer.tickets.schedule.trip.route' // Nested: ticket -> schedule -> trip -> route
-    ])
-    ->where('refund_status', 'pending') // Fetch only pending refunds
-    ->get();
-
-    // Debugging output to check data structure (optional, only for debugging)
-    // Remove or comment out this line to stop the dd from appearing above the table
-    // dd($refunds); 
-
-    // Return view with refunds
-    return view('operations_officer.requestrefunds', compact('refunds'));
+    return view('booknow', compact('totalSeats', 'bookedSeats', 'completedSeats', 'schedule'));
 }
 
 
-public function handleRefundRequest(Request $request)
-{
-    $request->validate([
-        'refund_id' => 'required|exists:refunds,id',
-        'action' => 'required|in:approve,reject',
-    ]);
+    public function illitrate()
+    {
+        return view('ticket_officer.illitratecreate');
+    }
 
-    $refund = Refund::findOrFail($request->refund_id);
-    $refund->refund_status = $request->action === 'approve' ? 'approved' : 'rejected';
-    $refund->refund_date = now();
-    $refund->save();
+    public function showRefundRequests()
+    {
+        $refunds = Refund::with([
+            'customer',
+            'payment',
+            'customer.tickets.schedule.trip.route'
+        ])
+            ->where('refund_status', 'pending')
+            ->get();
 
-    return response()->json(['success' => true, 'message' => 'Refund request processed successfully.']);
-}
+        return view('operations_officer.requestrefunds', compact('refunds'));
+    }
 
+    public function handleRefundRequest(Request $request)
+    {
+        $request->validate([
+            'refund_id' => 'required|exists:refunds,id',
+            'action' => 'required|in:approve,reject',
+        ]);
+
+        $refund = Refund::findOrFail($request->refund_id);
+        $refund->refund_status = $request->action === 'approve' ? 'approved' : 'rejected';
+        $refund->refund_date = now();
+        $refund->save();
+
+        return response()->json(['success' => true, 'message' => 'Refund request processed successfully.']);
+    }
 }

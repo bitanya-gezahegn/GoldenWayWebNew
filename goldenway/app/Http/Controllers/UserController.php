@@ -75,21 +75,22 @@ class UserController extends Controller
             ]);
         
         
-    }
-public function users_history()
-
+    }public function users_history()
     {
         $userId = Auth::id();
     
-        // Fetch tickets with all necessary relationships, including refund
-        $tickets = Ticket::with(['refund', 'schedule.trip.route', 'schedule.driver', 'payment'])
+        // Fetch tickets along with necessary relationships
+        $tickets = Ticket::with(['schedule.trip.route', 'schedule.driver', 'payment'])
             ->where('customer_id', $userId)
             ->get();
     
-    $refunds=Refund::find($userId);
- 
-        // Return the tickets to the view
-        return view('userhistory', compact('tickets','refunds'));
+        // Get only tickets that have payments
+        $paymentIds = $tickets->whereNotNull('payment')->pluck('payment.id');
+    
+        // Fetch refunds related to these payments
+        $refunds = Refund::whereIn('payment_id', $paymentIds)->get();
+    
+        return view('userhistory', compact('tickets', 'refunds'));
     }
     
     public function requestRefund(Request $request)

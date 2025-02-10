@@ -58,6 +58,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/register-user', [AdminController::class, 'create'])->name('admin.register-user');
     Route::get('/register-user', [AdminController::class, 'create'])->name('admin.register-user');
     Route::get('/illitrate', [TicketController::class, 'illitrate'])->name('illitrate');
+    Route::get('/manageusers', [AdminController::class, 'manageusers'])->name('manageusers');
     Route::get('/requestrefunds', [TicketController::class, 'requestrefunds']);
     Route::get('/showRefundRequests', [TicketController::class, 'showRefundRequests'])->name('refund.requests');
     Route::post('/refund-requests/handle', [TicketController::class, 'handleRefundRequest'])->name('refund.requests.handle');

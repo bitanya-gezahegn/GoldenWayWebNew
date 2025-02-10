@@ -308,6 +308,8 @@
         <nav class="side-bar">
         <ul>
                 <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
                 <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
                 <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
                 <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
@@ -317,12 +319,12 @@
                 <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
                 <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
                 <li>
-    <a href="{{ route('refund.requests') }}">
-        <i class="fa fa-file"></i>
-        <span>Refund Requests</span>
-    </a>
-</li>
-  </ul>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
 
         <section class="section-1">
@@ -333,7 +335,7 @@
                         {{ session('success') }}
                     </div>
                 @endif
-        <h1>Manage Routes</h1>
+        <h1>Manage Buses</h1>
 
         <!-- Form for Adding New Route -->
         <form action="{{ route('bus.store') }}" method="POST" class="form-container">
@@ -351,8 +353,9 @@
         </form>
 
         <!-- Existing Routes Table -->
-        <h2>Existing Buses</h2>
-        <table class="route-table">
+       
+        <h2 class="text-4xl font-bold text-center text-gray-800 mb-8 pt-10">Existing Buses</h2>
+         <table class="route-table">
             <thead>
                 <tr>
                     <th>Bus ID</th>
@@ -364,15 +367,15 @@
             <tbody>
     @foreach($buses as $bus)
         <tr>
-            <td>{{ $bus->busID }}</td>
+            <td>{{ $bus->id }}</td>
             <td>{{ $bus->bus_type }}</td>
             <td>{{ $bus->plate_number }}</td>
             <td>
                 <!-- Edit Button -->
-                  <a href="{{ url('buses.edit/'.$bus->busID) }}" class="btn-edit">Edit</a>
+                  <a href="{{ url('buses.edit/'.$bus->id) }}" class="btn-edit">Edit</a>
                        
                 <!-- Delete Form -->
-                <form action="{{ route('bus.destroy', $bus->busID) }}" method="POST" style="display:inline;">
+                <form action="{{ route('bus.destroy', $bus->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn-delete">Delete</button>

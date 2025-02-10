@@ -13,7 +13,7 @@ class Bus extends Model
     protected $table = 'buses';
 
     // Define the primary key
-    protected $primaryKey = 'busID';
+    protected $primaryKey = 'id';
 
     // Specify that the primary key is auto-incrementing
     public $incrementing = true;

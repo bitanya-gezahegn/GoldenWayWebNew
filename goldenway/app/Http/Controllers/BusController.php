@@ -44,8 +44,8 @@ class BusController extends Controller
     }
     public function editBusConfirm(Request $request, $id)
 {
-    // Find the bus record by ID using the primary key 'busID'
-    $bus = Bus::where('busID', $id)->first();
+    // Find the bus record by ID using the primary key 'id'
+    $bus = Bus::where('id', $id)->first();
 
     if (!$bus) {
         return redirect()->route('buses.index')->with('error', 'Bus not found!');
@@ -54,7 +54,7 @@ class BusController extends Controller
     // Validate the request data
     $request->validate([
         'bus_type' => 'required|string',
-        'plate_number' => 'required|string|unique:buses,plate_number,' . $id . ',busID', // Ignore the current bus's plate number
+        'plate_number' => 'required|string|unique:buses,plate_number,' . $id . ',id', // Ignore the current bus's plate number
     ]);
 
     // Update the bus details

@@ -329,15 +329,25 @@
 
         <div class="body">
             <nav class="side-bar">
-                <ul>
-                    <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                    <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
-                    <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
-                    <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
-                    <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
-                    <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
-                    <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
+                <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
+                <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
+                <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
+                <li><a href="{{ url('bus') }}"><i class="fa fa-file"></i><span>Manage Buses</span></a></li>
+
+                <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
+                <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
+                <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
+                <li>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
             </nav>
 
             <section class="section-1 py-8">
@@ -367,6 +377,7 @@
             </div>
 
             <!-- Driver Selection -->
+          
             <div class="form-group">
                 <label for="driver_id" class="block text-gray-700 font-medium text-sm">Driver</label>
                 <select name="driver_id" id="driver_id" class="form-select mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
@@ -375,7 +386,14 @@
                     @endforeach
                 </select>
             </div>
-
+            <div class="form-group">
+                <label for="bus_id" class="block text-gray-700 font-medium text-sm">Bus</label>
+                <select name="bus_id" id="bus_id" class="form-select mt-2 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500" required>
+                    @foreach ($bus as $bus)
+                        <option value="{{ $bus->id }}">{{ $bus->bus_type }}</option>
+                    @endforeach
+                </select>
+            </div>
             <!-- Status Selection -->
             <div class="form-group">
                 <label for="status" class="block text-gray-700 font-medium text-sm">Status</label>

@@ -12,6 +12,7 @@ class Route extends Model
     protected $fillable = [
         'origin',
         'destination',
+        'distance',
         'bus_stops',
     ];
 

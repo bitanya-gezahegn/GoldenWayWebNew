@@ -44,4 +44,8 @@ class Ticket extends Model
         return $this->hasOne(Refund::class, 'payment_id', 'payment_id');
     }
  
+    public function trip()
+    {
+        return $this->belongsTo(Trip::class);
+    }
 }

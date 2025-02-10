@@ -20,12 +20,14 @@ class RouteController extends Controller
         $request->validate([
             'start' => 'required|string',
             'end' => 'required|string',
+            'distance' => 'required|string',
             'stop' => 'string',
         ]);
 
         Route::create([
             'origin' => $request['start'],
             'destination' => $request['end'],
+            'distance' => $request['distance'],
             'bus_stops'=>  json_encode([$request['stop']]),
 
         
@@ -46,6 +48,8 @@ class RouteController extends Controller
             $routes=Route::find($id);
              $routes->origin=$request->start;
             $routes->destination=$request->end;
+            $routes->bus_stops=$request->bus_stops;
+            $routes->distance=$request->distance;
            
             $routes->save();
             

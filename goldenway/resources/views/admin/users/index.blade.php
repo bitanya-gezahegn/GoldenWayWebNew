@@ -316,15 +316,15 @@
 
     <div class="body">
         <nav class="side-bar">
-            <ul>
-                <li><a href="{{ url('dashboardadmin') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                <li><a href="{{ url('redirect') }}"><i class="fa fa-desktop"></i><span>Manage Users</span></a></li>
+        <ul>
+			<li><a href="{{ url('dashboardadmin') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('manageusers') }}"><i class="fa fa-desktop"></i><span>Manage Users</span></a></li>
                 <li><a href="{{ url('admincreate') }}"><i class="fa fa-desktop"></i><span>Add Users</span></a></li>
-                   </ul>
+             </ul>
         </nav>
 
         <section class="section-1 py-16">
-    <main class="w-full p-6">
+    <main class="w-full p-6 mb-64">
 
         <div class="container mx-auto">
             <h1 class="text-3xl font-semibold text-gray-800 mb-6">Manage Users</h1>

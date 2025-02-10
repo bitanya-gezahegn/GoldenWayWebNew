@@ -102,6 +102,7 @@
                     <h3 class="text-lg font-semibold text-yellow-600 mb-2">Route: <span class="text-gray-800">{{ $schedule->trip->route->origin ?? 'N/A' }} → {{ $schedule->trip->route->destination ?? 'N/A' }}</span></h3>
                     <p class="text-sm text-gray-600"><strong>Date:</strong> {{ $schedule->created_at->format('Y-m-d') }}</p>
                     <p class="text-sm text-gray-600"><strong>Driver:</strong> {{ $schedule->driver->name ?? 'N/A' }}</p>
+                    <p class="text-sm text-gray-600"><strong>Bus:</strong> {{ $schedule->bus->bus_type ?? 'N/A' }}</p>
                     <p class="text-sm text-gray-600"><strong>Bus Stops:</strong> {{ $schedule->trip->route->bus_stops ?? 'N/A' }}</p>
                     <p class="text-sm text-gray-600"><strong>Status:</strong> <span class="highlight">{{ $schedule->status }}</span></p>
                     <div class="mt-4 flex justify-between">

@@ -171,17 +171,78 @@
         <nav class="side-bar">
             <ul>
 			<li><a href="{{ url('dashboardadmin') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                <li><a href="{{ url('redirect') }}"><i class="fa fa-desktop"></i><span>Manage Users</span></a></li>
+                <li><a href="{{ route('manageusers') }}"><i class="fa fa-desktop"></i><span>Manage Users</span></a></li>
                 <li><a href="{{ url('admincreate') }}"><i class="fa fa-desktop"></i><span>Add Users</span></a></li>
              </ul>
         </nav>
 
-        <section class="section-1">
-            <h1>Welcome to the Admin Dashboard</h1>
-            <p>Content specific to the Dashboard page.</p>
-        </section>
+     
+
+
+<section class="p-8 bg-gray-100 justify-center items-center text-center place-items-center m-auto mt-32">
+  <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Admin Dashboard</h1>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="bg-blue-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Users</h5>
+      <p class="text-3xl font-semibold">{{$total_user}}</p>
+    </div>
+
+    <div class="bg-green-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Tickets</h5>
+      <p class="text-3xl font-semibold">{{$total_ticket}}</p>
+    </div>
+
+    <div class="bg-yellow-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Bus</h5>
+      <p class="text-3xl font-semibold">{{$total_bus}}</p>
+    </div>
+
+    <div class="bg-indigo-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Trips</h5>
+      <p class="text-3xl font-semibold">{{$total_trips}}</p>
+    </div>
+  </div>
+</section>
+    </div>
     </div>
 
 </body>
 </html>
 </x-app-layout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

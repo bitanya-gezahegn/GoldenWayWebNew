@@ -169,8 +169,10 @@
 
     <div class="body">
         <nav class="side-bar">
-            <ul>
+        <ul>
                 <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
                 <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
                 <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
                 <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
@@ -180,90 +182,89 @@
                 <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
                 <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
                 <li>
-    <a href="{{ route('refund.requests') }}">
-        <i class="fa fa-file"></i>
-        <span>Refund Requests</span>
-    </a>
-</li>
-  </ul>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
 
-        <section class="section-1">
-            
+        <section class="p-8 bg-gray-100">
+  <div class="mt-12 container mx-auto py-10">
+    <h2 class="text-2xl font-bold text-gray-800 mb-8">Refund Requests</h2>
 
+    @if($refunds->isEmpty())
+      <p class="text-gray-600">No refund requests found.</p>
+    @else
+      <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+        <table class="w-full border-collapse border border-gray-200">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="px-4 py-2 border border-gray-300">#</th>
+              <th class="px-4 py-2 border border-gray-300">Customer</th>
+              <th class="px-4 py-2 border border-gray-300">Route</th>
+              <th class="px-4 py-2 border border-gray-300">Reason</th>
+              <th class="px-4 py-2 border border-gray-300">Requested Amount</th>
+              <th class="px-4 py-2 border border-gray-300">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          @foreach($refunds as $refund)
+            <tr class="even:bg-gray-100">
+              <td class="px-4 py-2 border border-gray-300">{{ $refund->id }}</td>
+              <td class="px-4 py-2 border border-gray-300">
+                {{ $refund->customer->name ?? 'N/A' }}
+              </td>
+              <td class="px-4 py-2 border border-gray-300">
+                {{ $refund->customer->tickets->first()?->schedule->trip->route->origin ?? 'N/A' }} to 
+                {{ $refund->customer->tickets->first()?->schedule->trip->route->destination ?? 'N/A' }}
+              </td>
+              <td class="px-4 py-2 border border-gray-300">{{ $refund->reason ?? 'N/A' }}</td>
+              <td class="px-4 py-2 border border-gray-300">{{ $refund->refund_amount }} ETB</td>
+              <td class="px-4 py-2 border border-gray-300">
+                <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600" 
+                        onclick="handleRefund({{ $refund->id }}, 'approve')">Approve</button>
+                <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2" 
+                        onclick="handleRefund({{ $refund->id }}, 'reject')">Reject</button>
+              </td>
+            </tr>
+          @endforeach
+          </tbody>
 
-    <div class="container mx-auto py-10">
-        <h2 class="text-2xl font-bold text-gray-800 mb-6">Refund Requests</h2>
+        </table>
+      </div>
+    @endif
+  </div>
 
-        @if($refunds->isEmpty())
-            <p class="text-gray-600">No refund requests found.</p>
-        @else
-            <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-                <table class="w-full border-collapse border border-gray-200">
-                    <thead class="bg-gray-200">
-                        <tr>
-                            <th class="px-4 py-2 border border-gray-300">#</th>
-                            <th class="px-4 py-2 border border-gray-300">Customer</th>
-                            <th class="px-4 py-2 border border-gray-300">Route</th>
-                            <th class="px-4 py-2 border border-gray-300">Reason</th>
-                            <th class="px-4 py-2 border border-gray-300">Requested Amount</th>
-                            <th class="px-4 py-2 border border-gray-300">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-@foreach($refunds as $refund)
-    <tr class="even:bg-gray-100">
-        <td class="px-4 py-2 border border-gray-300">{{ $refund->id }}</td>
-        <td class="px-4 py-2 border border-gray-300">
-            {{ $refund->customer->name ?? 'N/A' }}
-        </td>
-        <td class="px-4 py-2 border border-gray-300">
-            {{ $refund->customer->tickets->first()?->schedule->trip->route->origin ?? 'N/A' }} to 
-            {{ $refund->customer->tickets->first()?->schedule->trip->route->destination ?? 'N/A' }}
-        </td>
-        <td class="px-4 py-2 border border-gray-300">{{ $refund->reason ?? 'N/A' }}</td>
-        <td class="px-4 py-2 border border-gray-300">{{ $refund->refund_amount }} ETB</td>
-        <td class="px-4 py-2 border border-gray-300">
-            <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600" 
-                    onclick="handleRefund({{ $refund->id }}, 'approve')">Approve</button>
-            <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 ml-2" 
-                    onclick="handleRefund({{ $refund->id }}, 'reject')">Reject</button>
-        </td>
-    </tr>
-@endforeach
-</tbody>
+  <script>
+    // Handle Approve/Reject Actions
+    function handleRefund(refundId, action) {
+        if (!confirm(`Are you sure you want to ${action} this refund request?`)) return;
 
-                </table>
-            </div>
-        @endif
-    </div>
+        fetch('{{ route('refund.requests.handle') }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({ refund_id: refundId, action: action })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert('Failed to process the refund request.');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+  </script>
+</section>
 
-    <script>
-        // Handle Approve/Reject Actions
-        function handleRefund(refundId, action) {
-            if (!confirm(`Are you sure you want to ${action} this refund request?`)) return;
-
-            fetch('{{ route('refund.requests.handle') }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({ refund_id: refundId, action: action })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(data.message);
-                    location.reload();
-                } else {
-                    alert('Failed to process the refund request.');
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-    </script> </section>
-    </div>
+    
 
 </body>
 </html>

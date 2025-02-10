@@ -20,7 +20,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 20px 30px;
-            background: goldenrod; /* blue-400 */
+            background: goldenrod;
             color: #fff;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
@@ -42,7 +42,7 @@
         /* Sidebar */
         .side-bar {
             width: 250px;
-            background-color: #F3F4F6; /* gray-300 */
+            background-color: #F3F4F6;
             min-height: 100vh;
             padding-top: 20px;
             transition: 300ms width ease-in-out;
@@ -62,7 +62,7 @@
         }
 
         .side-bar ul li:hover {
-            background-color: goldenrod; /* blue-400 */
+            background-color: goldenrod;
             color: white;
         }
 
@@ -103,7 +103,7 @@
         /* Section Content */
         .section-1 {
             width: 100%;
-            background-color: #F9FAFB; /* light gray */
+            background-color: #F9FAFB;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -113,7 +113,7 @@
 
         .section-1 h1 {
             font-size: 60px;
-            color: goldenrod; /* blue-400 */
+            color: goldenrod;
         }
 
         .section-1 p {
@@ -159,18 +159,20 @@
     <input type="checkbox" id="checkbox">
     <header class="header">
         <h2 class="u-name">OPERATION <b>OFFICER</b>
-            
         </h2>
         <a href="/">
-		<label for="checkbox">
+            <label for="checkbox">
                 <i class="fa fa-bars" aria-hidden="true"></i>
-            </label>    </a>
+            </label>
+        </a>
     </header>
 
     <div class="body">
         <nav class="side-bar">
             <ul>
                 <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
                 <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
                 <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
                 <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
@@ -180,20 +182,39 @@
                 <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
                 <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
                 <li>
-    <a href="{{ route('refund.requests') }}">
-        <i class="fa fa-file"></i>
-        <span>Refund Requests</span>
-    </a>
-</li>
-  </ul>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
-
-        <section class="section-1">
-            <h1>Welcome to the Operations Officer Dashboard</h1>
-            <p>Content specific to the Dashboard page.</p>
-        </section>
+        <section class="p-8 bg-gray-100 justify-center items-center text-center place-items-center m-auto mt-32">
+  <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Operation Officer Dashboard</h1>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="bg-blue-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Users</h5>
+      <p class="text-3xl font-semibold">{{$total_user}}</p>
     </div>
 
+    <div class="bg-green-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Tickets</h5>
+      <p class="text-3xl font-semibold">{{$total_ticket}}</p>
+    </div>
+
+    <div class="bg-yellow-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Bus</h5>
+      <p class="text-3xl font-semibold">{{$total_bus}}</p>
+    </div>
+
+    <div class="bg-indigo-500 text-white p-6 rounded-2xl shadow-lg">
+      <h5 class="text-xl font-bold mb-2">Total Trips</h5>
+      <p class="text-3xl font-semibold">{{$total_trips}}</p>
+    </div>
+  </div>
+</section>
+        </div>
+    </div>
 </body>
 </html>
 </x-app-layout>

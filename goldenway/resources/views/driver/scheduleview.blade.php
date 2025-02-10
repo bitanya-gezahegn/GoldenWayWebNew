@@ -209,6 +209,7 @@
             <thead>
                 <tr class="bg-gray-200 text-gray-700 uppercase text-sm font-medium">
                     <th class="px-6 py-4 text-left border-b">Route</th>
+                    <th class="px-6 py-4 text-left border-b">Bus</th>
                     <th class="px-6 py-4 text-left border-b">Status</th>
                     <th class="px-6 py-4 text-left border-b">Date</th>
                 </tr>
@@ -219,6 +220,11 @@
                         <td class="px-6 py-4 border-b">
                             <span class="font-medium text-gray-800">
                                 Route: {{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 border-b">
+                            <span class="font-medium text-gray-800">
+                                {{ $schedule->bus->bus_type ?? 'N/A' }} 
                             </span>
                         </td>
                         <td class="px-6 py-4 border-b">

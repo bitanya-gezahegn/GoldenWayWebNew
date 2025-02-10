@@ -31,7 +31,7 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 20px 30px;
-                background: #3B82F6; /* blue-400 */
+                background: goldenrod; /* yellow-400 */
                 color: #fff;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
@@ -73,7 +73,7 @@
             }
 
             .side-bar ul li:hover {
-                background-color: #3B82F6; /* blue-400 */
+                background-color: goldenrod; /* yellow-400 */
                 color: white;
             }
 
@@ -124,11 +124,11 @@
 
             .section-1 h1 {
                 font-size: 60px;
-                color: #3B82F6; /* blue-400 */
+                color: goldenrod; /* yellow-400 */
             }
 
             .section-1 p {
-                color: #3B82F6;
+                color: goldenrod;
                 font-size: 20px;
                 background-color: #fff;
                 padding: 15px;
@@ -179,7 +179,7 @@
             .btn-submit {
                 width: 100%;
                 padding: 12px;
-                background-color: #3B82F6; /* blue-400 */
+                background-color: goldenrod; /* yellow-400 */
                 color: white;
                 font-size: 18px;
                 border: none;
@@ -189,7 +189,7 @@
             }
 
             .btn-submit:hover {
-                background-color: #1E66A4; /* dark blue */
+                background-color: #1E66A4; /* dark yellow */
             }
 
             /* Responsive Design */
@@ -235,7 +235,7 @@
 }
 
 .table th {
-    background-color: #3B82F6; /* blue-400 */
+    background-color: goldenrod; /* yellow-400 */
     color: white;
     font-size: 16px;
 }
@@ -286,7 +286,7 @@
 }
 /* Edit and Delete Buttons */
 .btn-primary {
-    background-color: #3B82F6; /* blue-400 */
+    background-color: goldenrod; /* yellow-400 */
     color: white;
     font-size: 14px;
     padding: 8px 12px;
@@ -297,7 +297,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #1E66A4; /* dark blue */
+    background-color: #1E66A4; /* dark yellow */
 }
 
 .btn-danger {
@@ -335,6 +335,8 @@
             <nav class="side-bar">
             <ul>
                 <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
                 <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
                 <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
                 <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
@@ -344,12 +346,12 @@
                 <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
                 <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
                 <li>
-    <a href="{{ route('refund.requests') }}">
-        <i class="fa fa-file"></i>
-        <span>Refund Requests</span>
-    </a>
-</li>
-  </ul>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
             </nav>
 
             <section class="section-1 py-8">
@@ -363,7 +365,7 @@
 
         <div class="max-w-4xl mx-auto px-4">
             <div class="bg-white shadow-md rounded-lg p-6">
-                <h1 class="text-3xl font-semibold text-center text-blue-600 mb-6">Edit Schedule</h1>
+                <h1 class="text-3xl font-semibold text-center text-yellow-600 mb-6">Edit Schedule</h1>
 
                 <!-- Form for editing schedule -->
                 <form action="{{ route('schedules.update', $schedule->id) }}" method="POST">
@@ -373,7 +375,7 @@
                     <!-- Trip Selection -->
                     <div class="mb-4">
                         <label for="trip_id" class="block text-sm font-medium text-gray-700">Trip</label>
-                        <select name="trip_id" id="trip_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                        <select name="trip_id" id="trip_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500">
                             @foreach ($trips as $trip)
                                 <option value="{{ $trip->id }}" {{ $trip->id == $schedule->trip_id ? 'selected' : '' }}>
                                     {{ $trip->route->origin ?? 'N/A' }} to {{ $trip->route->destination ?? 'N/A' }}
@@ -385,10 +387,20 @@
                     <!-- Driver Selection -->
                     <div class="mb-4">
                         <label for="driver_id" class="block text-sm font-medium text-gray-700">Driver</label>
-                        <select name="driver_id" id="driver_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                        <select name="driver_id" id="driver_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500">
                             @foreach ($drivers as $driver)
                                 <option value="{{ $driver->id }}" {{ $driver->id == $schedule->driver_id ? 'selected' : '' }}>
                                     {{ $driver->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="bus_id" class="block text-sm font-medium text-gray-700">Bus</label>
+                        <select name="bus_id" id="bus_id" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500">
+                            @foreach ($bus as $bus)
+                            <option value="{{ $bus->id }}" {{ $bus->id == $schedule->bus_id ? 'selected' : '' }}>
+                            {{ $bus->bus_type }}
                                 </option>
                             @endforeach
                         </select>
@@ -397,14 +409,14 @@
                     <!-- Status Selection -->
                     <div class="mb-4">
                         <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
-                        <select name="status" id="status" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500">
+                        <select name="status" id="status" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-yellow-500 focus:border-yellow-500">
                             <option value="active" {{ $schedule->status === 'active' ? 'selected' : '' }}>Active</option>
                             <option value="inactive" {{ $schedule->status === 'inactive' ? 'selected' : '' }}>Inactive</option>
                         </select>
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit" class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="submit" class="w-full bg-yellow-500 text-white py-2 px-4 rounded-md hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500">
                         Update
                     </button>
                 </form>

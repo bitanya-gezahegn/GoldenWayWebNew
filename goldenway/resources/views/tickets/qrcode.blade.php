@@ -34,9 +34,16 @@
                     <p class="text-gray-800 font-medium">{{ $ticketData['destination'] }}</p>
                 </div>
                 <div>
-                    <span class="text-gray-500">Date</span>
-                    <p class="text-gray-800 font-medium">{{ $ticketData['date']->format('Y-m-d') }}</p>
-                </div>
+    <span class="text-gray-500">Date</span>
+    <p class="text-gray-800 font-medium">
+        @if(!empty($ticketData['date']) && $ticketData['date'] !== 'N/A')
+            {{ \Carbon\Carbon::parse($ticketData['date'])->format('Y-m-d') }}
+        @else
+            N/A
+        @endif
+    </p>
+</div>
+
                 <div>
                     <span class="text-gray-500">Departure</span>
                     <p class="text-gray-800 font-medium">{{ $ticketData['departureTime'] }}</p>
@@ -61,10 +68,17 @@
                 <div>
                     <span class="text-gray-500">Price</span>
                     <p class="text-gray-800 font-medium">{{ $ticketData['price'] }}</p>
+                </div>   <div>
+                    <span class="text-gray-500">Distance</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['distance'] }}km</p>
                 </div>
                 <div>
                     <span class="text-gray-500">Ticket No</span>
                     <p class="text-gray-800 font-medium">{{ $ticketData['id'] }}</p>
+                </div> 
+                <div>
+                    <span class="text-gray-500">Bus</span>
+                    <p class="text-gray-800 font-medium">{{ $ticketData['bus'] }}</p>
                 </div>
                 <div>
                     <span class="text-gray-500">Seat</span>
@@ -76,7 +90,19 @@
         <!-- QR Code -->
         <div class="p-5 text-center">
             <div id="qr-code-container">
-                {!! QrCode::size(200)->generate($ticket->qr_code) !!}
+                {!! QrCode::size(200)->generate(
+                    "Golden Bus Ticket\n".
+                    "Name: {$ticketData['name']}\n".
+                    "From: {$ticketData['origin']}\n".
+                    "To: {$ticketData['destination']}\n".
+                    "Date: {$ticketData['date']}\n".
+                    "Departure: {$ticketData['departureTime']}\n".
+                    "Arrival: {$ticketData['arrivalTime']}\n".
+                    "Seat: {$ticketData['seat_number']}\n".
+                    "Bus: {$ticketData['bus']}\n".
+                    "Ticket No: {$ticketData['id']}\n".
+                    "Price: {$ticketData['price']}"
+                ) !!}
             </div>
         </div>
 
@@ -86,8 +112,9 @@
             <button id="download-ticket" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
                 Download Ticket Image
             </button>
+
             <!-- Payment Button -->
-            <form action="{{ route('payment.initialize', $ticket->id) }}" method="POST" class="mt-3">
+            <form action="{{ route('payment.initialize', $ticketData['id']) }}" method="POST" class="mt-3">
                 @csrf
                 <button class="w-full bg-yellow-600 text-white font-semibold py-2 rounded-md hover:bg-yellow-500">
                     Pay with Chapa
@@ -96,6 +123,7 @@
         </div>
     </div>
 
+    <!-- Script for Downloading QR Code -->
     <script>
         document.getElementById('download-ticket').addEventListener('click', function () {
             const qrContainer = document.getElementById('qr-code-container');

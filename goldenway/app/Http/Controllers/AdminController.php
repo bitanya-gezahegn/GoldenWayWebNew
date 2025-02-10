@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\Bus;
 use App\Models\User;
 use App\Models\Schedule;
 use App\Models\Payment;
@@ -9,7 +11,8 @@ use Illuminate\Support\Facades\Hash;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Route;
-
+use App\Models\Ticket;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
@@ -28,17 +31,29 @@ class AdminController extends Controller
             elseif($usertype == 'admin'){
 
                 $users = User::where('role', '!=', 'admin')->get();
-                return view('admin.users.index', compact('users'));
-            }
+                $total_ticket=Ticket::all()->count();
+                $total_bus=Bus::all()->count();
+                $total_user=User::all()->count();
+                $total_trips=Trip::all()->count();
+        return view('admin.dashboardadmin',compact('total_ticket','total_bus','total_user','total_trips','users'));
+                       
+                            }
             elseif($usertype == 'driver'){
+                
+   
                 return view('driver.dashboard',compact('actor'));
 
             }
             elseif($usertype == 'operations_officer'){
         $routes = Route::all();
+
+        $total_ticket=Ticket::all()->count();
+        $total_bus=Bus::all()->count();
+        $total_user=User::all()->count();
+        $total_trips=Trip::all()->count();
                 
-                return view('dashboardd',compact('routes'));
-                
+                return view('dashboardd',compact('routes','total_ticket','total_bus','total_user','total_trips'));
+                    
         }
         elseif($usertype == 'ticket_officer'){
             $completedPayments = Payment::where('payment_status', 'completed')
@@ -177,15 +192,40 @@ class AdminController extends Controller
      
     public function test(){
         return view('test');
-    }   public function dashboardd(){
-        return view('dashboardd');
+    }   
+    
+    public function dashboardd(){
+        $routes = Route::all();
+
+        $total_ticket=Ticket::all()->count();
+        $total_bus=Bus::all()->count();
+        $total_user=User::all()->count();
+        $total_trips=Trip::all()->count();
+                
+                return view('dashboardd',compact('routes','total_ticket','total_bus','total_user','total_trips'));
+          
     }
     public function manageroute(){
         $routes = Route::all();
         return view('routes.routes',compact('routes'));
     }
     public function dashboardadmin(){
-        return view('admin.dashboardadmin');
+        
+        $users = User::where('role', '!=', 'admin')->get();
+        $total_ticket=Ticket::all()->count();
+        $total_bus=Bus::all()->count();
+        $total_user=User::all()->count();
+        $total_trips=Trip::all()->count();
+return view('admin.dashboardadmin',compact('total_ticket','total_bus','total_user','total_trips','users'));
+            
     }
-}
 
+public function manageusers (){
+    $users = User::where('role', '!=', 'admin')->get();
+    $total_ticket=Ticket::all()->count();
+    $total_bus=Bus::all()->count();
+    $total_user=User::all()->count();
+    $total_trips=Trip::all()->count();
+return view('admin.users.index',compact('total_ticket','total_bus','total_user','total_trips','users'));
+ 
+}}

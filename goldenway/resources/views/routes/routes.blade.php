@@ -308,6 +308,8 @@
         <nav class="side-bar">
         <ul>
                 <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
                 <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
                 <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
                 <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
@@ -317,12 +319,12 @@
                 <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
                 <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
                 <li>
-    <a href="{{ route('refund.requests') }}">
-        <i class="fa fa-file"></i>
-        <span>Refund Requests</span>
-    </a>
-</li>
-  </ul>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
         </nav>
 
         <section class="section-1">
@@ -345,7 +347,11 @@
             <div class="form-group">
                 <label for="end">End Location:</label>
                 <input type="text" id="end" name="end" required placeholder="Enter end location">
+            </div> <div class="form-group">
+                <label for="distance">distance:</label>
+                <input type="number" id="distance" name="distance" required placeholder="Enter distance in km">
             </div>
+            
             <div class="form-group">
                 <label for="stop">Bus Stops (Optional):</label>
                 <input type="text" id="stop" name="stop" placeholder="Enter bus stops, separated by commas">
@@ -354,11 +360,12 @@
         </form>
 
         <!-- Existing Routes Table -->
-        <h2>Existing Routes</h2>
+        <h2 class="text-4xl font-bold text-center text-gray-800 mb-8 pt-10">Existing Routes</h2>
         <table class="route-table">
             <thead>
                 <tr>
                     <th>Route</th>
+                    <th>Distance</th>
                     <th>Bus Stops</th>
                     <th>Actions</th>
                 </tr>
@@ -367,6 +374,7 @@
                 @foreach($routes as $route)
                     <tr>
                         <td>{{ $route->origin }} - {{ $route->destination }}</td>
+                        <td>{{ $route->distance }}KM</td>
                         <td>
                             @if($route->bus_stops)
                                 {{ implode(', ', json_decode($route->bus_stops)) }}

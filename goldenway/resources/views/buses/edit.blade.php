@@ -1,3 +1,5 @@
+
+
 <x-app-layout>
     <!DOCTYPE html>
     <html lang="en">
@@ -20,7 +22,7 @@
                 justify-content: space-between;
                 align-items: center;
                 padding: 20px 30px;
-                background: #3B82F6; /* blue-400 */
+                background: goldenrod; /* blue-400 */
                 color: #fff;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
@@ -62,7 +64,7 @@
             }
 
             .side-bar ul li:hover {
-                background-color: #3B82F6; /* blue-400 */
+                background-color: goldenrod; /* blue-400 */
                 color: white;
             }
 
@@ -113,11 +115,11 @@
 
             .section-1 h1 {
                 font-size: 60px;
-                color: #3B82F6; /* blue-400 */
+                color: goldenrod; /* blue-400 */
             }
 
             .section-1 p {
-                color: #3B82F6;
+                color: goldenrod;
                 font-size: 20px;
                 background-color: #fff;
                 padding: 15px;
@@ -168,7 +170,7 @@
             .btn-submit {
                 width: 100%;
                 padding: 12px;
-                background-color: #3B82F6; /* blue-400 */
+                background-color: goldenrod; /* blue-400 */
                 color: white;
                 font-size: 18px;
                 border: none;
@@ -178,7 +180,7 @@
             }
 
             .btn-submit:hover {
-                background-color: #1E66A4; /* dark blue */
+                background-color: yellow; /* dark blue */
             }
 
             /* Responsive Design */
@@ -226,15 +228,25 @@
 
         <div class="body">
             <nav class="side-bar">
-                <ul>
-                    <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                    <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
-                    <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
-                    <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
-                    <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
-                    <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
-                    <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
-                </ul>
+            <ul>
+                <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
+                <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
+                <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
+                <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
+                <li><a href="{{ url('bus') }}"><i class="fa fa-file"></i><span>Manage Buses</span></a></li>
+
+                <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
+                <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
+                <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
+                <li>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
             </nav>
 
             <section class="section-1">
@@ -245,22 +257,26 @@
                             {{ session('success') }}
                         </div>
                     @endif
-                    <h2 class="card-title">Edit Route</h2>
+                    <section class=" mb-48">
+        <h2 class="text-4xl font-bold text-center text-gray-800 pt-10">Edit Bus</h2>
+
 
                     <!-- Form for Editing Route -->
-                    <form action="{{ route('buses.edit_confirm', $bus->busID) }}" method="POST">
-    @csrf
-    <div>
-        <label for="bus_type">Bus Type:</label>
-        <input type="text" name="bus_type" id="bus_type" value="{{ $bus->bus_type }}" required>
-    </div>
-    <div>
-        <label for="plate_number">Plate Number:</label>
-        <input type="text" name="plate_number" id="plate_number" value="{{ $bus->plate_number }}" required>
-    </div>
-    <button type="submit">Update Bus</button>
-</form>
+                    <form action="{{ route('buses.edit_confirm', $bus->id) }}" method="POST" class="form-container">
+                        @csrf
+                        <!-- Start Location Field -->
+                        <div class="form-group">
+                        <label for="bus_type" class="form-label"> Bus Type:</label>
+                            <input type="text" id="bus_type" name="bus_type" class="form-control" value="{{ $bus->bus_type }}" required>
+     </div>
 
+                        <!-- End Location Field -->
+                        <div class="form-group">
+                        <label for="plate_number" class="form-label">Plate Number:</label>
+        <input type="text" name="plate_number" id="plate_number"   class="form-control" value="{{ $bus->plate_number }}" required>
+       </div> 
+                        <button type="submit" class="btn-submit">Update Bus</button>
+                    </form>
 
                 </main>
             </section>
@@ -270,3 +286,15 @@
     </body>
     </html>
 </x-app-layout>
+
+
+
+
+
+
+
+
+
+
+
+

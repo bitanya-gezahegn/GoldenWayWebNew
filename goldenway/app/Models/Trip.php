@@ -36,5 +36,9 @@ class Trip extends Model
      {
          return $this->hasMany(Schedule::class);
      }
+     public function tickets()
+     {
+         return $this->hasMany(Ticket::class);
+     }
  
 }

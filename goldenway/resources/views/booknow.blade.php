@@ -25,13 +25,18 @@
             <!-- Seat Map -->
             <div class="grid grid-cols-4 gap-4 max-w-md mx-auto mb-8">
                 @foreach ($totalSeats as $seat)
+                    @php
+                        $isBooked = in_array($seat, $bookedSeats);
+                        $isCompleted = in_array($seat, $completedSeats);
+                    @endphp
+
                     <div 
-                        class="seat w-16 h-16 flex items-center justify-center text-gray-500 font-bold text-lg rounded-md transition-all 
-                        {{ in_array($seat, $bookedSeats) ? 'bg-gray-400 cursor-not-allowed' : 'bg-theme hover-bg-theme cursor-pointer' }}" 
+                        class="seat w-16 h-16 flex items-center justify-center text-black font-bold text-lg rounded-md transition-all 
+                        {{ $isBooked ? 'bg-gray-400 cursor-not-allowed' : ($isCompleted ? 'bg-green-500 cursor-not-allowed' : 'bg-theme hover-bg-theme cursor-pointer') }}" 
                         data-seat="{{ $seat }}"
                         role="button" 
-                        aria-label="Seat {{ $seat }} {{ in_array($seat, $bookedSeats) ? 'taken' : 'available' }}"
-                        tabindex="{{ in_array($seat, $bookedSeats) ? '-1' : '0' }}"
+                        aria-label="Seat {{ $seat }} {{ $isBooked ? 'Booked' : ($isCompleted ? 'Completed' : 'Available') }}"
+                        tabindex="{{ $isBooked || $isCompleted ? '-1' : '0' }}"
                     >
                         {{ $seat }}
                     </div>
@@ -61,15 +66,15 @@
 
                 // Click event for seat selection
                 seats.forEach(seat => {
-                    if (!seat.classList.contains('bg-gray-400')) { // Only allow clicks on available seats
+                    if (!seat.classList.contains('bg-gray-400') && !seat.classList.contains('bg-green-500')) { 
+                        // Only allow clicks on available seats
                         seat.addEventListener('click', () => {
-    seats.forEach(s => s.classList.remove('ring', 'ring-yellow-400', 'ring-offset-2'));
-    seat.classList.add('ring', 'ring-yellow-400', 'ring-offset-2');
-    seatInput.value = seat.dataset.seat;
-    console.log('Selected seat:', seat.dataset.seat);  // Check if this is logging the seat
-    submitButton.disabled = false;
-});
-
+                            seats.forEach(s => s.classList.remove('ring', 'ring-yellow-400', 'ring-offset-2'));
+                            seat.classList.add('ring', 'ring-yellow-400', 'ring-offset-2');
+                            seatInput.value = seat.dataset.seat;
+                            console.log('Selected seat:', seat.dataset.seat);  // Debugging log
+                            submitButton.disabled = false;
+                        });
                     }
                 });
 

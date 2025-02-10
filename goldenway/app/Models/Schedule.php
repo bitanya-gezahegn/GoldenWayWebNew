@@ -12,6 +12,7 @@ class Schedule extends Model
     protected $fillable = [
         'trip_id',
         'driver_id',
+        'bus_id',
         'status',
     ];
 
@@ -19,6 +20,13 @@ class Schedule extends Model
     public function trip()
     {
         return $this->belongsTo(Trip::class);
+    }
+   
+    
+    
+    public function bus()
+    {
+        return $this->belongsTo(Bus::class);
     }
 
     /**

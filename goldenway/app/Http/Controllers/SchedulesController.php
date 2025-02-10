@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bus;
 use App\Models\Schedule;
 use App\Models\Trip;
 use App\Models\User;
@@ -18,8 +19,9 @@ class SchedulesController extends Controller
     public function create()
     {
         $trips = Trip::all();
+        $bus = Bus::all();
         $drivers = User::where('role', 'driver')->get(); // Only users with the 'driver' role
-        return view('schedules.create', compact('trips', 'drivers'));
+        return view('schedules.create', compact('trips', 'drivers','bus'));
     }
 
     public function store(Request $request)
@@ -27,6 +29,8 @@ class SchedulesController extends Controller
         $request->validate([
             'trip_id' => 'required|exists:trips,id',
             'driver_id' => 'required|exists:users,id',
+            'bus_id' => 'required|exists:buses,id',
+
             'status' => 'required|string',
         ]);
 
@@ -37,8 +41,9 @@ class SchedulesController extends Controller
     public function edit(Schedule $schedule)
     {
         $trips = Trip::all();
+        $bus = Bus::all();
         $drivers = User::where('role', 'driver')->get();
-        return view('schedules.edit', compact('schedule', 'trips', 'drivers'));
+        return view('schedules.edit', compact('schedule', 'trips', 'drivers','bus'));
     }
 
     public function update(Request $request, Schedule $schedule)
@@ -46,6 +51,8 @@ class SchedulesController extends Controller
         $request->validate([
             'trip_id' => 'required|exists:trips,id',
             'driver_id' => 'required|exists:users,id',
+            'bus_id' => 'required|exists:buses,id',
+
             'status' => 'required|string',
         ]);
 

@@ -326,6 +326,8 @@
             <nav class="side-bar">
             <ul>
                 <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
                 <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
                 <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
                 <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
@@ -335,25 +337,26 @@
                 <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
                 <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
                 <li>
-    <a href="{{ route('refund.requests') }}">
-        <i class="fa fa-file"></i>
-        <span>Refund Requests</span>
-    </a>
-</li>
-  </ul>
+                    <a href="{{ route('refund.requests') }}">
+                        <i class="fa fa-file"></i>
+                        <span>Refund Requests</span>
+                    </a>
+                </li>
+            </ul>
             </nav>
 
             <section class="section-1 py-8">
-    <div class="max-w-7xl mx-auto px-4">
-        <h1 class="text-3xl font-semibold text-center text-yellow-600 mb-6">Schedules</h1>
+    <div class="max-w-7xl mx-auto px-4 mb-60">
+        <h1 class="text-3xl font-semibold text-center text-yellow-600 ">Schedules</h1>
 
         <!-- Table for schedules -->
-        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden pt-10 mt-10">
             <thead>
                 <tr class="bg-gray-200 text-left text-sm font-medium text-gray-700">
                     <th class="px-4 py-2 border-b">ID</th>
                     <th class="px-4 py-2 border-b">Trip</th>
                     <th class="px-4 py-2 border-b">Driver</th>
+                    <th class="px-4 py-2 border-b">Bus</th>
                     <th class="px-4 py-2 border-b">Status</th>
                     <th class="px-4 py-2 border-b">Actions</th>
                 </tr>
@@ -364,6 +367,7 @@
                         <td class="px-4 py-2">{{ $schedule->id }}</td>
                         <td class="px-4 py-2">{{ $schedule->trip->route->origin ?? 'N/A' }} to {{ $schedule->trip->route->destination ?? 'N/A' }}</td>
                         <td class="px-4 py-2">{{ $schedule->driver->name }}</td>
+                        <td class="px-4 py-2">{{ $schedule->bus->bus_type }}</td>
                         <td class="px-4 py-2">{{ $schedule->status }}</td>
                         <td class="px-4 py-2 flex items-center space-x-2">
                             <a href="{{ route('schedules.edit', $schedule->id) }}" class="bg-yellow-500 text-white py-1 px-3 rounded-lg hover:bg-yellow-600 transition duration-300">Edit</a> 
