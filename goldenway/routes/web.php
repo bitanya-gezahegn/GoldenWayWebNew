@@ -99,9 +99,8 @@ Route::get('/admincreate', [AdminController::class, 'admincreate']);
 
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
+
 });
 Route::get('/logout', function () {
     return view('welcome');
@@ -111,8 +110,8 @@ Route::middleware(['web'])->group(function () {
     Route::get('/payment/error', [PaymentController::class, 'error'])->name('payment.error');
 });
 
-Route::post('/search-schedule', [AdminController::class, 'search'])->name('schedule.search');
-Route::get('/search-schedule', [AdminController::class, 'search'])->name('schedule.search');
+Route::post('/search-schedule', [AdminController::class, 'processSearch'])->name('schedule.search');
+Route::get('/search-results', [AdminController::class, 'showSearchResults'])->name('schedule.search.results');
 
 Route::get('/reportissues', [DriverController::class, 'reportissues'])->name('reportissues');
 Route::post('/reportissuecreate', [DriverController::class, 'reportissuecreate'])
@@ -146,9 +145,7 @@ Route::get('/download-qr/{ticketId}', [TicketController::class, 'downloadQr'])->
 // Optional route for booking a schedule (GET)
 Route::get('/schedule/{id}/booknow', [TicketController::class, 'booknow'])->name('booknow');
 
-Route::get("/fff", function() {
-    return view("xxx");
-});
+
 
 
 Route::post('/payment/initialize/{id}', [PaymentController::class, 'initialize'])->name('payment.initialize');

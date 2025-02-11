@@ -11,13 +11,13 @@
     <body class="bg-gray-100">
     <div class="container mx-auto py-10">
         <h2 class="text-2xl font-bold text-gray-800 mb-6">User History</h2>
-    
+
         @if(session('success'))
             <div class="bg-green-100 text-green-800 px-4 py-2 rounded-md mb-4">
                 {{ session('success') }}
             </div>
         @endif
-    
+
         @if($tickets->isEmpty())
             <p class="text-gray-600">No tickets found.</p>
         @else
@@ -92,43 +92,49 @@
             </div>
         @endif
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const refundForms = document.querySelectorAll('form[id^="refund-form-"]');
-    
+
             refundForms.forEach(form => {
                 form.addEventListener('submit', async function (event) {
                     event.preventDefault();
                     const formData = new FormData(form);
-                    
+                    const ticketRow = form.closest('tr');
+
                     try {
                         const response = await fetch(form.action, {
                             method: 'POST',
                             headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                'Accept': 'application/json',
                             },
                             body: formData
                         });
-                        
-                        if (!response.ok) throw new Error('Server error. Try again.');
-    
+
                         const data = await response.json();
-    
+
+                        if (!response.ok) throw new Error(data.message || 'Server error. Try again.');
+
                         if (data.success) {
                             form.innerHTML = '<span class="text-green-500 text-sm">Refund requested successfully!</span>';
+
+                            // Update refund status dynamically in the table
+                            const refundCell = ticketRow.querySelector('td:nth-child(6)');
+                            refundCell.innerHTML = '<span class="px-2 py-1 text-xs font-semibold bg-yellow-100 text-yellow-700 rounded">Pending</span>';
                         } else {
                             alert(data.message || 'Something went wrong. Please try again.');
                         }
                     } catch (error) {
                         console.error('Error:', error);
-                        alert('Something went wrong. Please try again.');
+                        alert(error.message || 'Something went wrong. Please try again.');
                     }
                 });
             });
         });
     </script>
-    
+
     </body>
     </html>
 </x-app-layout>

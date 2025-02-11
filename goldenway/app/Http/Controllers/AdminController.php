@@ -24,8 +24,12 @@ class AdminController extends Controller
             $actor=Auth::user();
       $usertype= Auth::user()->role;
 
-      if($usertype == 'customer') {
-        $schedules = Schedule::where('status', 'active')->get();
+      if ($usertype == 'customer') {
+        $schedules = Schedule::where('status', 'active')
+            ->latest()
+            ->take(10) // Limit to 10 schedules
+            ->get();
+
         return view('dashboard', compact('schedules'));
     }
             elseif($usertype == 'admin'){
@@ -37,11 +41,13 @@ class AdminController extends Controller
                 $total_trips=Trip::all()->count();
         return view('admin.dashboardadmin',compact('total_ticket','total_bus','total_user','total_trips','users'));
                        
-                            }
+                            
+    
+}
             elseif($usertype == 'driver'){
                 
    
-                return view('driver.dashboard',compact('actor'));
+                return view('driver.dashboard');
 
             }
             elseif($usertype == 'operations_officer'){
@@ -150,11 +156,11 @@ class AdminController extends Controller
  
          return redirect()->route('users.index')->with('success', 'User deleted successfully!');
      }
-     
-     public function search(Request $request)
+     // Handle the form submission and redirect to the result page
+     public function processSearch(Request $request)
      {
          // Validate inputs
-         $request->validate([
+         $validatedData = $request->validate([
              'origin' => 'nullable|string|max:255',
              'destination' => 'nullable|string|max:255',
              'date' => 'nullable|date',
@@ -163,36 +169,40 @@ class AdminController extends Controller
          // Initialize query
          $query = Schedule::query();
      
-         // Filter by origin
-         if ($request->filled('origin')) {
-             $query->whereHas('trip.route', function ($q) use ($request) {
-                 $q->where('origin', 'like', '%' . $request->input('origin') . '%');
+         // Apply search filters
+         if (!empty($validatedData['origin'])) {
+             $query->whereHas('trip.route', function ($q) use ($validatedData) {
+                 $q->where('origin', 'like', '%' . $validatedData['origin'] . '%');
              });
          }
      
-         // Filter by destination
-         if ($request->filled('destination')) {
-             $query->whereHas('trip.route', function ($q) use ($request) {
-                 $q->where('destination', 'like', '%' . $request->input('destination') . '%');
+         if (!empty($validatedData['destination'])) {
+             $query->whereHas('trip.route', function ($q) use ($validatedData) {
+                 $q->where('destination', 'like', '%' . $validatedData['destination'] . '%');
              });
          }
      
-         // Filter by date
-         if ($request->filled('date')) {
-             $query->whereDate('created_at', $request->input('date'));
+         if (!empty($validatedData['date'])) {
+             $query->whereDate('created_at', $validatedData['date']);
          }
      
-         // Retrieve results
+         // Retrieve filtered schedules
          $schedules = $query->with(['trip.route', 'driver'])->get();
      
          return view('dashboard', ['schedules' => $schedules]);
      }
+
+// Show search results
+public function showSearchResults()
+{
+    $schedules = session('schedules', []);
+    return view('dashboard', ['schedules' => $schedules]);
+}
+
      
        
      
-    public function test(){
-        return view('test');
-    }   
+  
     
     public function dashboardd(){
         $routes = Route::all();
@@ -204,6 +214,9 @@ class AdminController extends Controller
                 
                 return view('dashboardd',compact('routes','total_ticket','total_bus','total_user','total_trips'));
           
+    }
+    public function dashboard(){
+        return redirect()->route('redirect');
     }
     public function manageroute(){
         $routes = Route::all();

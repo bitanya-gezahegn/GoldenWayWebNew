@@ -140,47 +140,59 @@ class PaymentController extends Controller
 
         return response()->json(['success' => false], 400);
     }
-
-    public function requestRefund(Request $request)
-    {
-        $ticket = Ticket::find($request->ticket_id);
-
-        if (!$ticket) {
-            return redirect()->back()->with('error', 'Ticket not found.');
+        public function requestRefund(Request $request)
+        {
+            $request->validate([
+                'ticket_id' => 'required|exists:tickets,id',
+                'reason' => 'nullable|string|max:255',
+            ]);
+    
+            $ticket = Ticket::find($request->ticket_id);
+    
+            if (!$ticket) {
+                return response()->json(['success' => false, 'message' => 'Ticket not found.'], 404);
+            }
+    
+            $payment = $ticket->payment;
+    
+            if (!$payment) {
+                return response()->json(['success' => false, 'message' => 'Payment not found.'], 404);
+            }
+    
+            if ($payment->status === 'refunded') {
+                return response()->json(['success' => false, 'message' => 'Refund has already been processed.'], 400);
+            }
+    
+            $existingRefund = Refund::where('payment_id', $payment->id)->first();
+    
+            if ($existingRefund) {
+                return response()->json(['success' => false, 'message' => 'Refund request already submitted.'], 400);
+            }
+    
+            // Create the refund request
+            Refund::create([
+                'payment_id' => $payment->id,
+                'customer_id' => $ticket->customer->id,
+                'refund_amount' => $payment->amount,
+                'reason' => $request->reason ?? null,
+                'refund_status' => 'pending',
+                'refund_date' => null,
+            ]);
+    
+            // Update payment status
+            $payment->update(['status' => 'refund_pending']);
+    
+            return response()->json(['success' => true, 'message' => 'Refund request submitted successfully.']);
         }
-
-        $payment = $ticket->payment;
-
-        if (!$payment) {
-            return redirect()->back()->with('error', 'Payment not found.');
-        }
-
-        if ($payment->status === 'refunded') {
-            return redirect()->back()->with('error', 'Refund has already been processed.');
-        }
-
-        $refund = Refund::create([
-            'payment_id' => $payment->id,
-            'customer_id' => $ticket->customer->id,
-            'refund_amount' => $payment->amount,
-            'reason' => $request->reason ?? null,
-            'refund_status' => 'pending',
-            'refund_date' => null,
-        ]);
-
-        $payment->update(['status' => 'refund_pending']);
-
-        return redirect()->back()->with('success', 'Refund request submitted successfully.');
-    }
-
+    
+    
     public function cash($id)
 {
     // Fetch the ticket data based on the ticket ID
     $ticket = Ticket::findOrFail($id);
 
     return view('ticket_officer.book_ticket_payment', compact('ticket'));
-}
-public function processCashPayment(Request $request, $id)
+}public function processCashPayment(Request $request, $id)
 {
     $ticket = Ticket::with(['customer', 'schedule.trip.route'])->findOrFail($id);
 
@@ -191,7 +203,9 @@ public function processCashPayment(Request $request, $id)
         'password' => 'required',
     ]);
 
-    $ticketOfficer = User::where('email', $validatedData['email'])->where('role', 'ticket_officer')->first();
+    $ticketOfficer = User::where('email', $validatedData['email'])
+        ->where('role', 'ticket_officer')
+        ->first();
 
     if (!$ticketOfficer || !Hash::check($validatedData['password'], $ticketOfficer->password)) {
         return back()->with('error', 'Invalid credentials or unauthorized user.');
@@ -200,17 +214,18 @@ public function processCashPayment(Request $request, $id)
     Payment::create([
         'ticket_id' => $id,
         'customer_id' => $ticketOfficer->id,
-            'amount' => $ticket->schedule->trip->price,
-           
+        'amount' => $ticket->schedule->trip->price,
         'payment_method' => $validatedData['payment_method'],
         'payment_status' => $validatedData['payment_status'],
         'ticket_status' => 'unchecked',
         'tx_ref' => uniqid('tx_'),
     ]);
 
+    $ticket->status = 'completed';
+    $ticket->save();
+
     return redirect()->route('payment.cash.form', $id)->with('success', 'Payment recorded successfully.');
 }
-
 
 }
 

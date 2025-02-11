@@ -2,8 +2,22 @@
     <div class="max-w-4xl mx-auto py-8">
         <h1 class="text-3xl font-semibold text-gray-800 mb-6">Add New User</h1>
 
+        <!-- Flash Messages -->
+        @if (session('success'))
+            <div class="p-4 mb-4 text-green-700 bg-green-100 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form action="{{ route('illitratepost') }}" method="POST" class="bg-white p-6 shadow-md rounded-lg">
             @csrf
+
             <!-- Name -->
             <div class="mb-4">
                 <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
@@ -65,12 +79,9 @@
 
             <!-- Submit Button -->
             <div class="flex gap-4">
-                <button type="submit" class="w-full py-2 px-4 bg-goldenrod text-black font-semibold rounded-lg shadow-md hover:bg-yellow-500">
+                <button type="submit" class="w-full py-2 px-4 bg-yellow-500 text-black font-semibold rounded-lg shadow-md hover:bg-yellow-600">
                     Add User
                 </button>
-
-                <!-- Step Two Button -->
-               
             </div>
         </form>
     </div>

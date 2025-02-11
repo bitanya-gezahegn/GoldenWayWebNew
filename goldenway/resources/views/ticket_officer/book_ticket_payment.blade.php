@@ -2,6 +2,20 @@
     <div class="max-w-4xl mx-auto py-8">
         <h1 class="text-3xl font-semibold text-gray-800 mb-6">Cash Payment for Ticket #{{ $ticket->id }}</h1>
 
+        <!-- Success Message -->
+        @if (session('success'))
+            <div class="bg-green-500 text-white p-4 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        <!-- Error Message -->
+        @if (session('error'))
+            <div class="bg-red-500 text-white p-4 rounded mb-4">
+                {{ session('error') }}
+            </div>
+        @endif
+
         <form action="{{ route('payment.processCashPayment', ['id' => $ticket->id]) }}" method="POST">
             @csrf
 

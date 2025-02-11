@@ -132,7 +132,7 @@ class UserController extends Controller
             'role' => 'in:customer',
             'status' => 'required|in:active,suspended',
         ]);
-
+    
         User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -140,9 +140,9 @@ class UserController extends Controller
             'email_verified_at' => $request->email_verified_at ? Carbon::parse($request->email_verified_at) : null,
             'role' => $request->role,
             'status' => $request->status,
-            'password' => Hash::make('defaultpassword'), // Replace with secure logic
+            'password' => Hash::make('12345678'), // Replace with secure logic
         ]);
-
+    
         return redirect()->back()->with('success', 'User added successfully!');
-    }
+    }    
     }
