@@ -48,7 +48,7 @@
             <!-- Email Verified At -->
             <div class="mb-4">
                 <label for="email_verified_at" class="block text-sm font-medium text-gray-700">Email Verified At (Required)</label>
-                <input type="datetime-local" name="email_verified_at" id="email_verified_at" value="{{ old('email_verified_at') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                <input type="datetime-local" name="email_verified_at" id="email_verified_at" required value="{{ old('email_verified_at') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('email_verified_at')
                     <p class="text-red-600 text-sm">{{ $message }}</p>
                 @enderror
