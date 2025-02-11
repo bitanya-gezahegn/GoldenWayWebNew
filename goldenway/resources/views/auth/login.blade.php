@@ -10,12 +10,17 @@
 
         <x-validation-errors class="mb-4" />
 
-        @session('status')
+        @if(session('status'))
             <div class="mb-4 font-medium text-sm text-green-600">
-                {{ $value }}
+                {{ session('status') }}
             </div>
-        @endsession
+        @endif
 
+        @if(session('error'))
+            <div class="mb-4 font-medium text-sm text-red-500">
+                {{ session('error') }}
+            </div>
+        @endif
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
