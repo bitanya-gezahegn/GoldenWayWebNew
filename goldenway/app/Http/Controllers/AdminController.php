@@ -18,63 +18,52 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
-{
-    public function redirect(Request $request){
-        if(Auth::id()){
-            $actor=Auth::user();
-      $usertype= Auth::user()->role;
-
-      if ($usertype == 'customer') {
-        $schedules = Schedule::where('status', 'active')
-            ->latest()
-            ->take(10) // Limit to 10 schedules
-            ->get();
-
-        return view('dashboard', compact('schedules'));
-    }
-            elseif($usertype == 'admin'){
-
-                $users = User::where('role', '!=', 'admin')->get();
-                $total_ticket=Ticket::all()->count();
-                $total_bus=Bus::all()->count();
-                $total_user=User::all()->count();
-                $total_trips=Trip::all()->count();
-        return view('admin.dashboardadmin',compact('total_ticket','total_bus','total_user','total_trips','users'));
-                       
-                            
+{public function redirect(Request $request)
+    {
+        if (Auth::id()) {
+            $actor = Auth::user();
+            $usertype = Auth::user()->role;
+            $status = Auth::user()->status;
     
-}
-            elseif($usertype == 'driver'){
-                
-   
-                return view('driver.dashboard');
-
+            // Check if user is suspended
+            if ($status === 'suspended') {
+                Auth::logout(); // Log the user out immediately
+                return redirect('/login')->with('error', 'Your account is suspended. Please contact support.');
             }
-            elseif($usertype == 'operations_officer'){
-        $routes = Route::all();
-
-        $total_ticket=Ticket::all()->count();
-        $total_bus=Bus::all()->count();
-        $total_user=User::all()->count();
-        $total_trips=Trip::all()->count();
-                
-                return view('dashboardd',compact('routes','total_ticket','total_bus','total_user','total_trips'));
-                    
+    
+            if ($usertype == 'customer') {
+                $schedules = Schedule::where('status', 'active')
+                    ->latest()
+                    ->take(10) // Limit to 10 schedules
+                    ->get();
+                return view('dashboard', compact('schedules'));
+            } elseif ($usertype == 'admin') {
+                $users = User::where('role', '!=', 'admin')->get();
+                $total_ticket = Ticket::all()->count();
+                $total_bus = Bus::all()->count();
+                $total_user = User::all()->count();
+                $total_trips = Trip::all()->count();
+                return view('admin.dashboardadmin', compact('total_ticket', 'total_bus', 'total_user', 'total_trips', 'users'));
+            } elseif ($usertype == 'driver') {
+                return view('driver.dashboard');
+            } elseif ($usertype == 'operations_officer') {
+                $routes = Route::all();
+                $total_ticket = Ticket::all()->count();
+                $total_bus = Bus::all()->count();
+                $total_user = User::all()->count();
+                $total_trips = Trip::all()->count();
+                return view('dashboardd', compact('routes', 'total_ticket', 'total_bus', 'total_user', 'total_trips'));
+            } elseif ($usertype == 'ticket_officer') {
+                $completedPayments = Payment::where('payment_status', 'completed')
+                    ->with('customer')
+                    ->get();
+                return view('ticket_officer.dashboard', compact('completedPayments'));
+            } else {
+                return redirect()->back();
+            }
         }
-        elseif($usertype == 'ticket_officer'){
-            $completedPayments = Payment::where('payment_status', 'completed')
-            ->with('customer') // Eager load the related customer
-            ->get();
+    }
     
-        return view('ticket_officer.dashboard', compact('completedPayments'));
-    
-            
-    }
-    else {
-        return redirect()->back();
-    }
-}
-    }
     public function create(){
         return view('admin.users.create');
     }
@@ -124,7 +113,7 @@ class AdminController extends Controller
              'name' => 'required|string|max:255',
              'email' => 'required|email|unique:users,email,' . $id,
              'phone' => 'required|string|max:15',
-             'role' => 'required|string|in:operations_officer,driver,ticket_officer',
+             'role' => 'required|string|in:customer,operations_officer,driver,ticket_officer',
              'status' => 'required|string|in:active,suspended', // Added validation for status
          ]);
      

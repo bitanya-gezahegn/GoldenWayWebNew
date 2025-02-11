@@ -367,14 +367,14 @@
 
                 <!-- Role -->
                 <div class="mb-6">
-                    <label for="role" class="block text-gray-700 font-medium mb-2">Role</label>
-                    <select name="role" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
-                        <option value="operations_officer" {{ $user->role == 'operations_officer' ? 'selected' : '' }}>Operation Officer</option>
-                        <option value="driver" {{ $user->role == 'driver' ? 'selected' : '' }}>Driver</option>
-                        <option value="ticket_officer" {{ $user->role == 'ticket_officer' ? 'selected' : '' }}>Ticket Officer</option>
-                    </select>
-                </div>
-
+    <label for="role" class="block text-gray-700 font-medium mb-2">Role</label>
+    <select name="role" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500">
+        <option value="customer" {{ old('role', $user->role) == 'customer' ? 'selected' : '' }}>Customer</option>
+        <option value="operations_officer" {{ old('role', $user->role) == 'operations_officer' ? 'selected' : '' }}>Operation Officer</option>
+        <option value="driver" {{ old('role', $user->role) == 'driver' ? 'selected' : '' }}>Driver</option>
+        <option value="ticket_officer" {{ old('role', $user->role) == 'ticket_officer' ? 'selected' : '' }}>Ticket Officer</option>
+    </select>
+</div>
                 <!-- Status -->
                 <div class="mb-6">
                     <label for="status" class="block text-gray-700 font-medium mb-2">Status</label>
