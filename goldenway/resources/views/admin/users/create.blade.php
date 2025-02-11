@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  
 
     <style>
         * {
@@ -292,6 +294,24 @@
         .btn-submit {
             font-size: 16px;
         }
+        .alert-success {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    padding: 10px !important;
+    border: 1px solid #c3e6cb !important;
+    border-radius: 5px !important;
+    margin-bottom: 15px !important;
+}
+
+.alert-error {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+    padding: 10px !important;
+    border: 1px solid #f5c6cb !important;
+    border-radius: 5px !important;
+    margin-bottom: 15px !important;
+}
+
     }
 
 
@@ -319,12 +339,36 @@
              </ul>
         </nav>
 
-        <section class="section-1 py-16">
-    <div class="card mx-auto max-w-2xl bg-white shadow-md rounded-lg">
+        <section class="section-1 py-16 w-full">
+    <div class="card mx-auto max-w-2xl bg-white shadow-md rounded-lg w-full">
         <div class="card-header text-center py-4 border-b">
             <h3 class="card-title text-2xl font-semibold text-gray-800">Register New User</h3>
         </div>
+       
         <div class="card-body p-8">
+        @if (session('success'))
+    <div class="bg-green-500 text-white p-3 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if (session('error'))
+    <div class="bg-red-500 text-white p-3 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="bg-red-500 text-white p-3 rounded mb-4">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
             <form method="POST" action="{{ route('adminstoring') }}">
                 @csrf
 

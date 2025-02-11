@@ -66,30 +66,38 @@ class AdminController extends Controller
     
     public function create(){
         return view('admin.users.create');
-    }
-    public function adminstoring(Request $request)
+    }public function adminstoring(Request $request)
     {
-        // Validate the request data
-        $validatedData = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|string|max:15', // 'nullable' allows optional input for phone
-            'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:operations_officer,driver,ticket_officer,customer,admin', // Match all enum options
-        ]);
+        try {
+            // Validate the request data
+            $validatedData = $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'phone' => 'nullable|string|max:15',
+                'password' => 'required|string|min:8|confirmed',
+                'role' => 'required|in:operations_officer,driver,ticket_officer,customer,admin',
+            ]);
     
-        // Create the user
-        User::create([
-            'name' => $validatedData['name'],
-            'email' => $validatedData['email'],
-            'phone' => $validatedData['phone'], // Allows null value
-            'password' => Hash::make($validatedData['password']),
-            'role' => $validatedData['role'], // Use 'role' to match table column
-            'status' => 'active', // Default status
-        ]);
+            // Create the user
+            User::create([
+                'name' => $validatedData['name'],
+                'email' => $validatedData['email'],
+                'phone' => $validatedData['phone'],
+                'password' => Hash::make($validatedData['password']),
+                'role' => $validatedData['role'],
+                'status' => 'active',
+            ]);
     
-        // Redirect with a success message or view
-        return redirect()->route('redirect')->with('success', 'User created successfully!');
+            // Redirect with a success message
+            return redirect()->route('redirect')->with('success', 'User created successfully!');
+    
+        } catch (\Illuminate\Database\QueryException $ex) {
+            // Handle database errors
+            return back()->with('error', 'Database error: ' . $ex->getMessage());
+        } catch (\Exception $ex) {
+            // Handle other exceptions
+            return back()->with('error', 'An error occurred: ' . $ex->getMessage());
+        }
     }
     
      public function home(){
