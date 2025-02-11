@@ -1,411 +1,77 @@
-
 <x-app-layout>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <div class="max-w-4xl mx-auto py-8">
+        <h1 class="text-3xl font-semibold text-gray-800 mb-6">Add New User</h1>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
-    <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
-
-    <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
-
-        /* Header Section */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 30px;
-            background: goldenrod; /* yellow-400 */
-            color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .u-name {
-            font-size: 20px;
-            font-weight: bold;
-        }
-
-        .header i {
-            font-size: 30px;
-            cursor: pointer;
-        }
-
-        .header i:hover {
-            color: #ffb038;
-        }
-
-        /* Sidebar */
-        .side-bar {
-            width: 250px;
-            background-color: #F3F4F6; /* gray-300 */
-            min-height: 100vh;
-            padding-top: 20px;
-            transition: 300ms width ease-in-out;
-            box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .side-bar ul {
-            list-style: none;
-            padding-left: 0;
-        }
-
-        .side-bar ul li {
-            font-size: 16px;
-            padding: 15px;
-            padding-left: 20px;
-            transition: 300ms background-color ease;
-        }
-
-        .side-bar ul li:hover {
-            background-color: goldenrod; /* yellow-400 */
-            color: white;
-        }
-
-        .side-bar ul li a {
-            text-decoration: none;
-            color: #333;
-            display: flex;
-            align-items: center;
-            font-size: 16px;
-            padding-right: 10px;
-        }
-
-        .side-bar ul li a i {
-            margin-right: 15px;
-            font-size: 20px;
-        }
-
-        /* Toggle Button */
-        #checkbox {
-            display: none;
-        }
-
-        #checkbox:checked ~ .body .side-bar {
-            width: 60px;
-        }
-
-        #checkbox:checked ~ .body .side-bar .u-name,
-        #checkbox:checked ~ .body .side-bar ul li a span {
-            display: none;
-        }
-
-        /* Body Section */
-        .body {
-            display: flex;
-            transition: margin-left 300ms ease-in-out;
-        }
-
-        /* Section Content */
-        .section-1 {
-            width: 100%;
-            background-color: #F9FAFB; /* light gray */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            padding: 50px;
-        }
-
-        .section-1 h1 {
-            font-size: 60px;
-            color: goldenrod; /* yellow-400 */
-        }
-
-        .section-1 p {
-            color: goldenrod;
-            font-size: 20px;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .user-p img {
-            width: 100px;
-            border-radius: 50%;
-        }
-
-        .user-p h4 {
-            color: #333;
-            padding: 5px 0;
-        }
-
-        /* Media Queries for Responsiveness */
-        @media (max-width: 768px) {
-            .side-bar {
-                width: 200px;
-            }
-
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 15px;
-            }
-
-            .section-1 h1 {
-                font-size: 40px;
-            }
-        }
-      
-    /* Center Section */
-    .section-1 {
-        width: 100%;
-        background-color: #F9FAFB; /* light gray */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        padding: 50px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Section Title */
-    .section-1 h1 {
-        font-size: 50px;
-        color: goldenrod; /* yellow-400 */
-        margin-bottom: 30px;
-    }
-
-    /* Form Container */
-    .form-container {
-        width: 100%;
-        max-width: 600px;
-        background-color: #fff;
-        padding: 25px;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-group {
-        margin-bottom: 20px;
-    }
-
-    .form-group label {
-        display: block;
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 5px;
-    }
-
-    .form-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-    }
-
-    .btn-submit {
-        width: 100%;
-        padding: 12px;
-        background-color: goldenrod; /* yellow-400 */
-        color: white;
-        font-size: 18px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-submit:hover {
-        background-color: #1E66A4; /* dark yellow */
-    }
-
-    /* Existing Routes Table */
-    .route-table {
-        width: 100%;
-        max-width: 900px;
-        margin-top: 30px;
-        border-collapse: collapse;
-        background-color: #fff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .route-table th,
-    .route-table td {
-        padding: 15px;
-        text-align: left;
-        font-size: 16px;
-        border-bottom: 1px solid #ddd;
-    }
-
-    .route-table th {
-        background-color: #F3F4F6; /* light gray */
-    }
-
-    .route-table td {
-        color: #333;
-    }
-
-    .btn-edit, .btn-delete {
-        padding: 6px 12px;
-        font-size: 14px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .btn-edit {
-        background-color: #FFA500; /* orange */
-        color: white;
-    }
-
-    .btn-edit:hover {
-        background-color: #FF7F00; /* dark orange */
-    }
-
-    .btn-delete {
-        background-color: #E74C3C; /* red */
-        color: white;
-    }
-
-    .btn-delete:hover {
-        background-color: #C0392B; /* dark red */
-    }
-
-    /* Responsive Design */
-    @media (max-width: 768px) {
-        .section-1 h1 {
-            font-size: 40px;
-        }
-
-        .form-container {
-            padding: 20px;
-        }
-
-        .route-table th, .route-table td {
-            font-size: 14px;
-        }
-
-        .btn-submit {
-            font-size: 16px;
-        }
-    }
-
-
-    </style>
-</head>
-
-<body>
-    <input type="checkbox" id="checkbox">
-    <header class="header">
-            <h2 class="u-name">ADMIN</b>
-                
-            </h2>
-            <a href="/">
-            <label for="checkbox">
-                    <i class="fa fa-bars" aria-hidden="true"></i>
-                </label>      </a>
-        </header>
-
-    <div class="body">
-    <nav class="side-bar">
-    <ul>
-                <li><a href="{{ url('dashboardd') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
-
-                <li><a href="{{ route('manageroute') }}"><i class="fa fa-comments"></i><span>Manage Routes</span></a></li>
-                <li><a href="{{ route('trips.create') }}"><i class="fa fa-calendar-check-o"></i><span>Add Trips</span></a></li>
-                <li><a href="{{ url('trips.index') }}"><i class="fa fa-users"></i><span>Manage Trips</span></a></li>
-                <li><a href="{{ url('bus') }}"><i class="fa fa-file"></i><span>Manage Buses</span></a></li>
-
-                <li><a href="{{ route('schedules.create') }}"><i class="fa fa-address-book"></i><span>Add Schedules</span></a></li>
-                <li><a href="{{ url('schedules.index') }}"><i class="fa fa-bullhorn"></i><span>Manage Schedules</span></a></li>
-                <li><a href="{{ url('issuedisplay') }}"><i class="fa fa-file"></i><span>Reports</span></a></li>
-                <li>
-                    <a href="{{ route('refund.requests') }}">
-                        <i class="fa fa-file"></i>
-                        <span>Refund Requests</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-
-        <section class="section-1 py-16">
-    <div class="card mx-auto max-w-2xl bg-white shadow-md rounded-lg">
-        <div class="card-header text-center py-4 border-b">
-            <h3 class="card-title text-2xl font-semibold text-gray-800">Register New User</h3>
-        </div>
-        <div class="card-body p-8">
-            <form method="POST" action="{{ route('adminstoring') }}">
-                @csrf
-
-                <!-- Name -->
-                <div class="mb-6">
-                    <label for="name" class="block text-gray-700 font-medium mb-2">Name</label>
-                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="name" name="name" placeholder="Enter user name" required>
-                </div>
-
-                <!-- Email -->
-                <div class="mb-6">
-                    <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
-                    <input type="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="email" name="email" placeholder="Enter email address" required>
-                </div>
-
-                <!-- Phone -->
-                <div class="mb-6">
-                    <label for="phone" class="block text-gray-700 font-medium mb-2">Phone</label>
-                    <input type="text" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="phone" name="phone" placeholder="Enter phone number">
-                </div>
-
-                <!-- Role -->
-                <div class="mb-6">
-                    <label for="role" class="block text-gray-700 font-medium mb-2">Role</label>
-                    <select class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="role" name="role" required>
-                        <option value="" disabled selected>Select user role</option>
-                        <option value="customer">Customer</option>
-                         </select>
-                </div>
-
-                <!-- Status -->
-                <div class="mb-6">
-                    <label for="status" class="block text-gray-700 font-medium mb-2">Status</label>
-                    <select class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="status" name="status" required>
-                        <option value="active">Active</option>
-                        <option value="suspended">Suspended</option>
-                    </select>
-                </div>
-
-                <!-- Password -->
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
-                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="password" name="password" placeholder="Enter password" required>
-                </div>
-
-                <!-- Confirm Password -->
-                <div class="mb-6">
-                    <label for="password_confirmation" class="block text-gray-700 font-medium mb-2">Confirm Password</label>
-                    <input type="password" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" id="password_confirmation" name="password_confirmation" placeholder="Confirm password" required>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="d-grid mt-6">
-                    <button type="submit" class="w-full bg-yellow-500 text-white py-3 rounded-lg hover:bg-yellow-600 focus:ring-2 focus:ring-yellow-500 focus:outline-none">Register User</button>
-                </div>
-            </form>
-
-            <!-- Back to Users List -->
-            <div class="mt-6 text-center">
-                <a href="/redirect" class="text-gray-700 hover:text-gray-900 font-medium">Back to Users List</a>
+        <form action="{{ route('illitratepost') }}" method="POST" class="bg-white p-6 shadow-md rounded-lg">
+            @csrf
+            <!-- Name -->
+            <div class="mb-4">
+                <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                <input type="text" name="name" id="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @error('name')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                @enderror
             </div>
-        </div>
-    </div>
-</section>
 
-    </div>
+            <!-- Email -->
+            <div class="mb-4">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                <input type="email" name="email" id="email" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @error('email')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
 
-</body>
-</html>
+            <!-- Phone -->
+            <div class="mb-4">
+                <label for="phone" class="block text-sm font-medium text-gray-700">Phone (Optional)</label>
+                <input type="text" name="phone" id="phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @error('phone')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Email Verified At -->
+            <div class="mb-4">
+                <label for="email_verified_at" class="block text-sm font-medium text-gray-700">Email Verified At (Optional)</label>
+                <input type="datetime-local" name="email_verified_at" id="email_verified_at" value="{{ old('email_verified_at') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                @error('email_verified_at')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Role -->
+            <div class="mb-4">
+                <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                <select name="role" id="role" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="customer" selected>Customer</option>
+                </select>
+                @error('role')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Status -->
+            <div class="mb-4">
+                <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+                <select name="status" id="status" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="active">Active</option>
+                    <option value="suspended">Suspended</option>
+                </select>
+                @error('status')
+                    <p class="text-red-600 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex gap-4">
+                <button type="submit" class="w-full py-2 px-4 bg-goldenrod text-black font-semibold rounded-lg shadow-md hover:bg-yellow-500">
+                    Add User
+                </button>
+
+                <!-- Step Two Button -->
+               
+            </div>
+        </form>
+    </div>
 </x-app-layout>

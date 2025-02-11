@@ -10,8 +10,10 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\Ticket;
 use App\Models\Refund;
 use App\Models\Schedule;
+use App\Models\Payment;
 use App\Models\Trip;
 use Exception;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class TicketController extends Controller
@@ -166,4 +168,53 @@ public function showBookingPage($scheduleId)
 
         return response()->json(['success' => true, 'message' => 'Refund request processed successfully.']);
     }
-}
+   public function bookTicketAndPaymentForm()
+    {
+        $schedules = Schedule::with('route', 'bus')->get();
+        $availableSeats = range(1, 50); // Assume seat range from 1 to 50
+        $bookedSeats = Ticket::whereIn('status', ['booked', 'completed'])->pluck('seat_number')->toArray();
+        $availableSeats = array_diff($availableSeats, $bookedSeats);
+        
+        $tickets = Ticket::with('schedule')->get();
+    
+        return view('ticket_officer.ticket_payment', compact('schedules', 'availableSeats', 'tickets'));
+    }
+    
+    public function storeTicket(Request $request)
+    {
+        $validatedData = $request->validate([
+            'schedule_id' => 'required|exists:schedules,id',
+            'seat_number' => 'required|integer',
+        ]);
+    
+        $ticket = Ticket::create([
+            'schedule_id' => $validatedData['schedule_id'],
+            'seat_number' => $validatedData['seat_number'],
+            'status' => 'booked',
+            'qr_code' => uniqid('qr_'),
+            'customer_id' => Auth::id(),
+        ]);
+    
+        return back()->with('success', 'Ticket successfully booked!');
+    }
+    
+    public function storePayment(Request $request)
+    {
+        $validatedData = $request->validate([
+            'ticket_id' => 'required|exists:tickets,id',
+            'payment_method' => 'required|string',
+            'amount' => 'required|numeric',
+        ]);
+    
+        Payment::create([
+            'ticket_id' => $validatedData['ticket_id'],
+            'customer_id' => Auth::id(),
+            'amount' => $validatedData['amount'],
+            'payment_method' => $validatedData['payment_method'],
+            'payment_status' => 'completed',
+            'ticket_status' => 'unchecked',
+            'tx_ref' => uniqid('tx_'),
+        ]);
+    
+        return back()->with('success', 'Payment successfully processed!');
+    }}

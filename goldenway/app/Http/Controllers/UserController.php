@@ -8,7 +8,10 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Refund;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
+
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -116,4 +119,30 @@ class UserController extends Controller
         return response()->json(['success' => false, 'message' => 'Invalid request or refund already requested.']);
     }
     
+
+
+
+    public function illitratepost(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'phone' => 'nullable|string|max:15',
+            'email_verified_at' => 'nullable|date',
+            'role' => 'in:customer',
+            'status' => 'required|in:active,suspended',
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'email_verified_at' => $request->email_verified_at ? Carbon::parse($request->email_verified_at) : null,
+            'role' => $request->role,
+            'status' => $request->status,
+            'password' => Hash::make('defaultpassword'), // Replace with secure logic
+        ]);
+
+        return redirect()->back()->with('success', 'User added successfully!');
+    }
     }

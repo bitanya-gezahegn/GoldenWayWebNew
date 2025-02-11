@@ -58,6 +58,14 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/register-user', [AdminController::class, 'create'])->name('admin.register-user');
     Route::get('/register-user', [AdminController::class, 'create'])->name('admin.register-user');
     Route::get('/illitrate', [TicketController::class, 'illitrate'])->name('illitrate');
+    Route::post('/illitratepost', [UserController::class, 'illitratepost'])->name('illitratepost');
+    Route::get('/book-ticket-payment', [TicketController::class, 'bookTicketAndPaymentForm'])->name('book.ticket.payment');
+    Route::get('/ticket-payment', [TicketController::class, 'bookTicketPage'])->name('book-ticket-payment');
+    Route::post('/store-ticket', [TicketController::class, 'storeTicket'])->name('store-ticket');
+    Route::post('/store-payment', [TicketController::class, 'storePayment'])->name('store-payment');
+    
+Route::post('/store-booking', [TicketController::class, 'storeBooking'])->name('store-booking');
+ 
     Route::get('/manageusers', [AdminController::class, 'manageusers'])->name('manageusers');
     Route::get('/requestrefunds', [TicketController::class, 'requestrefunds']);
     Route::get('/showRefundRequests', [TicketController::class, 'showRefundRequests'])->name('refund.requests');
@@ -144,6 +152,12 @@ Route::get("/fff", function() {
 
 
 Route::post('/payment/initialize/{id}', [PaymentController::class, 'initialize'])->name('payment.initialize');
+Route::get('/payment/cash/{id}', [PaymentController::class, 'cash'])->name('payment.cash.form');
+
+Route::post('/payment/cash/{id}', [PaymentController::class, 'cash'])->name('payment.cash');
+Route::post('/payment/processCashPayment/{id}', [PaymentController::class, 'processCashPayment'])->name('payment.processCashPayment');
+
+
 Route::get('/payment/callback/{tx_ref}', [PaymentController::class, 'callback'])->name('payment.callback');
 Route::get('/payment/success', [PaymentController::class, 'success'])->name('payment.success');
 Route::get('/payment/error', [PaymentController::class, 'error'])->name('payment.error');

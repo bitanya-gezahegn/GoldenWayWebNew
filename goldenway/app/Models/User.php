@@ -12,13 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens;
-
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -32,6 +26,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'status',
+        'email_verified_at', // Ensure this is included
     ];
 
     /**
@@ -59,41 +54,32 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast to native types.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
     public function getIsAdminAttribute()
-{
-    return $this->role === 'admin';
-}
+    {
+        return $this->role === 'admin';
+    }
 
-public function tickets()
-{
-    return $this->hasMany(Ticket::class, 'customer_id');
-}
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class, 'customer_id');
+    }
 
-/**
- * Get the payments associated with the user.
- */
-public function payments()
-{
-    return $this->hasMany(Payment::class, 'customer_id');
-}
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'customer_id');
+    }
 
-/**
- * Get the refunds associated with the user.
- */
-public function refunds()
-{
-    return $this->hasManyThrough(Refund::class, Payment::class, 'customer_id', 'payment_id');
-}
-
+    public function refunds()
+    {
+        return $this->hasManyThrough(Refund::class, Payment::class, 'customer_id', 'payment_id');
+    }
 }

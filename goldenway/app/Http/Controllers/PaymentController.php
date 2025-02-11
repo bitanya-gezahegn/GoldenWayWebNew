@@ -8,6 +8,9 @@ use App\Models\Payment;
 use App\Models\Refund;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
+use Illuminate\Support\Facades\Hash;
 
 header('Accept: application/json');
 class PaymentController extends Controller
@@ -57,6 +60,7 @@ class PaymentController extends Controller
 
         return redirect($response['data']['checkout_url'])->with('success', 'Redirecting to payment gateway...');
     }
+
     public function callback(Request $request, string $tx_ref)
     {
         // Call the verifyTransaction method from ChapaService
@@ -168,6 +172,46 @@ class PaymentController extends Controller
 
         return redirect()->back()->with('success', 'Refund request submitted successfully.');
     }
+
+    public function cash($id)
+{
+    // Fetch the ticket data based on the ticket ID
+    $ticket = Ticket::findOrFail($id);
+
+    return view('ticket_officer.book_ticket_payment', compact('ticket'));
+}
+public function processCashPayment(Request $request, $id)
+{
+    $ticket = Ticket::with(['customer', 'schedule.trip.route'])->findOrFail($id);
+
+    $validatedData = $request->validate([
+        'payment_method' => 'required',
+        'payment_status' => 'required',
+        'email' => 'required|email',
+        'password' => 'required',
+    ]);
+
+    $ticketOfficer = User::where('email', $validatedData['email'])->where('role', 'ticket_officer')->first();
+
+    if (!$ticketOfficer || !Hash::check($validatedData['password'], $ticketOfficer->password)) {
+        return back()->with('error', 'Invalid credentials or unauthorized user.');
+    }
+
+    Payment::create([
+        'ticket_id' => $id,
+        'customer_id' => $ticketOfficer->id,
+            'amount' => $ticket->schedule->trip->price,
+           
+        'payment_method' => $validatedData['payment_method'],
+        'payment_status' => $validatedData['payment_status'],
+        'ticket_status' => 'unchecked',
+        'tx_ref' => uniqid('tx_'),
+    ]);
+
+    return redirect()->route('payment.cash.form', $id)->with('success', 'Payment recorded successfully.');
+}
+
+
 }
 
     

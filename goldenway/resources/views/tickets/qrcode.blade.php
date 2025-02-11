@@ -88,7 +88,7 @@
         </div>
 
         <!-- QR Code -->
-        <div class="p-5 text-center">
+        <div class="p-5 text-center flex justify-center ">
             <div id="qr-code-container">
                 {!! QrCode::size(200)->generate(
                     "Golden Bus Ticket\n".
@@ -114,12 +114,23 @@
             </button>
 
             <!-- Payment Button -->
-            <form action="{{ route('payment.initialize', $ticketData['id']) }}" method="POST" class="mt-3">
+            
+            <form action="{{ route('payment.initialize', $ticketData['id']) }}" method="POST" class="mt-3 ">
                 @csrf
                 <button class="w-full bg-yellow-600 text-white font-semibold py-2 rounded-md hover:bg-yellow-500">
                     Pay with Chapa
                 </button>
+               
             </form>
+            <form action="{{ route('payment.cash', ['id' => $ticketData['id']]) }}" method="POST">
+    @csrf
+    <button class="w-full bg-yellow-600 text-white font-semibold py-2 rounded-md hover:bg-yellow-500 mt-3">
+        Pay with Cash
+    </button>
+</form>
+
+
+             
         </div>
     </div>
 

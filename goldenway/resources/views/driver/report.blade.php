@@ -197,11 +197,11 @@
     <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Add Issue</h2>
     
     <!-- Form -->
-    <form action="{{ route('reportissuecreate') }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">
+    <form action="{{ route('reportissuecreate') }}" method="POST" class="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto mb-44">
         @csrf
         
         <!-- Description Input -->
-        <div class="mb-6">
+        <div class="mb-6 ">
             <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
             <input 
                 type="text" 

@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+
 
     <title>Dashboard</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -317,7 +319,9 @@
         <nav class="side-bar">
             <ul>
                 <li><a href="{{ url('redirect') }}"><i class="fa fa-desktop"></i><span>Dashboard</span></a></li>
-                   </ul>
+                <li><a href="{{ route('illitrate') }}"><i class="fa fa-comments"></i><span>Tickets for Illitrates</span></a></li>
+
+            </ul>
         </nav>
 
         <section class="section-1 py-16">
@@ -328,8 +332,7 @@
     <!-- Completed Payments Table -->
     <div class="text-end mb-6">
         <h2 class="text-3xl font-semibold text-gray-800">Completed Payments</h2>
-    </div>
-    <table id="payments-table" class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
+    </div><table id="payments-table" class="min-w-full table-auto bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
             <tr class="bg-gray-100 text-left text-sm font-medium text-gray-700">
                 <th class="px-4 py-2 border-b">Payment ID</th>
@@ -365,71 +368,77 @@
             @endforeach
         </tbody>
     </table>
-</section>
 
-
-    </div>
     <script>
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
+   function onScanSuccess(decodedText) {
+    console.log(`Scanned QR Code content: ${decodedText}`);
 
-            const ticketIdMatch = decodedText.match(/ticket_(\d+)\.png/);
-            if (ticketIdMatch) {
-                const ticketId = ticketIdMatch[1];
-                console.log(`Extracted Ticket ID = ${ticketId}`);
-                filterTableByTicketId(ticketId);
-            } else {
-                console.error("Unable to extract Ticket ID from the scanned QR code.");
-            }
-        }
+    // Extract ticket number after "Ticket No: "
+    const ticketIdMatch = decodedText.match(/Ticket No:\s*(\d+)/);
 
-        var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
-        html5QrcodeScanner.render(onScanSuccess);
-
-        function filterTableByTicketId(ticketId) {
-            const tableRows = document.querySelectorAll('#payments-table tbody tr');
-            tableRows.forEach(row => {
-                const ticketIdCell = row.querySelector('.ticket-id');
-                if (ticketIdCell && ticketIdCell.textContent.trim() === ticketId) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
-        }
-        function changeTicketStatus(paymentId) {
-            console.log(paymentId); // Debugging
-    fetch(`/update-ticket-status/${paymentId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-        },
-        body: JSON.stringify({ status: 'checked' })
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        if (data.success) {
-            const statusCell = document.querySelector(`#payment-${paymentId} .ticket-status`);
-            statusCell.textContent = 'Checked';
-            statusCell.classList.add('bg-green-500', 'text-white');
-            statusCell.classList.remove('bg-gray-200');
-        } else {
-            alert('Failed to update ticket status: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('An error occurred while updating the ticket status.');
-    });
+    if (ticketIdMatch) {
+        const ticketId = ticketIdMatch[1]; // Capture group contains the ticket ID
+        console.log(`Extracted Ticket ID: ${ticketId}`);
+        alert(`Ticket ID Found: ${ticketId}`);
+        filterTableByTicketId(ticketId);
+    } else {
+        alert("Unable to extract Ticket ID from the scanned QR code.");
+    }
 }
 
-        
+function filterTableByTicketId(ticketId) {
+    const tableRows = document.querySelectorAll('#payments-table tbody tr');
+    let matchFound = false;
+
+    tableRows.forEach(row => {
+        const ticketIdCell = row.querySelector('.ticket-id');
+        if (ticketIdCell && ticketIdCell.textContent.trim() === ticketId) {
+            row.style.backgroundColor = 'lightgreen'; // Highlight the matching row
+            matchFound = true;
+        } else {
+            row.style.backgroundColor = ''; // Reset other rows
+        }
+    });
+
+    if (!matchFound) {
+        alert(`No matching Ticket ID (${ticketId}) found.`);
+    }
+}
+
+var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", { fps: 10, qrbox: 250 });
+html5QrcodeScanner.render(onScanSuccess);
+
+        function changeTicketStatus(paymentId) {
+            console.log(paymentId); // Debugging
+            fetch(`/update-ticket-status/${paymentId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({ status: 'checked' })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const statusCell = document.querySelector(`#payment-${paymentId} .ticket-status`);
+                    statusCell.textContent = 'Checked';
+                    statusCell.classList.add('bg-green-500', 'text-white');
+                    statusCell.classList.remove('bg-gray-200');
+                } else {
+                    alert('Failed to update ticket status: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while updating the ticket status.');
+            });
+        }
     </script>
 </body>
 </html>
