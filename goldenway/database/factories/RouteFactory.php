@@ -16,10 +16,20 @@ class RouteFactory extends Factory
      */
     public function definition(): array
     {
+
+        $ethiopianCities = [
+            'Addis Ababa', 'Adama', 'Bahir Dar', 'Dire Dawa', 'Hawassa', 'Mekele', 'Gondar', 'Jimma',
+            'Debre Berhan', 'Harar', 'Shashemene', 'Nekemte', 'Hosaena', 'Dessie', 'Arba Minch', 'Debre Markos',
+            'Sebeta', 'Bishoftu', 'Assela', 'Wolkite', 'Gode', 'Gambela', 'Dilla', 'Ambo', 'Bule Hora',
+            'Sodo', 'Metu', 'Burayu', 'Axum', 'Adigrat', 'Chiro', 'Ziway', 'Mojo', 'Butajira', 'Fiche',
+            'Goba', 'Yabelo', 'Mizan Teferi', 'Woldia', 'Shire', 'Debre Tabor', 'Agaro', 'Kombolcha',
+            'Ginir', 'Gorgora', 'Alem Tena', 'Sawla', 'Dangla', 'Bati', 'Kemise'
+        ];
         return [
-            'origin' => $this->faker->city, 
-            'destination' => $this->faker->city, 
-            'bus_stops' => json_encode("hi, hello"),
+            'origin' => $this->faker->randomElement($ethiopianCities), 
+            'destination' => $this->faker->randomElement($ethiopianCities), 
+            'bus_stops' => json_encode("{$this->faker->randomElement($ethiopianCities)}, {$this->faker->randomElement($ethiopianCities)}"),
+            'distance' => $this->faker->numberBetween(50, 1000),
         ];
     }
 }

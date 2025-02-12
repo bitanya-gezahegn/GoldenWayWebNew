@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\TestingSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -56,5 +57,7 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => bcrypt('tofficer123'),
         ]);
+
+        $this->call(TestingSeeder::class);
     }
 }

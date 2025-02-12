@@ -24,7 +24,7 @@ class TicketFactory extends Factory
             'customer_id'=>User::factory(),
             'seat_number'=>$this->faker->numberBetween(10, 50),
             'status'=>'booked',
-            'qr_code'=>'',
+            'qr_code'=>'qr-' . $this->faker->unique()->randomNumber(5),
            
         ];
     }
